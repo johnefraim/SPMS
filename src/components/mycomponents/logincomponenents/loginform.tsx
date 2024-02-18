@@ -65,7 +65,7 @@ const formSchema = z.object({
                 </FormItem>
             )}
             />
-            <Button type="submit">
+            <Button type="submit" className="bg-orange-500 hover:bg-orange-800">
                 <LogIn size={16} />
                 Login</Button>
           </form>

@@ -11,16 +11,14 @@ export default function Login(){
         <header>
             <HomeNavigation/>
         </header>
-            <section className="flex items-center min-h-screen min-w-max justify-center">
-            <Card>
-                <CardTitle className=" text-orange-500 flex">Sign In <KeyRound size={20} /></CardTitle>
-            <CardContent>
-                <div className="flex flex-col items-center justify-center mt-8">
-                    <LoginForm/>
-                </div>
+            <div className="flex items-center min-h-screen min-w-max justify-center">
+            <Card className="flex-2 w-64">
+                <CardTitle className="flex text-orange-500 mt-4 ml-6 ">Sign In <KeyRound size={20} className="flex" /></CardTitle>
+            <CardContent className="flex">
+                <LoginForm/>
             </CardContent>
             </Card>
-            </section>
+            </div>
             <footer>
                 <Footer/>
             </footer>
