@@ -8,6 +8,7 @@ export default function portfolios(){
         <header>
             <HomeNavigation/>
         </header>
+          
         </>
     );
 }
