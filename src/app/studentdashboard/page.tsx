@@ -1,16 +1,15 @@
-
 'use client'
-
 import { StudentSidebar } from "@/components/mycomponents/studentdashboard/studentsidebar";
 import { StudentNavigation } from "@/components/mycomponents/studentdashboard/studentnavigation";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { StudentOverview } from "@/components/mycomponents/studentdashboard/student-overview";
-import { useState } from "react";
+import {  useLayoutEffect, useState } from "react";
 import EditProfile from "@/components/mycomponents/studentdashboard/editprofile";
 import { CreatePortfolio } from "@/components/mycomponents/studentdashboard/createportfolio";
+import { redirect } from "next/navigation";
+
 export default function StudentDashboard(){
+
     const [currentComponent, setCurrentComponent] = useState('overview');
-    
     const renderComponent = () => {
         switch (currentComponent) {
             case 'overview':
@@ -24,12 +23,19 @@ export default function StudentDashboard(){
         }
     };
 
+    useLayoutEffect(() => {
+        const datatoken = localStorage.getItem('token');
+      if (datatoken === null) {
+        redirect('/login');
+      }
+      }, [])
+
     return(
         <>
             <header>
                 <StudentNavigation/>
             </header>
-            <section className="bg-slate-300 h-full flex">
+            <section className="h-full flex">
                 <div><StudentSidebar 
                     onDashboard={()=>setCurrentComponent('overview')}
                     onEditProfile={()=> setCurrentComponent('editProfile')}

@@ -13,7 +13,7 @@ import {
   NavigationMenuContent
 } from "@/components/ui/navigation-menu"
 import { Avatar, AvatarImage, AvatarFallback } from "../../ui/avatar";
-
+import { logout } from "@/app/api/route";
 
 export function StudentNavigation() {
   return (
@@ -28,7 +28,7 @@ export function StudentNavigation() {
           <NavigationMenuItem>
           <NavigationMenuTrigger>
           <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                <AvatarImage onClick={logout} src="https://github.com/shadcn.png" alt="@shadcn" />
                 <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           <NavigationMenuContent>

@@ -1,4 +1,3 @@
-'use client'
 import React from "react";
 import { HomeNavigation } from "@/components/mycomponents/homenavigationbar";
 

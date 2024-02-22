@@ -10,8 +10,8 @@ export default function Home() {
         <HomeNavigation/>
       </header>
       <main>
-        <section className="flex 1/2 ml-12">
-          <div className="flex justify-center items-center">
+        <section className="flex 1/2 ml-12 max-h-screen overflow-hidden">
+          <div className="flex 1/2 justify-center">
           <SectionPage 
             h1tag="&quot;Programmers Teaching Programmers to code and to collaborate!&quot;"/>
           </div>

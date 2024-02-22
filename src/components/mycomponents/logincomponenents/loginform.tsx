@@ -4,26 +4,24 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { LogIn, User, Lock } from "lucide-react"
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    
-  } from "@/components/ui/form"
-  import { Input } from "@/components/ui/input"
+import {Form,FormControl,FormField,FormItem,} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { authenticate } from "@/app/api/route"
+import { useEffect } from "react"
+import { redirect } from "next/navigation"
+
 
 const formSchema = z.object({
     username: z.string().min(2, {
       message: "Username must be at least 2 characters.",
     }),
-    password: z.string().min(8,{
+    password: z.string().min(2,{
         message: "Password must be 8 characters"
     })
   })
 
   export function LoginForm() {
-    
+
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
@@ -32,9 +30,22 @@ const formSchema = z.object({
       },
     })
    
+    useEffect(() => {
+      const datatoken = localStorage.getItem('token');
+      if (datatoken !== null) {
+        redirect('/studentdashboard');
+      }
+    }, [])
     
     function onSubmit(values: z.infer<typeof formSchema>) {
-      console.log(values)
+      const data = authenticate(values.username, values.password);
+      data.then((res) => {
+        if (res.status === 200) {
+          console.log(res.data.token);
+          localStorage.setItem('token', res.data.token);
+          redirect('/studentdashboard');
+        }
+      });
     }
 
     return (

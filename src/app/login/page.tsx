@@ -1,9 +1,9 @@
-
 import { HomeNavigation } from "@/components/mycomponents/homenavigationbar";
 import { LoginForm } from "@/components/mycomponents/logincomponenents/loginform";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import Footer from "@/components/mycomponents/footer";
 import { KeyRound } from "lucide-react";
+
 
 export default function Login(){
     return(
@@ -11,14 +11,14 @@ export default function Login(){
         <header>
             <HomeNavigation/>
         </header>
-            <div className="flex items-center min-h-screen min-w-max justify-center">
+            <section className="flex items-center min-h-screen min-w-max justify-center">
             <Card className="flex-2 w-64">
                 <CardTitle className="flex text-orange-500 mt-4 ml-6 ">Sign In <KeyRound size={20} className="flex" /></CardTitle>
             <CardContent className="flex">
-                <LoginForm/>
+                <LoginForm />
             </CardContent>
             </Card>
-            </div>
+            </section>
             <footer>
                 <Footer/>
             </footer>
