@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/navigation-menu"
 import { LayoutDashboard, SquareUserRound, GalleryHorizontalEnd  } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { CreatePortfolioDialog } from "./createportfoliodiaglog"
 
 interface StudentSidebarProps {
     onEditProfile: () => void;
@@ -23,26 +24,25 @@ interface StudentSidebarProps {
 
 export function StudentSidebar({onEditProfile, onECreatePortfolio, onDashboard}: StudentSidebarProps) {
   return (
-    <NavigationMenu className=" bg-gray-200 w-64 h-screen items-start justify-start flex"> 
-      <NavigationMenuList className="flex flex-col">
-        {/**navigation list */}
-        <NavigationMenuItem>
-            <Button variant={"ghost"} size={"lg"} className="flex items-center" onClick={onDashboard}>
+    <NavigationMenu className=" bg-gray-100 w-48 h-full items-start mt-2 shadow-md"> 
+      <NavigationMenuList className="flex flex-col mt-6 space-y-3">
+        <NavigationMenuItem className="w-full">
+            <Button variant={"ghost"} onClick={onDashboard} className="w-full justify-start">
                 <LayoutDashboard className="text-orange-500"/>Dashboard
             </Button>
         </NavigationMenuItem>
 
-        <NavigationMenuItem>
-        <Button variant={"ghost"} size={"lg"} className="flex items-center" onClick={onEditProfile}>
+        <NavigationMenuItem className="w-full">
+        <Button variant={"ghost"}  onClick={onEditProfile} className="w-full justify-start">
             <SquareUserRound className="text-orange-500"/>
-              Edit profile
+              Profile
           </Button>
         </NavigationMenuItem>
 
-        <NavigationMenuItem className="">
-        <Button variant={"ghost"} size={"lg"} className="flex items-center" onClick={onECreatePortfolio}>
+        <NavigationMenuItem className="w-full">
+        <Button variant={"ghost"} className="w-full justify-start" onClick={onECreatePortfolio}>
             <GalleryHorizontalEnd className="text-orange-500"/>
-              Create Portfolio
+              Portfolio
           </Button>
         </NavigationMenuItem>
       </NavigationMenuList>

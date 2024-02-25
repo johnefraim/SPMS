@@ -7,7 +7,7 @@ import { LogIn, User, Lock } from "lucide-react"
 import {Form,FormControl,FormField,FormItem,} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { authenticate } from "@/app/api/route"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { redirect } from "next/navigation"
 
 
@@ -22,6 +22,7 @@ const formSchema = z.object({
 
   export function LoginForm() {
 
+    
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
@@ -30,23 +31,29 @@ const formSchema = z.object({
       },
     })
    
-    useEffect(() => {
-      const datatoken = localStorage.getItem('token');
-      if (datatoken !== null) {
-        redirect('/studentdashboard');
-      }
-    }, [])
-    
-    function onSubmit(values: z.infer<typeof formSchema>) {
-      const data = authenticate(values.username, values.password);
-      data.then((res) => {
-        if (res.status === 200) {
-          console.log(res.data.token);
-          localStorage.setItem('token', res.data.token);
-          redirect('/studentdashboard');
-        }
-      });
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+      try {
+        const response = await authenticate(values.username, values.password);
+        const { access_token } = response.data; 
+        localStorage.setItem('token', access_token);
+        setUsername('');
+        setPassword('');
+        
+    } catch (error) {
+        console.error('Login failed:', error);
+        
     }
+
+    }
+    const token = localStorage.getItem('token');
+    useEffect(() => {
+        if (token && token !== "undefined" && token !== "null") {
+            redirect('/studentdashboard');
+        }
+    }, [token]);
 
     return (
         <section>

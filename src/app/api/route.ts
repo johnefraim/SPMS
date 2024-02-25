@@ -1,14 +1,15 @@
 import axios from 'axios';
-import { redirect } from 'next/navigation';
+import { redirect } from 'next/dist/server/api-utils';
 
 const api = axios.create({
     baseURL: 'http://localhost:8080/api/auth',
     headers: {
         'Content-Type': 'application/json',
     },
+
 });
 
-// Add an interceptor to include the token in the headers
+
 api.interceptors.request.use(config => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -25,14 +26,16 @@ export const authenticate = (email: string, password: string) => {
 
 export const logout = () => {
     localStorage.removeItem('token');
-    console.log('logged out');
     return api.post('/logout');
 };
 
 export const authenticated =()=>{
-    if (localStorage.getItem('token') !== null){
+    const token = localStorage.getItem('token');
+    
+    if (token && token !== "undefined" && token !== "null") {
         return true;
     }
+    return false;
 };
 
 export default api;

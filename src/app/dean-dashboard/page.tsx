@@ -22,12 +22,13 @@ export default function StudentDashboard(){
                 return <StudentOverview />;
         }
     };
-    const token = localStorage.getItem('token');
+
     useLayoutEffect(() => {
-        if (!token || token === "undefined" || token === "null") {
-            redirect('/login');
-        }
-    }, [token]);
+        const datatoken = localStorage.getItem('token');
+      if (datatoken === null) {
+        redirect('/login');
+      }
+      }, [])
 
     return(
         <>

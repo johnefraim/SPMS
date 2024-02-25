@@ -7,7 +7,13 @@ export default function portfolios(){
         <header>
             <HomeNavigation/>
         </header>
-          
+          <section>
+            <h1>Portfolios</h1>
+            <div className="ml-2 mt-2 mr-2 w-max">
+                <p>No Portfolio Found.</p>
+            </div>
+            
+          </section>
         </>
     );
 }
