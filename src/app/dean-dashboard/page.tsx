@@ -36,11 +36,9 @@ export default function StudentDashboard(){
                 <StudentNavigation/>
             </header>
             <section className="h-lvh flex">
-                <div><StudentSidebar 
-                    onDashboard={()=>setCurrentComponent('overview')}
-                    onEditProfile={()=> setCurrentComponent('editProfile')}
-                    onECreatePortfolio={()=>setCurrentComponent('createPortfolio')}
-                /></div>
+                <div>
+                    WElCOME DEAN!
+                </div>
                 <div className="w-full flex-row-3">{renderComponent()}</div>
             </section>
         </>

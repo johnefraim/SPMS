@@ -13,34 +13,38 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Plus } from "lucide-react"
 
-export function CreatePortfolioDialog() {
+interface CreatePortfolioDialogProps {
+  onClick?: () => void;
+}
+
+
+export function CreatePortfolioDialog({ onClick }: CreatePortfolioDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Share</Button>
+        <Button size="sm"><Plus />Create Portfolio</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Share link</DialogTitle>
+          <DialogTitle>Create your Portfolio</DialogTitle>
           <DialogDescription>
-            Anyone who has this link will be able to view this.
+            Add important information that want to include.
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center space-x-2">
           <div className="grid flex-1 gap-2">
-            <Label htmlFor="link" className="sr-only">
-              Link
+            <Label>
+             Portfolio Title
             </Label>
             <Input
-              id="link"
-              defaultValue="https://ui.shadcn.com/docs/installation"
-              readOnly
+              type="text"
+              placeholder="Programmer"
+              className="w-full"
             />
           </div>
-          <Button type="submit" size="sm" className="px-3">
-            <span className="sr-only">Copy</span>
-          </Button>
+          
         </div>
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>

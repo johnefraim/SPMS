@@ -38,7 +38,7 @@ export default function StudentDashboard(){
                 <div><StudentSidebar 
                     onDashboard={()=>setCurrentComponent('overview')}
                     onEditProfile={()=> setCurrentComponent('editProfile')}
-                    onECreatePortfolio={()=>setCurrentComponent('createPortfolio')}
+                    onCreatePortfolio={()=>setCurrentComponent('createPortfolio')}
                 /></div>
                 <div className="w-full flex-row-3">{renderComponent()}</div>
             </section>

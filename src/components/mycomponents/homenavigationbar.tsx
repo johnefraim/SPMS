@@ -21,7 +21,7 @@ export function HomeNavigation() {
           <h1 className="ml-2 mt-4 text-2xl text-orange-500">College of Computer Studies</h1>
         </Link>
       </NavigationMenuList>
-      <NavigationMenuList className="flex items-center mr-12"> 
+      <NavigationMenuList className="flex items-center mr-12 space-x-4"> 
         <NavigationMenuItem className="">
           <Link href="/" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
