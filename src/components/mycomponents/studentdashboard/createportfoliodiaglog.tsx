@@ -14,13 +14,50 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Plus } from "lucide-react"
-
+import { Form, FormField, FormItem, FormControl } from "@/components/ui/form"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { createPortfolio } from "@/app/api/createportfolio"
+import { on } from "events"
 interface CreatePortfolioDialogProps {
   onClick?: () => void;
 }
 
+const schema = z.object({
+  title: z.string(),
+  category: z.string(),
+  description: z.string(),
+  tags: z.string(),
+});
 
 export function CreatePortfolioDialog({ onClick }: CreatePortfolioDialogProps) {
+
+  const formdata = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      title: '',
+      category: '',
+      description: '',
+      tags: '',
+    },
+  });
+
+  async function onSubmit(formvalue: z.infer<typeof schema>){
+    try {
+      
+      const response = await createPortfolio(formvalue.title, formvalue.category, formvalue.description, formvalue.tags);
+      const { data } = response;
+      console.log(data);
+      formdata.reset();
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        console.log('Validation errors:', error.errors);
+      }
+    }
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -33,26 +70,44 @@ export function CreatePortfolioDialog({ onClick }: CreatePortfolioDialogProps) {
             Add important information that want to include.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex items-center space-x-2">
-          <div className="grid flex-1 gap-2">
-            <Label>
-             Portfolio Title
-            </Label>
-            <Input
-              type="text"
-              placeholder="Programmer"
-              className="w-full"
-            />
-          </div>
-          
+        <div className="grid items-center space-y-3">
+        <Form {...formdata}>
+          <form onSubmit={formdata.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField control={formdata.control} name="title" render={({field}) => (
+              <FormItem>
+              <Label>Title</Label>
+              <Input placeholder="Enter Portfolio Title" {...field}/>
+            </FormItem>
+            )}>
+            </FormField>
+            <FormField control={formdata.control} name="category" render={({field}) => (
+              <FormItem>
+              <Label>Category</Label>
+              <Input placeholder="Enter category" {...field}/>
+            </FormItem>
+            )}>
+            </FormField>
+            <FormField control={formdata.control} name="description" render={({field}) => (
+              <FormItem>
+              <Label>Description</Label>
+              <Input placeholder="Enter description" {...field}/>
+            </FormItem>
+            )}>
+            </FormField>
+            <FormField control={formdata.control} name="tags" render={({field}) => (
+              <FormItem>
+              <Label>Tags</Label>
+              <Input placeholder="Enter Tags/Keywords (comma separated)" {...field}/>
+            </FormItem>
+            )}>
+            </FormField>
+            <DialogFooter className="sm:justify-start">
+              <Button type="submit">Create</Button>
+            </DialogFooter>
+          </form>
+
+        </Form>
         </div>
-        <DialogFooter className="sm:justify-start">
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              Close
-            </Button>
-          </DialogClose>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   )

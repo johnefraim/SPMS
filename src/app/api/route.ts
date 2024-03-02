@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { redirect } from 'next/dist/server/api-utils';
+
 
 const api = axios.create({
     baseURL: 'http://localhost:8080/api/auth',
@@ -13,8 +13,13 @@ const api = axios.create({
 api.interceptors.request.use(config => {
     const token = localStorage.getItem('token');
     if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers.Authorization = `Bearer ${{token}}`;
     }
+    // Log the request details
+    console.log('token:', token);
+    console.log('Request URL:', config.url);
+    console.log('Request Headers:', config.headers);
+    console.log('Request Data:', config.data);
     return config;
 }, error => {
     return Promise.reject(error);

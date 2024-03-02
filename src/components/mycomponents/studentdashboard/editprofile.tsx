@@ -14,8 +14,8 @@ export default function EditProfile(){
                     <div className="flex content-center">
                         <div>
                         <Image
-                        className="mt-4 space-y-4 rounded-md border-2 border-gray-300 w-full h-32"
-                        src={"/model-1.png"}
+                        className="mt-4 space-y-4 rounded-full border-2 border-gray-300 w-full h-32"
+                        src={"/CCS_LOGO.png"}
                         alt="model-1"
                         width={100}
                         height={10}
