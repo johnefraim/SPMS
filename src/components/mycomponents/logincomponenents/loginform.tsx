@@ -34,21 +34,25 @@ const formSchema = z.object({
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+    /**
+     * Handles the form submission for the login form.
+     *
+     * @param values - The form values.
+     * @returns void
+     */
+    async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
       try {
         const response = await authenticate(values.username, values.password);
-        const { access_token } = response.data; 
+        const { access_token, name } = response.data; 
         localStorage.setItem('token', access_token);
+        localStorage.setItem('name', name);
         setUsername('');
         setPassword('');
-        
-    } catch (error) {
+      } catch (error) {
         console.error('Login failed:', error);
-        
+      }
     }
 
-    }
-    
     const token = localStorage.getItem('token');
     useEffect(() => {
         if (token && token !== "undefined" && token !== "null") {

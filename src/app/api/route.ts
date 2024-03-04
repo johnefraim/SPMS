@@ -36,7 +36,7 @@ export const logout = () => {
 
 export const authenticated =()=>{
     const token = localStorage.getItem('token');
-    
+    console.log(authenticated);
     if (token && token !== "undefined" && token !== "null") {
         return true;
     }

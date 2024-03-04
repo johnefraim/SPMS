@@ -1,9 +1,8 @@
 
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import React from "react";
 import { CreatePortfolioDialog } from "./createportfoliodiaglog";
 import { useState } from "react";
-
+import PortfolioListView from "./portfolioListView";
 export function CreatePortfolio(){
     const [open, setOpen] = useState(false);
     return(
@@ -14,8 +13,7 @@ export function CreatePortfolio(){
                 </h1>
                 <div className="ml-2 mt-2 mr-2 w-max">
                     <CreatePortfolioDialog onClick={()=>{setOpen(true)}}/>
-                    
-                    <p>No Portfolio Found.</p>
+                    <PortfolioListView/>
                 </div>
             </section>
         </>
