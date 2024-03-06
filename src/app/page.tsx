@@ -10,10 +10,10 @@ export default function Home() {
         <HomeNavigation/>
       </header>
       <main>
-        <section className="flex 1/2 ml-12">
+        <section className="flex 1/2 bg-gradient-to-r from-teal-200 via-teal-300 to-slate-400">
           <div className="flex 1/2 justify-center">
           <SectionPage 
-            h1tag="&quot;Programmers Teaching Programmers to code and to collaborate!&quot;"/>
+            h1tag="&quot;Programmers teaching Programmers to code and to collaborate!&quot;"/>
           </div>
         </section>
         </main>

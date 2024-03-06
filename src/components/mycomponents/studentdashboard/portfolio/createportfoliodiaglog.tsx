@@ -15,14 +15,16 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Plus } from "lucide-react"
 import { Form, FormField, FormItem, FormControl } from "@/components/ui/form"
-import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createPortfolio } from "@/app/api/createportfolio"
-import { on } from "events"
+import { useState } from "react"
+
 interface CreatePortfolioDialogProps {
   onClick?: () => void;
+  refreshPortfolioList: () => void;
+  showAlertDialog:()=> void;
 }
 
 const schema = z.object({
@@ -32,8 +34,9 @@ const schema = z.object({
   tags: z.string(),
 });
 
-export function CreatePortfolioDialog({ onClick }: CreatePortfolioDialogProps) {
+export function CreatePortfolioDialog({ onClick, refreshPortfolioList, showAlertDialog }: CreatePortfolioDialogProps) {
 
+  const [showAlert, setShowAlert] = useState(false);
   const formdata = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -49,15 +52,18 @@ export function CreatePortfolioDialog({ onClick }: CreatePortfolioDialogProps) {
       
       const response = await createPortfolio(formvalue.title, formvalue.category, formvalue.description, formvalue.tags);
       const { data } = response;
-      console.log(data);
-      formdata.reset();
+      if(response.status === 201){
+        refreshPortfolioList();
+        formdata.reset();
+        showAlertDialog();
+      }
     } catch (error) {
       if (error instanceof z.ZodError) {
         console.log('Validation errors:', error.errors);
       }
     }
   };
-
+  
   return (
     <Dialog>
       <DialogTrigger asChild>

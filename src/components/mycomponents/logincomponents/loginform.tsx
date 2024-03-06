@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { authenticate } from "@/app/api/route"
 import { useEffect, useState } from "react"
 import { redirect } from "next/navigation"
-
+import Link  from "next/link"
 
 const formSchema = z.object({
     username: z.string().min(2, {
@@ -63,7 +63,7 @@ const formSchema = z.object({
     return (
         <section>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 flex-row">
             <FormField
               control={form.control}
               name="username"
@@ -71,7 +71,7 @@ const formSchema = z.object({
                 <FormItem>
                     <User />
                   <FormControl>
-                    <Input placeholder="Username" {...field} />
+                    <Input placeholder="Email" {...field} className="border-black"/>
                   </FormControl>
                 </FormItem>
               )}
@@ -83,12 +83,13 @@ const formSchema = z.object({
                 <FormItem>
                     <Lock />
                     <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
+                    <Input type="password" placeholder="Password" {...field} className="border-black"/>
                   </FormControl>
                 </FormItem>
             )}
             />
-            <Button type="submit" className="bg-orange-500 hover:bg-orange-800">
+            <Link className="text-sm text-blue-500 grid space-y-2" href={'/forgotpassword'}>Forgot password?</Link>
+            <Button variant={'ghost'} type="submit" className=" hover:bg-orange-500">
                 <LogIn size={16} />
                 Login</Button>
           </form>

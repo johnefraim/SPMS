@@ -14,8 +14,8 @@ api.interceptors.request.use(config => {
          // Log the request details
     //console.log('token:', token);
     console.log('Request URL:', config.url);
-    console.log('Request Headers:', config.headers);
-    console.log('Request Data:', config.data);
+    //console.log('Request Headers:', config.headers);
+    //console.log('Request Data:', config.data);
     }
     return config;
 }, error => {
@@ -29,4 +29,12 @@ export const createPortfolio = (portfolioTitle: string,category: string, descrip
 
 export const getMyPortfolios = (id: string) => {
   return api.get(`/${id}`);
+}
+
+export const deletePortfolio = (id: string) => {
+  return api.delete(`/delete/${id}`);
+}
+
+export const updatePortfolio = (id: number, portfolioTitle: string, category: string, description: string, tagsKeywords: string) => {
+  return api.put(`/update/${id}`, { portfolioTitle, category, description, tagsKeywords});
 }

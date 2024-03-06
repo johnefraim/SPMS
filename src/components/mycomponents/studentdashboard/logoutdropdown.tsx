@@ -22,7 +22,7 @@ export function LogoutDropDown() {
     const [logoutStatus, setLogout] = useState(false);
     useEffect(() => {
       if (logoutStatus) {
-        redirect('/login');
+        redirect('/');
       }
     }, [logoutStatus]);
   return (

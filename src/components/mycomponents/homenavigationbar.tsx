@@ -10,11 +10,11 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-import { Home, GalleryHorizontalEnd,LogIn, Info } from "lucide-react"
+import { Home, GalleryHorizontalEnd,LogIn, Info, UserPlus } from "lucide-react"
 
 export function HomeNavigation() {
   return (
-    <NavigationMenu className="flex justify-between bg-gray-100"> 
+    <NavigationMenu className="flex justify-between "> 
       <NavigationMenuList className="flex justify-center items-center">
         <Link href={"/"} className="flex items-center">
           <Image src="/CCS_LOGO.png" alt="unc logo" width={64} height={64}className="ml-12 mt-4 mb-4"/>
@@ -25,7 +25,7 @@ export function HomeNavigation() {
         <NavigationMenuItem className="">
           <Link href="/" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-            <Home className="text-orange-500"/>
+            <Home className="text-gray-800"/>
               Home
             </NavigationMenuLink>
           </Link>
@@ -33,7 +33,7 @@ export function HomeNavigation() {
           <NavigationMenuItem>
               <Link href="/portfolios" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                <GalleryHorizontalEnd className="text-orange-500"/>
+                <GalleryHorizontalEnd className="text-gray-00"/>
                   Portfolios
               </NavigationMenuLink>
             </Link>
@@ -42,17 +42,17 @@ export function HomeNavigation() {
           <NavigationMenuItem>
           <Link href="/about" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-            <Info className="text-orange-500"/>
+            <Info className="text-gray-800"/>
               About
             </NavigationMenuLink>
           </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/login" legacyBehavior passHref>
+            <Link href="/register" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                <LogIn className="text-orange-500"/>
-                Login
+              <UserPlus className="text-orange-500"/>
+                Sign Up
               </NavigationMenuLink>
           </Link>
           </NavigationMenuItem>

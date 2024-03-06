@@ -1,10 +1,10 @@
 'use client'
 import { StudentSidebar } from "@/components/mycomponents/studentdashboard/studentsidebar";
 import { StudentNavigation } from "@/components/mycomponents/studentdashboard/studentnavigation";
-import { StudentOverview } from "@/components/mycomponents/studentdashboard/student-overview";
+import { StudentOverview } from "@/components/mycomponents/studentdashboard/dashboard/student-overview";
 import {  useLayoutEffect, useState } from "react";
-import EditProfile from "@/components/mycomponents/studentdashboard/editprofile";
-import { CreatePortfolio } from "@/components/mycomponents/studentdashboard/createportfolio";
+import EditProfile from "@/components/mycomponents/studentdashboard/profile/editprofile";
+import { CreatePortfolio } from "@/components/mycomponents/studentdashboard/portfolio/createportfolio";
 import { redirect } from "next/navigation";
 
 export default function StudentDashboard(){

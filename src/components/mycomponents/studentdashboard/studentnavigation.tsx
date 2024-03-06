@@ -16,7 +16,7 @@ import { Bell } from "lucide-react";
 export function StudentNavigation() {
   
   return (
-    <NavigationMenu className="flex justify-between bg-gray-100 shadow-md"> 
+    <NavigationMenu className="flex justify-between bg-stone-100 shadow-md"> 
       <NavigationMenuList className="flex justify-center items-center">
           <Image src="/CCS_LOGO.png" alt="unc logo" width={64} height={64}className=" ml-12 mt-4 mb-4"/>
           <h1>SPMS</h1>
