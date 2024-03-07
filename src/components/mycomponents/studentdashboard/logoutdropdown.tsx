@@ -30,7 +30,7 @@ export function LogoutDropDown() {
         
       <DropdownMenuTrigger asChild>
         <Avatar>
-                <AvatarImage src="/CCS_LOGO.png" alt="@shadcn" />
+                <AvatarImage src="/CCS_LOGO.png" alt="user" />
                 <AvatarFallback>user</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

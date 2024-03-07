@@ -9,7 +9,8 @@ import AcademicDetailsForm from "@/components/mycomponents/studentdashboard/acad
 import ProjectComponent from "@/components/mycomponents/studentdashboard/projects/projectComponent";
 import ExperienceComponent from "@/components/mycomponents/studentdashboard/experience/experienceComponent";
 import CertificateComponent from "@/components/mycomponents/studentdashboard/certificate/certificateComponent";
-
+import { LogoutDropDown } from "@/components/mycomponents/studentdashboard/logoutdropdown";
+//import { LogoutDropDown } from "../../mycomponents/studentdashboard/logoutdropdown";
 export default function StudentDashboard(){
 
     const [currentComponent, setCurrentComponent] = useState('');
@@ -36,11 +37,9 @@ export default function StudentDashboard(){
 
     return(
         <>
-            <header>
-                <StudentNavigation/>
-            </header>
-            <section className="flex h-screen bg-gradient-to-r from-teal-200 via-teal-300 to-slate-400">
-                <div><StudentSidebar 
+            <section className="flex h-screen bg=[#EFEFEF]">
+                <div>
+                    <StudentSidebar 
                     onDashboard={()=>setCurrentComponent('overview')}
                     onEditProfile={()=> setCurrentComponent('editProfile')}
                     onCreatePortfolio={()=>setCurrentComponent('createPortfolio')}
@@ -49,7 +48,10 @@ export default function StudentDashboard(){
                     onWorkExperience={()=>setCurrentComponent('workExperience')}
                     onCertificate={()=>setCurrentComponent('certificate')}
                 /></div>
-                <div className="w-full flex-row-3">{renderComponent()}</div>
+                <div className="w-full flex-row-3 mt-16">{renderComponent()}</div>
+                <div className="grid justify-end p-4">
+                        <LogoutDropDown/>
+                </div>
             </section>
         </>
     );

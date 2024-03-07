@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
-import { LogIn, User, Lock } from "lucide-react"
+import { LogIn, User, Lock, Ghost } from "lucide-react"
 import {Form,FormControl,FormField,FormItem,} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { authenticate } from "@/app/api/route"
@@ -61,17 +61,17 @@ const formSchema = z.object({
     }, [token]);
 
     return (
-        <section>
+        <section className="w-full">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 flex-row">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
             <FormField
               control={form.control}
               name="username"
               render={({ field }) => (
                 <FormItem>
-                    <User />
+                    <User className="text-[#205375]"/>
                   <FormControl>
-                    <Input placeholder="Email" {...field} className="border-black"/>
+                    <Input placeholder="Email" {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -81,16 +81,16 @@ const formSchema = z.object({
             name="password"
             render={({field}) =>(
                 <FormItem>
-                    <Lock />
+                    <Lock className="text-[#205375]"/>
                     <FormControl>
-                    <Input type="password" placeholder="Password" {...field} className="border-black"/>
+                    <Input type="password" placeholder="Password" {...field}/>
                   </FormControl>
                 </FormItem>
             )}
             />
-            <Link className="text-sm text-blue-500 grid space-y-2" href={'/forgotpassword'}>Forgot password?</Link>
-            <Button variant={'ghost'} type="submit" className=" hover:bg-orange-500">
-                <LogIn size={16} />
+            <Link className="text-sm text-[#205375] grid space-y-2" href={'/forgotpassword'}>Forgot password?</Link>
+            <Button variant={'default'} type="submit" className=" hover:bg-gray-300">
+                <LogIn size={16}/>
                 Login</Button>
           </form>
         </Form>

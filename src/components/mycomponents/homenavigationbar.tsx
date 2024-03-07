@@ -14,7 +14,7 @@ import { Home, GalleryHorizontalEnd,LogIn, Info, UserPlus } from "lucide-react"
 
 export function HomeNavigation() {
   return (
-    <NavigationMenu className="flex justify-between "> 
+    <NavigationMenu className="flex justify-between bg-[#EFEFEF]"> 
       <NavigationMenuList className="flex justify-center items-center">
         <Link href={"/"} className="flex items-center">
           <Image src="/CCS_LOGO.png" alt="unc logo" width={64} height={64}className="ml-12 mt-4 mb-4"/>
@@ -24,8 +24,8 @@ export function HomeNavigation() {
       <NavigationMenuList className="flex items-center mr-12 space-x-4"> 
         <NavigationMenuItem className="">
           <Link href="/" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-            <Home className="text-gray-800"/>
+            <NavigationMenuLink className={`${navigationMenuTriggerStyle()} `}>
+            <Home className="text-orange-500"/>
               Home
             </NavigationMenuLink>
           </Link>
@@ -33,7 +33,7 @@ export function HomeNavigation() {
           <NavigationMenuItem>
               <Link href="/portfolios" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                <GalleryHorizontalEnd className="text-gray-00"/>
+                <GalleryHorizontalEnd className="text-orange-500"/>
                   Portfolios
               </NavigationMenuLink>
             </Link>
@@ -42,7 +42,7 @@ export function HomeNavigation() {
           <NavigationMenuItem>
           <Link href="/about" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-            <Info className="text-gray-800"/>
+            <Info className="text-orange-500"/>
               About
             </NavigationMenuLink>
           </Link>

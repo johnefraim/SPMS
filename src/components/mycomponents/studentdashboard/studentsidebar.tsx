@@ -44,10 +44,10 @@ export function StudentSidebar({onEditProfile,
   const [activeItem, setActiveItem] = useState("dashboard");
 
   return (
-    <NavigationMenu className=" bg-gray-800 w-48 h-full items-start shadow-lg"> 
+    <NavigationMenu className=" bg-][EFEFEF] w-48 h-full items-start shadow-2xl"> 
       <NavigationMenuList className="flex flex-col mt-6 space-y-3">
-        <NavigationMenuItem className="w-full">
-        <Image src="/CCS_LOGO.png" alt="unc logo" width={64} height={64}className=" ml-12 mt-4 mb-4"/>
+        <NavigationMenuItem className="w-full flex items-center space-x-4">
+        <Image src="/CCS_LOGO.png" alt="unc logo" width={64} height={64}className="items-center ml-4 mt-2  mb-4"/>
           <h1>SPMS</h1>
         </NavigationMenuItem>
           
