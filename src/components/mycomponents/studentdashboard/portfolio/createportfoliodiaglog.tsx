@@ -18,7 +18,7 @@ import { Form, FormField, FormItem, FormControl } from "@/components/ui/form"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { createPortfolio } from "@/app/api/createportfolio"
+import { createPortfolio } from "@/app/api/portfolioService"
 import { useState } from "react"
 
 interface CreatePortfolioDialogProps {

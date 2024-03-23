@@ -23,7 +23,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image";
 
 interface StudentSidebarProps {
-    onEditProfile: () => void;
+    onProfile: () => void;
     onCreatePortfolio: () => void;
     onDashboard:()=>void;
     onAcademicDetails:()=>void;
@@ -32,7 +32,7 @@ interface StudentSidebarProps {
     onCertificate:()=>void;
 }
 
-export function StudentSidebar({onEditProfile, 
+export function StudentSidebar({onProfile, 
                               onCreatePortfolio, 
                               onDashboard, 
                               onAcademicDetails,
@@ -67,7 +67,7 @@ export function StudentSidebar({onEditProfile,
         <NavigationMenuItem className="w-full">
         <Button variant={"ghost"}  onClick={() => {
               setActiveItem("profile");
-              onEditProfile();
+              onProfile();
             }}
             className={`w-full justify-start hover:text-orange-500 ${
               activeItem === "profile" ? "text-orange-500" : ""

@@ -1,4 +1,4 @@
-import { deletePortfolio, getMyPortfolios } from '@/app/api/createportfolio';
+import { deletePortfolio, getMyPortfolios } from '@/app/api/portfolioService';
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@/components/ui/table';
@@ -14,7 +14,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-
+import { Eye } from "lucide-react"
 
 interface refreshtype {
   refreshList: boolean;
@@ -78,8 +78,10 @@ const PortfolioListView = ({refreshList}: refreshtype) => {
           <tr key={portfolio.id}>
             <td className="px-6 py-4 whitespace-nowrap w-1/3">{portfolio.portfolioTitle}</td>
             <td className="px-6 py-4 whitespace-nowrap w-1/3">{portfolio.description}</td>
-            <td className="px-6 py-4 whitespace-nowrap w-1/3 space-x-2">
-              
+            <td className="px-6 py-4 whitespace-nowrap w-1/3 space-x-2 ">
+            <div className='flex w-12'>
+            <Eye size={32}/>
+            </div>
               <EditDialog portfolio={portfolio} refreshPortfolioList={refreshPortfolioList} />
               <AlertDialog>
                 <AlertDialogTrigger asChild>

@@ -5,11 +5,33 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import { useState } from "react";
-import { Select,
-        SelectContent,
-        SelectItem,
-        SelectTrigger,
-        SelectValue, } from "@radix-ui/react-select";
+import { Check, ChevronsUpDown } from "lucide-react"
+import { cn } from "@/lib/utils"
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
+
+
+const frameworks = [
+    {
+      value: "Male",
+      label: "Male",
+    },
+    {
+      value: "Female",
+      label: "Female",
+    },
+    {
+      value: "non-binary",
+      label: "non-binary",
+    },
+  ]
 
 const EditProfile = () => {
     const [profileImage, setProfileImage] = useState<File | null>(null);
@@ -23,6 +45,9 @@ const EditProfile = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [Address, setAddress] = useState('');
     const [summary, setSummary] = useState('');
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState("");
+
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setProfileImage(e.target.files ? e.target.files[0] : null);
@@ -36,7 +61,7 @@ const EditProfile = () => {
         setGender(value);
     };
     return (
-        <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+        <div className="max-w-md mx-auto bg-[#EFEFEF] rounded-xl shadow-md overflow-hidden md:max-w-2xl">
             <form onSubmit={handleSubmit} className="p-8">
                 {profileImage && (
                     <Image src={URL.createObjectURL(profileImage)} width={32} height={64} alt="Profile" className="mt-4 w-32 h-32 object-cover rounded-full" />
@@ -57,19 +82,18 @@ const EditProfile = () => {
                     <span className="text-gray-700">Last Name</span>
                     <Input type="text" value={lastName} onChange={e => setLastName(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
                 </Label>
-                <Label className="block mt-4">
-                    <span className="text-gray-700">Gender</span>
-                    <Select onValueChange={handleGenderChange}>
-                        <SelectTrigger className="w-[280px]">
-                            <SelectValue placeholder="Gender" />
-                        </SelectTrigger>
-                        <SelectContent >
-                            <SelectItem value="Male">Male</SelectItem>
-                            <SelectItem value="Female">Female</SelectItem>
-                            <SelectItem value="Non-Binary">Non-Binary</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </Label>
+                <Select>
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select Gender" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectItem value="Male">Male</SelectItem>
+          <SelectItem value="Female">Female</SelectItem>
+          <SelectItem value="Non-binary">Non-binary</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
                 <Label className="block mt-4">
                     <span className="text-gray-700">Birthday</span>
                     <Input type="date" value={birthday} onChange={e => setBirthday(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />

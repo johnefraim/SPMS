@@ -13,9 +13,9 @@ export default function Home() {
       </header>
       <main>
         <section className="flex">
-          <div className="h-lvh flex w-1/2 justify-center items-center">
+        <div className="h-lvh flex w-1/2 justify-center items-center">
             <div className="items-stretch">
-              <h1 className="text-4xl font-bold text-orange-500 ml-16">&quot;Programmers teaching Programmers to code and to collaborate!&quot;</h1>
+              <h1 className="text-5xl font-bold text-orange-500 ml-16 leading-16">Programmers teaching Programmers to code and to collaborate!</h1>
             </div>
           </div>
           <div className="flex w-1/2 justify-center items-center">

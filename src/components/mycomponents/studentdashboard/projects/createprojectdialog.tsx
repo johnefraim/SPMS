@@ -27,9 +27,19 @@ interface CreateProjectDialogProps {
   refreshProjectList: () => void;
   showAlertDialog:()=> void;
 }
+interface Project {
+  id: number;
+  projectImage: string;
+  projectTitle: string;
+  description: string;
+  Role: string;
+  technologies: string;
+  projectLink: string;
+  projectGithub: string;
+}
 
 const schema = z.object({
-  projectImage: z.string().nullable(),
+  projectImage: z.array(z.string().nullable()),
   projectTitle: z.string(),
   description: z.string(),
   Role: z.string(),
@@ -44,7 +54,7 @@ export function CreateProjectDialog({ onClick, refreshProjectList, showAlertDial
 const formdata = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-        projectImage: '',
+        projectImage: [],
         projectTitle: '',
         description: '',
         Role: '',
@@ -87,10 +97,10 @@ const formdata = useForm<z.infer<typeof schema>>({
         <Form {...formdata}>
           <form onSubmit={formdata.handleSubmit(onSubmit)} className="space-y-4">
             <FormField control={formdata.control} name="projectImage" render={({field}) => (
-                <FormItem>
+              <FormItem>
                 <Label>Images</Label>
-                <Input type="file"  placeholder="Image" {...field}/>
-            </FormItem>
+                <Input type="file" multiple onChange={(e) => field.onChange(e.target.files)} />
+              </FormItem>
             )}>
             </FormField>
             <FormField control={formdata.control} name="projectTitle" render={({field}) => (

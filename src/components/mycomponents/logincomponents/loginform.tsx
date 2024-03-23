@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { LogIn, User, Lock, Ghost } from "lucide-react"
 import {Form,FormControl,FormField,FormItem,} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { authenticate } from "@/app/api/route"
+import { authenticate } from "@/app/api/authService"
 import { useEffect, useState } from "react"
 import { redirect } from "next/navigation"
 import Link  from "next/link"
@@ -42,22 +42,37 @@ const formSchema = z.object({
      */
     async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
       try {
-        const response = await authenticate(values.username, values.password);
-        const { access_token, name } = response.data; 
-        localStorage.setItem('token', access_token);
-        localStorage.setItem('name', name);
         setUsername('');
         setPassword('');
+        const response = await authenticate(values.username, values.password);
+        const { access_token, name, role } = response.data; 
+        localStorage.setItem('token', access_token);
+        localStorage.setItem('name', name);
+        localStorage.setItem('role', role);
+        
       } catch (error) {
         console.error('Login failed:', error);
       }
     }
 
     const token = localStorage.getItem('token');
+    const userRole = localStorage.getItem('role');
     useEffect(() => {
-        if (token && token !== "undefined" && token !== "null") {
-            redirect('/studentdashboard');
+        if(token){
+          if(userRole === 'STUDENT'){
+            redirect('/dashboard/student');
+          }
+          else if(userRole === 'ADMIN'){
+            redirect('/dashboard/dean');
+          }
+          else if(userRole === 'MANGER'){
+            redirect('dashboard/program-head');
+          }
+          else{
+            redirect('/');
+          }
         }
+
     }, [token]);
 
     return (
@@ -71,7 +86,7 @@ const formSchema = z.object({
                 <FormItem>
                     <User className="text-[#205375]"/>
                   <FormControl>
-                    <Input placeholder="Email" {...field} />
+                    <Input required  placeholder="Email" {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -83,7 +98,7 @@ const formSchema = z.object({
                 <FormItem>
                     <Lock className="text-[#205375]"/>
                     <FormControl>
-                    <Input type="password" placeholder="Password" {...field}/>
+                    <Input required type="password" placeholder="Password" {...field}/>
                   </FormControl>
                 </FormItem>
             )}

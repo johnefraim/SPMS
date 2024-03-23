@@ -15,11 +15,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useEffect, useState } from "react"
 import { redirect } from "next/navigation"
-import { logout } from "@/app/api/route";
+import { logout } from "@/app/api/authService";
 import { Avatar, AvatarImage, AvatarFallback } from "../../ui/avatar";
 
 export function LogoutDropDown() {
     const [logoutStatus, setLogout] = useState(false);
+    const [profilePicture, setProfilePicture] = useState<string>('/default_user.png');
     useEffect(() => {
       if (logoutStatus) {
         redirect('/');
@@ -30,7 +31,7 @@ export function LogoutDropDown() {
         
       <DropdownMenuTrigger asChild>
         <Avatar>
-                <AvatarImage src="/CCS_LOGO.png" alt="user" />
+                <AvatarImage src={profilePicture} alt="user" />
                 <AvatarFallback>user</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

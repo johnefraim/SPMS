@@ -1,134 +1,121 @@
-'use client'
-import React from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+'use client' 
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
-import {Input} from '@/components/ui/input';
-import {Label} from '@/components/ui/label';
-import { z } from "zod"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect, useState } from "react"
+import { Input } from '@/components/ui/input';
+import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
+import { register } from '@/app/api/authService';
 import { redirect } from "next/navigation"
-import Link  from "next/link"
-import {Form,FormControl,FormField,FormItem,} from "@/components/ui/form"
 
 const formSchema = z.object({
-    firstName: z.string().min(2, {
-      message: "First Name must be at least 2 characters.",
-    }),
-    lastName: z.string().min(2,{
-        message: "Last Name must be 8 characters"
-    }),
-    email: z.string().email(),
-    password: z.string().min(8,{
-        message: "Password must be 8 characters"
-    }),
-    confirmPassword: z.string().min(8,{
-        message: "Password must be 8 characters"
-    })
-    })
-
-
+  firstName: z.string().min(2, { message: 'First Name must be at least 2 characters.' }),
+  lastName: z.string().min(2, { message: 'Last Name must be at least 2 characters.' }),
+  email: z.string().email(),
+  password: z.string().min(8, { message: 'Password must be at least 8 characters.' }),
+  confirmPassword: z.string().min(8, { message: 'Password must be at least 8 characters.' }),
+});
 
 export function RegistrationComponent() {
-    
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            firstName: "",
-            lastName: "",
-            email: "",
-            password: "",
-            confirmPassword: ""
-        },
-    })
-    
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [role, setRole] = useState('STUDENT');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
-        try {
-            console.log(values);
-            setFirstName('');
-            setLastName('');
-            setEmail('');
-            setPassword('');
-            setConfirmPassword('');
-        } catch (error) {
-            console.error('Registration failed:', error);
-        }
+  const role = 'STUDENT';
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+  });
+
+  async function Submit(values: z.infer<typeof formSchema>): Promise<void> {
+    try {
+      console.log(values);
+      const response = await register(values.firstName, values.lastName, values.email, values.password, role);
+      console.log(response);
+      form.reset();
+      redirect('/login');
+    } catch (error: any) {
+      console.error('Registration failed:', error);
+      setErrorMessage(error.message);
     }
+  }
 
-
-
-    return (
-        <>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem>
-                    
-                  <FormControl>
-                    <Input type='text' placeholder="First Name" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-            control={form.control}
-            name="lastName"
-            render={({field}) =>(
-                <FormItem>
-                    <FormControl>
-                    <Input type="text" placeholder="Last Name" {...field}/>
-                  </FormControl>
-                </FormItem>
-            )}
-            />
-            <FormField
-            control={form.control}
-            name="email"
-            render={({field}) =>(
-                <FormItem>
-                    <FormControl>
-                    <Input type="text" placeholder="Email" {...field}/>
-                  </FormControl>
-                </FormItem>
-            )}
-            />
-            <FormField
-            control={form.control}
-            name="password"
-            render={({field}) =>(
-                <FormItem>
-                    <FormControl>
-                    <Input type="password" placeholder="Password" {...field}/>
-                  </FormControl>
-                </FormItem>
-            )}
-            />
-            <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({field}) =>(
-                <FormItem>
-                    <FormControl>
-                    <Input type="password" placeholder="confirm Password" {...field}/>
-                  </FormControl>
-                </FormItem>
-            )}
-            />
-            <Button variant={'default'} type="submit" className=" hover:bg-gray-300 flex">
-                Register</Button>
-          </form>
-        </Form>
-        </>
-    );
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(Submit)} className="space-y-4 w-full">
+        <FormField
+          control={form.control}
+          name="firstName"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input type="text" placeholder="first name" {...field} required />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="lastName"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input type="text" placeholder="last name" {...field} required />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input type="text" placeholder="Email" {...field} required />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input type={showPassword ? 'text' : 'password'} placeholder="password" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input type={showPassword ? 'text' : 'password'} placeholder="confirm password" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <div>
+            <input type="checkbox" id="showPassword" checked={showPassword} onChange={() => setShowPassword(!showPassword)} />
+            <label htmlFor="showPassword">Show</label>
+          </div>
+        {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+        <div className="flex items-center justify-between">
+          <Button type="submit" variant="default">
+            Register
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
 }

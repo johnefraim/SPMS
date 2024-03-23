@@ -18,7 +18,7 @@ import { Form, FormField, FormItem, FormControl } from "@/components/ui/form"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { updatePortfolio } from "@/app/api/createportfolio"
+import { updatePortfolio } from "@/app/api/portfolioService"
 
 interface Portfolio {
   id: number;

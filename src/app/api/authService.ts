@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-
 const api = axios.create({
     baseURL: 'http://localhost:8080/api/auth',
     headers: {
@@ -25,12 +24,25 @@ api.interceptors.request.use(config => {
     return Promise.reject(error);
 });
 
+api.interceptors.response.use(response => {
+    // Log the response details
+    console.log('Response:', response);
+    return response;
+}, error => {
+    return Promise.reject(error);
+});
+
 export const authenticate = (email: string, password: string) => {
     return api.post('/authenticate', { email, password });
 };
 
+export const register = (firstname: string, lastname: string, email: string, password: string, role: string) => {
+    return api.post('/register', { firstname, lastname, email, password, role });
+};
+
 export const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('name');
     return api.post('/logout');
 };
 
@@ -42,5 +54,6 @@ export const authenticated =()=>{
     }
     return false;
 };
+
 
 export default api;

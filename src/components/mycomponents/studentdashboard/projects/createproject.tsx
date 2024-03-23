@@ -1,11 +1,10 @@
 
 import React from "react";
-
 import { useState } from "react";
-
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Rocket } from "lucide-react";
-
+import { CreateProjectDialog } from "@/components/mycomponents/studentdashboard/projects/createprojectdialog";
+import  ProjectListView  from "@/components/mycomponents/studentdashboard/projects/projectlistview";
 export function CreateProject(){
     const [open, setOpen] = useState(false);
     const [refresh, setRefresh] = useState(false);
@@ -24,7 +23,7 @@ export function CreateProject(){
         <>
             <section>
                 <div className="ml-4 mt-2 mr-2 w-full">
-                    <CreateProjectDialog showAlertDialog= {showAlertMessage} refreshPortfolioList={refreshProject} onClick={()=>{setOpen(true)}}/>
+                    <CreateProjectDialog showAlertDialog= {showAlertMessage} refreshProjectList={refreshProject} onClick={()=>{setOpen(true)}}/>
                     <ProjectListView refreshList ={refresh}/>
                 </div>
                 {showAlert && (
