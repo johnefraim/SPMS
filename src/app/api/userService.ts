@@ -1,20 +1,19 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:8080/api/user',
+    baseURL: "http://localhost:8080/api/user",
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
     },
-
 });
 
 api.interceptors.request.use(config => {
     const token = localStorage.getItem('token');
     if (token) {
-        config.headers.Authorization = `Bearer ${{token}}`;
+        config.headers.Authorization = `Bearer ${token}`;
     }
     // Log the request details
-    //console.log('token:', token);
     console.log('Request URL:', config.url);
     console.log('Request Headers:', config.headers);
     console.log('Request Data:', config.data);
@@ -22,6 +21,7 @@ api.interceptors.request.use(config => {
 }, error => {
     return Promise.reject(error);
 });
+
 
 api.interceptors.response.use(response => {
     // Log the response details
@@ -31,7 +31,18 @@ api.interceptors.response.use(response => {
     return Promise.reject(error);
 });
 
-export const getUserDetails = (id: string) => {
-    return api.get(`/${id}`);
+export const getUserDetails = () => {
+    return api.get(`/details`);
 };
+
+export const updateProfile = async (formData: FormData) => {
+    try {
+      const response = await api.put(`/update`, formData);
+      return response;
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      throw error;
+    }
+  };
+
 

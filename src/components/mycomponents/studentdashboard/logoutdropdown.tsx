@@ -17,6 +17,7 @@ import { useEffect, useState } from "react"
 import { redirect } from "next/navigation"
 import { logout } from "@/app/api/authService";
 import { Avatar, AvatarImage, AvatarFallback } from "../../ui/avatar";
+import { getUserDetails } from "@/app/api/userService";
 
 export function LogoutDropDown() {
     const [logoutStatus, setLogout] = useState(false);
@@ -25,6 +26,17 @@ export function LogoutDropDown() {
       if (logoutStatus) {
         redirect('/');
       }
+      const fetchUserDetails = async () => {
+        try {
+            const response = await getUserDetails();
+            console.log('get user response:', response.data.imageUrl)
+            setProfilePicture(`${response.data.imageUrl}`); 
+        } catch (error) {
+            console.error('Error fetching user details:', error);
+        }
+    };
+
+    fetchUserDetails();
     }, [logoutStatus]);
   return (
     <DropdownMenu>
