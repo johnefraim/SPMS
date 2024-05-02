@@ -27,7 +27,7 @@ const PortfolioPage = () => {
   <h1 className="text-4xl font-bold mb-8 text-center">About Me</h1>
   <div className="flex justify-center items-center mb-12">
     <img
-      src="/profile-pic.jpg" // Example path to the profile picture
+      src="/profile-pic.jpg" 
       alt="Profile Picture"
       className="rounded-full w-48 h-48 mx-auto mb-6"
     />

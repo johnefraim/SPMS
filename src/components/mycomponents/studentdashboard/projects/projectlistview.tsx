@@ -2,8 +2,7 @@ import { deletePortfolio, getMyPortfolios } from '@/app/api/portfolioService';
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@/components/ui/table';
-import { EditProjectDialog } from './editprojectdialog';
-import { getMyProject } from '@/app/api/projectAPI';
+// import { EditProjectDialog } from './editprojectdialog';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,26 +37,26 @@ const ProjectListView = ({refreshList}: refreshtype) => {
   const [refresh, setRefresh] = useState(false);
   
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        try {
-          const decodedToken = JSON.parse(atob(token.split('.')[1]));
-          const userId = decodedToken.Id;
-          const response = await getMyProject(userId.toString());
-          setPortfolios(response.data);
-          setRefresh(true);
-        } catch (error) {
-          console.error('Error fetching portfolios:', error);
-        } finally {
-          setIsLoading(false);
-        }
-      }
-    };
+  // useEffect(() => {
+  //   const fetchProjects = async () => {
+  //     const token = localStorage.getItem('token');
+  //     if (token) {
+  //       try {
+  //         const decodedToken = JSON.parse(atob(token.split('.')[1]));
+  //         const userId = decodedToken.Id;
+  //         //const response = await getMyProject(userId.toString());
+  //         setPortfolios(response.data);
+  //         setRefresh(true);
+  //       } catch (error) {
+  //         console.error('Error fetching portfolios:', error);
+  //       } finally {
+  //         setIsLoading(false);
+  //       }
+  //     }
+  //   };
 
-    fetchProjects();
-  }, [refreshList, refresh]);
+  //   fetchProjects();
+  // }, [refreshList, refresh]);
 
   const refreshPortfolioList = () => {
     setRefresh(!refresh);
@@ -65,7 +64,7 @@ const ProjectListView = ({refreshList}: refreshtype) => {
 
   return (
     <section className="p-4">
-      <h1 className="text-2xl font-bold mb-4">My Portfolios</h1>
+      <h1 className="text-2xl font-bold mb-4">My Project</h1>
       {isLoading && <p>Loading...</p>}
       <div className="overflow-x-auto">
     <table className="min-w-full divide-y divide-gray-200">
@@ -84,7 +83,7 @@ const ProjectListView = ({refreshList}: refreshtype) => {
             <td className="px-6 py-4 whitespace-nowrap w-1/3">{Project.projectTitle}</td>
             <td className="px-6 py-4 whitespace-nowrap w-1/3 space-x-2">
               
-              <EditProjectDialog project={Project} refreshPortfolioList={refreshPortfolioList} />
+              {/* <EditProjectDialog project={Project} refreshPortfolioList={refreshPortfolioList} /> */}
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button variant={'destructive'}>Delete</Button>

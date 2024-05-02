@@ -11,6 +11,7 @@ import CertificateComponent from "@/components/mycomponents/studentdashboard/cer
 import { LogoutDropDown } from "@/components/mycomponents/studentdashboard/logoutdropdown";
 import { redirect } from "next/navigation"
 import ProfileDisplay from "@/components/mycomponents/studentdashboard/profile/profileDisplay";
+import AchievementComponent from "@/components/mycomponents/studentdashboard/achievement/achievementComponent";
 //import { LogoutDropDown } from "../../mycomponents/studentdashboard/logoutdropdown";
 export default function StudentDashboard(){
 
@@ -32,6 +33,8 @@ export default function StudentDashboard(){
                 return <ExperienceComponent />;
             case 'certificate':
                 return <CertificateComponent />;
+            case 'achievements':
+                return <AchievementComponent/>;
             default:
                 return <StudentOverview />;
         }
@@ -66,6 +69,7 @@ export default function StudentDashboard(){
                     onProject={()=>setCurrentComponent('project')}
                     onWorkExperience={()=>setCurrentComponent('workExperience')}
                     onCertificate={()=>setCurrentComponent('certificate')}
+                    onAchievement={()=>setCurrentComponent('achievements')}
                 />
                 </div>
                 <div className="w-full flex-row-3 mt-16">{renderComponent()}</div>

@@ -18,7 +18,7 @@ import { Form, FormField, FormItem, FormControl } from "@/components/ui/form"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { updateProject } from "@/app/api/projectAPI"
+// import { updateProject } from "@/app/api/projectAPI"
 
 interface Project {
     Id: number;
@@ -64,26 +64,26 @@ export function EditProjectDialog({ onClick, project, refreshPortfolioList }: Cr
     });
 
   async function onSubmit(formvalue: z.infer<typeof schema>){
-    try {
+    // try {
       
-      const response = await updateProject(
-        project.Id,
-        formvalue.projectTitle,
-        formvalue.description,
-        formvalue.Role,
-        formvalue.technologies,
-        formvalue.projectLink,
-        formvalue.projectGithub
-      );
-      const { data } = response;
-      console.log(data);
-      refreshPortfolioList();
-      formdata.reset();
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        console.log('Validation errors:', error.errors);
-      }
-    }
+    //   const response = await updateProject(
+    //     project.Id,
+    //     formvalue.projectTitle,
+    //     formvalue.description,
+    //     formvalue.Role,
+    //     formvalue.technologies,
+    //     formvalue.projectLink,
+    //     formvalue.projectGithub
+    //   );
+    //   const { data } = response;
+    //   console.log(data);
+    //   refreshPortfolioList();
+    //   formdata.reset();
+    // } catch (error) {
+    //   if (error instanceof z.ZodError) {
+    //     console.log('Validation errors:', error.errors);
+    //   }
+    // }
   };
 
   return (

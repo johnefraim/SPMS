@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
 import { register } from '@/app/api/authService';
 import { redirect } from "next/navigation"
+import { RegistrationAlert } from './registrationAlert';
 
 const formSchema = z.object({
   firstName: z.string().min(2, { message: 'First Name must be at least 2 characters.' }),
@@ -21,8 +22,9 @@ export function RegistrationComponent() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+  const [alert, setAlert] = useState(false);
   const role = 'STUDENT';
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,9 +40,11 @@ export function RegistrationComponent() {
     try {
       console.log(values);
       const response = await register(values.firstName, values.lastName, values.email, values.password, role);
-      console.log(response);
       form.reset();
-      redirect('/login');
+      if(response.status == 200){
+        setAlert(true);
+      }
+
     } catch (error: any) {
       console.error('Registration failed:', error);
       setErrorMessage(error.message);
@@ -49,6 +53,7 @@ export function RegistrationComponent() {
 
   return (
     <Form {...form}>
+      {alert && <RegistrationAlert/>}
       <form onSubmit={form.handleSubmit(Submit)} className="space-y-4 w-full">
         <FormField
           control={form.control}

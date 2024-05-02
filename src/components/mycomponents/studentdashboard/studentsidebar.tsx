@@ -30,6 +30,7 @@ interface StudentSidebarProps {
     onProject:()=>void;
     onWorkExperience:()=>void;
     onCertificate:()=>void;
+    onAchievement: ()=>void;
 }
 
 export function StudentSidebar({onProfile, 
@@ -39,6 +40,7 @@ export function StudentSidebar({onProfile,
                               onProject,
                               onWorkExperience,
                               onCertificate,
+                              onAchievement,
                             }: StudentSidebarProps) {
   
   const [activeItem, setActiveItem] = useState("dashboard");
@@ -137,11 +139,12 @@ export function StudentSidebar({onProfile,
         </NavigationMenuItem>
         <NavigationMenuItem className="w-full">
         <Button variant={"ghost"} onClick={() => {
-              setActiveItem("academicDetails");
+              setActiveItem("Achievements");
+              onAchievement();
               
             }}
             className={`w-full justify-start hover:text-orange-500${
-              activeItem === "cademicDetails" ? "text-orange-500" : ""
+              activeItem === "achievements" ? "text-orange-500" : ""
             }`}>
             <Trophy />
             Achievements

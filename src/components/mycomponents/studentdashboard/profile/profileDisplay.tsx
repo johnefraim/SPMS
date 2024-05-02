@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -6,9 +7,14 @@ import Image from "next/image";
 import { getUserDetails } from "@/app/api/userService";
 import { ProfileEditDialog } from "./profileEditDialog";
 import axios from "axios";
+import { set } from "react-hook-form";
+import { string } from "zod";
+
+
 
 const ProfileDisplay = () => {
-    const [profileImage, setProfileImage] = useState<string>("/default_user.png");
+    const [profileImage, setProfileImage] = useState<Blob | null>(null);
+    const [imageName, setImageName] = useState("");
     const [name, setName] = useState('');
     const [middleName, setMiddleName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -22,7 +28,9 @@ const ProfileDisplay = () => {
     const [open, setOpen] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [refresh, setRefresh] = useState(false);
-    const [imageName, setImageName] = useState();
+   
+    
+    //fething user details
     useEffect(() => {
       const fetchUserDetails = async () => {
         const token = localStorage.getItem('token');
@@ -30,7 +38,6 @@ const ProfileDisplay = () => {
             try {
                 const response = await getUserDetails();
                 const { data } = response;
-                setProfileImage(data.imageUrl);
                 setName(data.name);
                 setMiddleName(data.middleName);
                 setLastName(data.lastName);
@@ -41,6 +48,14 @@ const ProfileDisplay = () => {
                 setPhoneNumber(data.phoneNumber);
                 setAddress(data.address);
                 setSummary(data.summary);
+                const responseImage = await axios.get(`http://localhost:8080/api/image/${data.imageName}`, {
+                  headers: {
+                      Authorization: `Bearer ${token}`
+                  },
+                  responseType: 'blob'
+                });
+               const imageUrl = responseImage.data;
+                setProfileImage(imageUrl);
             } catch (error) {
                 console.error('Error fetching user details:', error);
             }
@@ -67,13 +82,13 @@ const ProfileDisplay = () => {
             <div className="p-8">
                 <div className="relative">
                   <div className="w-full h-96 relative">
-
-                    <Image
-                      src={profileImage}
-                      layout="fill"
-                      objectFit="cover"
-                      alt="Profile"
-                    />
+                    {profileImage && (
+                      <img
+                        src={URL.createObjectURL(profileImage)}
+                        className="object-cover w-full h-full rounded-lg shadow-md"
+                        alt="Profile"
+                      />
+                    )}
                   </div>
                 </div>
                 <div className="mt-6">
@@ -85,8 +100,8 @@ const ProfileDisplay = () => {
                     <div className="text-gray-700 mt-2">Phone Number:{phoneNumber}</div>
                     <div className="text-gray-700 mt-2">Address:{address}</div>
                     <div className="mt-4">
-                        <div className="text-gray-900 text-lg font-semibold">Professional Summary</div>
-                        <div className="text-gray-700 mt-2">{summary}</div>
+                    <div className="text-gray-900 text-lg font-semibold">Professional Summary</div>
+                    <div className="text-gray-700 mt-2">{summary}</div>
                     </div>
                 </div>
             </div>
