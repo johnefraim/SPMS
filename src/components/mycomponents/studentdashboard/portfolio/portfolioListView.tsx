@@ -5,16 +5,13 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from '@/components/u
 import { EditDialog } from './editDialog';
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
-  AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Eye } from "lucide-react"
+import { Eye, Settings } from "lucide-react" 
 
 interface refreshtype {
   refreshList: boolean;
@@ -32,7 +29,6 @@ const PortfolioListView = ({refreshList}: refreshtype) => {
   const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
-  
 
   useEffect(() => {
     const fetchPortfolios = async () => {
@@ -80,8 +76,9 @@ const PortfolioListView = ({refreshList}: refreshtype) => {
             <td className="px-6 py-4 whitespace-nowrap w-1/3">{portfolio.description}</td>
             <td className="px-6 py-4 whitespace-nowrap w-1/3 space-x-2 ">
             <div className='flex w-12'>
-            <Eye size={32}/>
             </div>
+              <Button size={'sm'}>view</Button>
+              <Button size={'sm'}>config</Button>
               <EditDialog portfolio={portfolio} refreshPortfolioList={refreshPortfolioList} />
               <AlertDialog>
                 <AlertDialogTrigger asChild>

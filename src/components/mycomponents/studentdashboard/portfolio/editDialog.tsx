@@ -77,7 +77,7 @@ export function EditDialog({ onClick, portfolio, refreshPortfolioList }: CreateP
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={'outline'} onClick={onClick}>Edit</Button>
+        <Button onClick={onClick}>Edit</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
