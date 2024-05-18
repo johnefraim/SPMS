@@ -11,7 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Eye, Settings } from "lucide-react" 
+import  PortfolioConfig from './portfolioInputComponent/portfolioConfig';
 
 interface refreshtype {
   refreshList: boolean;
@@ -77,8 +77,8 @@ const PortfolioListView = ({refreshList}: refreshtype) => {
             <td className="px-6 py-4 whitespace-nowrap w-1/3 space-x-2 ">
             <div className='flex w-12'>
             </div>
-              <Button size={'sm'}>view</Button>
-              <Button size={'sm'}>config</Button>
+              <Button size={'sm'}>Preview</Button>
+              <PortfolioConfig portfolio_id={portfolio.id}/>
               <EditDialog portfolio={portfolio} refreshPortfolioList={refreshPortfolioList} />
               <AlertDialog>
                 <AlertDialogTrigger asChild>

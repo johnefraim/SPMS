@@ -8,28 +8,28 @@ const api = axios.create({
     },
 });
 
-api.interceptors.request.use(config => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    // Log the request details
-    console.log('Request URL:', config.url);
-    console.log('Request Headers:', config.headers);
-    console.log('Request Data:', config.data);
-    return config;
-}, error => {
-    return Promise.reject(error);
-});
+// api.interceptors.request.use(config => {
+//     const token = localStorage.getItem('token');
+//     if (token) {
+//         config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     // Log the request details
+//     console.log('Request URL:', config.url);
+//     console.log('Request Headers:', config.headers);
+//     console.log('Request Data:', config.data);
+//     return config;
+// }, error => {
+//     return Promise.reject(error);
+// });
 
 
-api.interceptors.response.use(response => {
-    // Log the response details
-    console.log('Response:', response);
-    return response;
-}, error => {
-    return Promise.reject(error);
-});
+// api.interceptors.response.use(response => {
+//     // Log the response details
+//     console.log('Response:', response);
+//     return response;
+// }, error => {
+//     return Promise.reject(error);
+// });
 
 export const getUserDetails = () => {
     return api.get(`/details`);

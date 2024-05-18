@@ -15,7 +15,7 @@ import { DeleteAcademicDetails, GetAcademicDetails } from "@/app/api/academicSer
 import { EditAcademicDialog } from "./editAcademicDialog";
 
 interface refresh{
-    refreshlist: boolean,
+    refreshlist?: boolean,
 }
 
 interface AcademicDetail{

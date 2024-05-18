@@ -12,7 +12,6 @@ import { LogoutDropDown } from "@/components/mycomponents/studentdashboard/logou
 import { redirect } from "next/navigation"
 import ProfileDisplay from "@/components/mycomponents/studentdashboard/profile/profileDisplay";
 import AchievementComponent from "@/components/mycomponents/studentdashboard/achievement/achievementComponent";
-//import { LogoutDropDown } from "../../mycomponents/studentdashboard/logoutdropdown";
 export default function StudentDashboard(){
 
     const [currentComponent, setCurrentComponent] = useState('');

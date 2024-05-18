@@ -30,7 +30,7 @@ const ProfileDisplay = () => {
     const [refresh, setRefresh] = useState(false);
    
     
-    //fething user details
+    
     useEffect(() => {
       const fetchUserDetails = async () => {
         const token = localStorage.getItem('token');
@@ -77,35 +77,55 @@ const ProfileDisplay = () => {
 
 
     return (
-        <Card className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-          <div className="justify-start items-start"><ProfileEditDialog showAlertDialog= {showAlertMessage} refreshPortfolioList={refreshPortfolio}  onClick={()=>{setOpen(true)}}/></div>
-            <div className="p-8">
-                <div className="relative">
-                  <div className="w-full h-96 relative">
-                    {profileImage && (
-                      <img
-                        src={URL.createObjectURL(profileImage)}
-                        className="object-cover w-full h-full rounded-lg shadow-md"
-                        alt="Profile"
-                      />
-                    )}
-                  </div>
-                </div>
-                <div className="mt-6">
-                    <div className="text-lg font-semibold text-gray-900">Fullname:{name} {middleName} {lastName}</div>
-                    <div className="text-gray-700 mt-2">Gender:{gender}</div>
-                    <div className="text-gray-700 mt-2">Birthday:{birthday}</div>
-                    <div className="text-gray-700 mt-2">Title:{title}</div>
-                    <div className="text-gray-700 mt-2">Email:{email}</div>
-                    <div className="text-gray-700 mt-2">Phone Number:{phoneNumber}</div>
-                    <div className="text-gray-700 mt-2">Address:{address}</div>
-                    <div className="mt-4">
-                    <div className="text-gray-900 text-lg font-semibold">Professional Summary</div>
-                    <div className="text-gray-700 mt-2">{summary}</div>
-                    </div>
-                </div>
+      <Card className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+      <div className="p-8">
+        <div className="flex justify-end mb-4">
+          <ProfileEditDialog
+            showAlertDialog={showAlertMessage}
+            refreshPortfolioList={refreshPortfolio}
+            onClick={() => setOpen(true)}
+          />
+        </div>
+        <div className="relative w-full h-64 mb-6">
+          {profileImage && (
+            <img
+              src={URL.createObjectURL(profileImage)}
+              className="object-cover w-full h-full rounded-lg shadow-md"
+              alt="Profile"
+            />
+          )}
+        </div>
+        <div className="text-gray-900">
+          <div className="text-lg font-semibold mb-2">
+            {name} {middleName} {lastName}
+          </div>
+          <div className="grid grid-cols-2 gap-y-2 text-gray-700">
+            <div>
+              <span className="font-semibold">Gender:</span> {gender}
             </div>
-        </Card>
+            <div>
+              <span className="font-semibold">Birthday:</span> {birthday}
+            </div>
+            <div>
+              <span className="font-semibold">Title:</span> {title}
+            </div>
+            <div>
+              <span className="font-semibold">Email:</span> {email}
+            </div>
+            <div>
+              <span className="font-semibold">Phone Number:</span> {phoneNumber}
+            </div>
+            <div>
+              <span className="font-semibold">Address:</span> {address}
+            </div>
+          </div>
+          <div className="mt-4">
+            <div className="text-lg font-semibold">Professional Summary</div>
+            <div className="text-gray-700 mt-2">{summary}</div>
+          </div>
+        </div>
+      </div>
+    </Card>
     );
 };
 
