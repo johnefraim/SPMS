@@ -26,21 +26,11 @@ interface StudentSidebarProps {
     onProfile: () => void;
     onCreatePortfolio: () => void;
     onDashboard:()=>void;
-    onAcademicDetails:()=>void;
-    onProject:()=>void;
-    onWorkExperience:()=>void;
-    onCertificate:()=>void;
-    onAchievement: ()=>void;
 }
 
 export function StudentSidebar({onProfile, 
                               onCreatePortfolio, 
                               onDashboard, 
-                              onAcademicDetails,
-                              onProject,
-                              onWorkExperience,
-                              onCertificate,
-                              onAchievement,
                             }: StudentSidebarProps) {
   
   const [activeItem, setActiveItem] = useState("dashboard");
@@ -87,67 +77,6 @@ export function StudentSidebar({onProfile,
             className={`w-full justify-start hover:text-orange-500${activeItem === "portfolio" ? "text-orange-500" : ""}`}>
             <GalleryHorizontalEnd />
               Portfolio
-          </Button>
-        </NavigationMenuItem>
-        <NavigationMenuItem className="w-full">
-        <Button variant={"ghost"} onClick={() => {
-              setActiveItem("academicDetails");
-              onAcademicDetails();
-            }}
-            className={`w-full justify-start hover:text-orange-500${
-              activeItem === "academicDetails" ? "text-orange-500" : ""
-            }`}>
-            <GraduationCap  />
-            Academic Details
-          </Button>
-        </NavigationMenuItem>
-        <NavigationMenuItem className="w-full">
-        <Button variant={"ghost"} onClick={() => {
-              setActiveItem("project");
-              onProject();
-            }}
-            className={`w-full justify-start hover:text-orange-500${
-              activeItem === "project" ? "text-orange-500" : ""
-            }`}>
-            <FolderGit2 strokeWidth={1.5} />
-            Project
-          </Button>
-        </NavigationMenuItem>
-        <NavigationMenuItem className="w-full">
-        <Button variant={"ghost"} onClick={() => {
-              setActiveItem("workExperience");
-              onWorkExperience();
-            }}
-            className={`w-full justify-start hover:text-orange-500${
-              activeItem === "workExperience" ? "text-orange-500" : ""
-            }`}>
-            <Briefcase strokeWidth={1.5} />
-            Work Experience
-          </Button>
-        </NavigationMenuItem>
-        <NavigationMenuItem className="w-full">
-        <Button variant={"ghost"} onClick={() => {
-              setActiveItem("academicDetails");
-              onCertificate();
-            }}
-            className={`w-full justify-start hover:text-orange-500${
-              activeItem === "cademicDetails" ? "text-orange-500" : ""
-            }`}>
-            <Medal />
-            Certificates
-          </Button>
-        </NavigationMenuItem>
-        <NavigationMenuItem className="w-full">
-        <Button variant={"ghost"} onClick={() => {
-              setActiveItem("Achievements");
-              onAchievement();
-              
-            }}
-            className={`w-full justify-start hover:text-orange-500${
-              activeItem === "achievements" ? "text-orange-500" : ""
-            }`}>
-            <Trophy />
-            Achievements
           </Button>
         </NavigationMenuItem>
       </NavigationMenuList>

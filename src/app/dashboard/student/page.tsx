@@ -1,17 +1,11 @@
 'use client'
 import { StudentSidebar } from "@/components/mycomponents/studentdashboard/studentsidebar";
-import { StudentNavigation } from "@/components/mycomponents/studentdashboard/studentnavigation";
 import { StudentOverview } from "@/components/mycomponents/studentdashboard/dashboard/student-overview";
 import {  useEffect, useState, useLayoutEffect } from "react";
 import { CreatePortfolio } from "@/components/mycomponents/studentdashboard/portfolio/createportfolio";
-import AcademicDetailsForm from "@/components/mycomponents/studentdashboard/academicdetails/academicDetails";
-import ProjectComponent from "@/components/mycomponents/studentdashboard/projects/projectComponent";
-import ExperienceComponent from "@/components/mycomponents/studentdashboard/experience/experienceComponent";
-import CertificateComponent from "@/components/mycomponents/studentdashboard/certificate/certificateComponent";
 import { LogoutDropDown } from "@/components/mycomponents/studentdashboard/logoutdropdown";
 import { redirect } from "next/navigation"
 import ProfileDisplay from "@/components/mycomponents/studentdashboard/profile/profileDisplay";
-import AchievementComponent from "@/components/mycomponents/studentdashboard/achievement/achievementComponent";
 export default function StudentDashboard(){
 
     const [currentComponent, setCurrentComponent] = useState('');
@@ -24,16 +18,6 @@ export default function StudentDashboard(){
                 return <ProfileDisplay/>;
             case 'createPortfolio':
                 return <CreatePortfolio />;
-            case 'academicDetails':
-                return <AcademicDetailsForm />;
-            case 'project':
-                return <ProjectComponent />;
-            case 'workExperience':
-                return <ExperienceComponent />;
-            case 'certificate':
-                return <CertificateComponent />;
-            case 'achievements':
-                return <AchievementComponent/>;
             default:
                 return <StudentOverview />;
         }
@@ -64,11 +48,6 @@ export default function StudentDashboard(){
                     onDashboard={()=>setCurrentComponent('overview')}
                     onProfile={()=> setCurrentComponent('profile')}
                     onCreatePortfolio={()=>setCurrentComponent('createPortfolio')}
-                    onAcademicDetails={()=>setCurrentComponent('academicDetails')}
-                    onProject={()=>setCurrentComponent('project')}
-                    onWorkExperience={()=>setCurrentComponent('workExperience')}
-                    onCertificate={()=>setCurrentComponent('certificate')}
-                    onAchievement={()=>setCurrentComponent('achievements')}
                 />
                 </div>
                 <div className="w-full flex-row-3 mt-16">{renderComponent()}</div>

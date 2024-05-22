@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {  Pen } from "lucide-react";
+import { Pen } from "lucide-react";
 import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -60,33 +60,22 @@ export function ProfileEditDialog({
   refreshPortfolioList,
   showAlertDialog,
 }: ProfileEditDialogProps) {
-  const [profileImage, setProfileImage] = useState<File|null>(null);
+  const [profileImage, setProfileImage] = useState<File | null>(null);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
-  const [firstname, setfirstname] = useState("");
-  const [middleName, setMiddleName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [gender, setGender] = useState("");
-  const [birthday, setBirthday] = useState("");
-  const [title, setTitle] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [address, setAddress] = useState("");
-  const [summary, setSummary] = useState("");
 
   const formdata = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      firstName: '',
-      middleName:'',
-      lastName:  '',
-      gender:  '',
-      birthday:  '',
-      title: '',
-      email: '',
-      phoneNumber: '',
-      address: '',
-      summary: '',
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      gender: "",
+      birthday: "",
+      title: "",
+      email: "",
+      phoneNumber: "",
+      address: "",
+      summary: "",
     },
   });
 
@@ -96,19 +85,18 @@ export function ProfileEditDialog({
 
   const submit = async (formValues: any) => {
     try {
-      
       const formData = new FormData();
       formData.append("file", profileImage as File);
-      formData.append("firstname", firstname);
-        formData.append("middleName", middleName);
-        formData.append("lastName", lastName);
-        formData.append("gender", gender);
-        formData.append("birthday", birthday);
-        formData.append("title", title);
-        formData.append("email", email);
-        formData.append("phoneNumber", phoneNumber);
-        formData.append("address", address);
-        formData.append("summary", summary);
+      formData.append("firstName", formValues.firstName);
+      formData.append("middleName", formValues.middleName);
+      formData.append("lastName", formValues.lastName);
+      formData.append("gender", formValues.gender);
+      formData.append("birthday", formValues.birthday);
+      formData.append("title", formValues.title);
+      formData.append("email", formValues.email);
+      formData.append("phoneNumber", formValues.phoneNumber);
+      formData.append("address", formValues.address);
+      formData.append("summary", formValues.summary);
 
       const response = await updateProfile(formData);
       if (response.status === 200) {
@@ -125,33 +113,36 @@ export function ProfileEditDialog({
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const response = await getUserDetails();
+          const decode = JSON.parse(atob(token.split(".")[1]));
+          const userId = decode.Id;
+          const response = await getUserDetails(userId.toString());
           const { data } = response;
           setProfileImage(data.profileImage);
-          setfirstname(data.name);
-          setMiddleName(data.middleName);
-          setLastName(data.lastName);
-          setGender(data.gender);
-            setBirthday(data.birthday);
-            setTitle(data.title);
-            setEmail(data.email);
-            setPhoneNumber(data.phoneNumber);
-            setAddress(data.address);
-            setSummary(data.summary);
+          formdata.reset({
+            firstName: data.name,
+            middleName: data.middleName,
+            lastName: data.lastName,
+            gender: data.gender,
+            birthday: data.birthday,
+            title: data.title,
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+            address: data.address,
+            summary: data.summary,
+          });
         } catch (error) {
-            console.error("Error fetching user details:", error);
-            }
+          console.error("Error fetching user details:", error);
         }
-    }
+      }
+    };
     fetchUserDetails();
-    }, []);
-
+  }, []);
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button size="sm">
-          <Pen /> Update Profile
+          <Pen /> Edit Profile
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-[80vh] overflow-y-auto">
@@ -162,7 +153,7 @@ export function ProfileEditDialog({
           </DialogDescription>
         </DialogHeader>
         <div className="grid items-center space-y-3">
-          <Form {...formdata} >
+          <Form {...formdata}>
             <form onSubmit={formdata.handleSubmit(submit)}>
               {profileImage && (
                 <Image
@@ -182,12 +173,10 @@ export function ProfileEditDialog({
                 />
               </Label>
               <Label className="block mt-4">
-                <span className="text-gray-700">Name</span>
+                <span className="text-gray-700">First Name</span>
                 <Input
                   type="text"
-                  name="firstName"
-                  value={firstname || ''}
-                  onChange={(e) => setfirstname(e.target.value)}
+                  {...formdata.register("firstName")}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                 />
               </Label>
@@ -195,9 +184,7 @@ export function ProfileEditDialog({
                 <span className="text-gray-700">Middle Name</span>
                 <Input
                   type="text"
-                  name="middleName"
-                  value={middleName || ''}
-                  onChange={(e) => setMiddleName(e.target.value)}
+                  {...formdata.register("middleName")}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                 />
               </Label>
@@ -205,9 +192,7 @@ export function ProfileEditDialog({
                 <span className="text-gray-700">Last Name</span>
                 <Input
                   type="text"
-                  name="lastName"
-                  value={lastName || ''}
-                  onChange={(e) => setLastName(e.target.value)}
+                  {...formdata.register("lastName")}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                 />
               </Label>
@@ -232,8 +217,7 @@ export function ProfileEditDialog({
                 <span className="text-gray-700">Birthday</span>
                 <Input
                   type="date"
-                  value={birthday || ''}
-                  onChange={(e) => setBirthday(e.target.value)}
+                  {...formdata.register("birthday")}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                 />
               </Label>
@@ -241,8 +225,7 @@ export function ProfileEditDialog({
                 <span className="text-gray-700">Title/Headline</span>
                 <Input
                   type="text"
-                  value={title || ''}
-                  onChange={(e) => setTitle(e.target.value)}
+                  {...formdata.register("title")}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                 />
               </Label>
@@ -250,8 +233,7 @@ export function ProfileEditDialog({
                 <span className="text-gray-700">Email</span>
                 <Input
                   type="email"
-                  value={email || ''}
-                  onChange={(e) => setEmail(e.target.value)}
+                  {...formdata.register("email")}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                 />
               </Label>
@@ -259,8 +241,7 @@ export function ProfileEditDialog({
                 <span className="text-gray-700">Phone Number</span>
                 <Input
                   type="tel"
-                  value={phoneNumber || ''}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  {...formdata.register("phoneNumber")}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                 />
               </Label>
@@ -268,23 +249,21 @@ export function ProfileEditDialog({
                 <span className="text-gray-700">Address</span>
                 <Input
                   type="text"
-                  value={address || ''}
-                  onChange={(e) => setAddress(e.target.value)}
+                  {...formdata.register("address")}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                 />
               </Label>
               <Label className="block mt-4">
                 <span className="text-gray-700">Professional Summary</span>
                 <Textarea
-                  value={summary || ''}
-                  onChange={(e) => setSummary(e.target.value)}
+                  {...formdata.register("summary")}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm space-y-2"
                 />
               </Label>
               <DialogFooter>
-              <Button type="submit" className="mt-4" onClick={()=>console.log('clicked')}>
-                Save
-              </Button>
+                <Button type="submit" className="mt-4">
+                  Save
+                </Button>
               </DialogFooter>
             </form>
           </Form>
@@ -293,4 +272,3 @@ export function ProfileEditDialog({
     </Dialog>
   );
 }
-

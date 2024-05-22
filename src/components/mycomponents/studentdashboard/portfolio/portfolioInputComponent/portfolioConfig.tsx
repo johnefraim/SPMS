@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Dialog, DialogContent,DialogHeader,DialogTitle, DialogTrigger, } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import EducationalBackground from "./educationalBackground";
-import PersonalDetails from "./personalDetails";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import  Career  from "./career";
 import Project from "./project";
@@ -10,12 +8,12 @@ import SkillInput from "./skills";
 import Certification from "./certification";
 import { CreateAcademicDialog } from "../../academicdetails/createAcademicDialog";
 import { AcademicListview } from "../../academicdetails/academicListview";
+import { CreatePersonalDetailscDialog } from "../../personalDetails/createPersonalDetailsDialog";
+import { PersonalDetailsListview } from "../../personalDetails/personalDetailsListview";
 
-interface PortfolioConfigProps {
-    portfolio_id: number;
-}
 
-export default function PortfolioConfig({portfolio_id}: {portfolio_id: number}): JSX.Element {
+
+export default function PortfolioConfig() {
     const [open, setOpen] = useState(false);
     const [refresh, setRefresh] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
@@ -45,10 +43,11 @@ export default function PortfolioConfig({portfolio_id}: {portfolio_id: number}):
                         <TabsTrigger value="Certifications">Certifications</TabsTrigger>
                     </TabsList>
                     <TabsContent value="Personal Details">
-                        <PersonalDetails portfolio_id={portfolio_id}/>
+                        <CreatePersonalDetailscDialog  refreshListview={refreshPortfolio} showAlertDialog={showAlertMessage} onClick={()=>setOpen(true)}/>
+                        <PersonalDetailsListview refreshlist={refresh}/>
                     </TabsContent>
                     <TabsContent value="Educational Background">
-                    <CreateAcademicDialog showAlertDialog= {showAlertMessage} refreshAcademicListview={refreshPortfolio} onClick={()=>{setOpen(true)}}/>
+                        <CreateAcademicDialog showAlertDialog= {showAlertMessage} refreshAcademicListview={refreshPortfolio} onClick={()=>{setOpen(true)}}/>
                         <AcademicListview/>
                     </TabsContent>
                     <TabsContent value="Work Experience">

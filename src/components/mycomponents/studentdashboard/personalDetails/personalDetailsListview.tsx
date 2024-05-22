@@ -12,49 +12,49 @@ import {
     AlertDialogTrigger,
   } from "@/components/ui/alert-dialog"
 import { DeleteAcademicDetails, GetAcademicDetails } from "@/app/api/academicService";
-import { EditAcademicDialog } from "./editAcademicDialog";
+import { EditPersonalDetailsDialog } from "./editPersonalDetails";
+import PersonalDetails from "../portfolio/portfolioInputComponent/personalDetails";
+import { GetPersonalDetails } from "@/app/api/personalDetailService";
 
 interface refresh{
     refreshlist?: boolean,
 }
 
-interface AcademicDetail{
+interface PersonalDetails{
     id: string,
-    school: string,
-    degree: string,
-    fieldOfStudy: string,
-    startDate: string,
-    endDate: string,
-    gpa: number,
-    activities: string,
-    description: string,
+    linkedin: string,
+    socialMedia: string,
+    website: string,
+    address:string,
+    dob: string,
 }
 
-export function AcademicListview({refreshlist}: refresh){
-    const [academicDetails, setacademicDetails] = useState<AcademicDetail[]>([]);
+export function PersonalDetailsListview({refreshlist}: refresh){
+    const [personalDetails, setPersonalDetails] = useState<PersonalDetails[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refresh, setRefresh] = useState(false);
 
-    useEffect(() => {
-      const fetchAcademicDetails = async () => {
-        const token = localStorage.getItem('token');
-        if (token) {
-          try {
-            const decodedToken = JSON.parse(atob(token.split('.')[1]));
-            const userId = decodedToken.Id;
-            const response = await GetAcademicDetails(userId.toString());
-            setacademicDetails(response.data);
-            setRefresh(true);
-          } catch (error) {
-            console.error('Error fetching portfolios:', error);
-          } finally {
-            setIsLoading(false);
-          }
-        }
-      };
+    // useEffect(() => {
+    //   const fetchPersonalDetails = async () => {
+    //     const token = localStorage.getItem('token');
+    //     if (token) {
+    //       try {
+    //         const decodedToken = JSON.parse(atob(token.split('.')[1]));
+    //         const userId = decodedToken.Id;
+    //         const response = await GetPersonalDetails(userId.toString());
+    //         console.log(response.data);
+    //         setPersonalDetails(response.data);
+    //         setRefresh(true);
+    //       } catch (error) {
+    //         console.error('Error fetching portfolios:', error);
+    //       } finally {
+    //         setIsLoading(false);
+    //       }
+    //     }
+    //   };
   
-      fetchAcademicDetails();
-    }, [refreshlist, refresh]);
+    //   fetchPersonalDetails();
+    // }, [refreshlist, refresh]);
   
     const refreshAcademicList = () => {
       setRefresh(!refresh);
@@ -62,7 +62,7 @@ export function AcademicListview({refreshlist}: refresh){
     return(
         <>
       <section className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Academic Details</h1>
+      <h1 className="text-2xl font-bold mb-4">Personal Details</h1>
       {isLoading && <p>Loading...</p>}
       <div className="overflow-x-auto">
     <table className="min-w-full divide-y divide-gray-200">
@@ -74,15 +74,15 @@ export function AcademicListview({refreshlist}: refresh){
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-200">
-        {academicDetails.map((academicDetails) => (
+        {personalDetails.map((personalDetails) => (
 
-          <tr key={academicDetails.id}>
-            <td className="px-6 py-4 whitespace-nowrap w-1/3">{academicDetails.school}</td>
-            <td className="px-6 py-4 whitespace-nowrap w-1/3">{academicDetails.fieldOfStudy}</td>
+          <tr key={personalDetails.id}>
+            <td className="px-6 py-4 whitespace-nowrap w-1/3">{personalDetails.linkedin}</td>
+            <td className="px-6 py-4 whitespace-nowrap w-1/3">{personalDetails.address}</td>
             <td className="px-6 py-4 whitespace-nowrap w-1/3 space-x-2 ">
             <div className='flex w-12'>
             </div>
-              <EditAcademicDialog academicdetail={academicDetails} refreshAcademicList={refreshAcademicList}/>
+                <EditPersonalDetailsDialog refreshAcademicList={refreshAcademicList} personalDetails={personalDetails}/>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button variant={'destructive'}>Delete</Button>
@@ -93,7 +93,7 @@ export function AcademicListview({refreshlist}: refresh){
                   <div className="flex justify-end space-x-4">
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <Button variant={'destructive'}  onClick={async () => {
-                      const response = await DeleteAcademicDetails(`${academicDetails.id}`);
+                      const response = await DeleteAcademicDetails(`${personalDetails.id}`);
                       if (response.status === 200) {
                         setRefresh(!refresh);
                       }

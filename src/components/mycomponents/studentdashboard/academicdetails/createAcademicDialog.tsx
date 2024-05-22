@@ -79,7 +79,7 @@ export function CreateAcademicDialog({onClick, refreshAcademicListview, showAler
     return(
         <Dialog>
             <DialogTrigger>
-                <Button size="sm">Add Academic Details</Button>
+                <Button size="sm"><Plus/>educational background</Button>
             </DialogTrigger>
 
             <DialogContent className="max-h-[80vh] overflow-y-auto">

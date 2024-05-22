@@ -78,7 +78,7 @@ const PortfolioListView = ({refreshList}: refreshtype) => {
             <div className='flex w-12'>
             </div>
               <Button size={'sm'}>Preview</Button>
-              <PortfolioConfig portfolio_id={portfolio.id}/>
+              <PortfolioConfig/>
               <EditDialog portfolio={portfolio} refreshPortfolioList={refreshPortfolioList} />
               <AlertDialog>
                 <AlertDialogTrigger asChild>

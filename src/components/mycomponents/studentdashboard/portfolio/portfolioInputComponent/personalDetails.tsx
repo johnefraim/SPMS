@@ -1,30 +1,33 @@
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { createPersonalDetails } from '@/app/api/portfolioTemplateService';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 interface portfolioProps {
     portfolioId: number;
 }
 
 interface PersonalDetailsProps {
-    portfolio_id: number;
+    linkedin: string;
+    socialMedia: string;
+    website: string;
+    address: string;
+    dob: string;
 }
 
-const PersonalDetails: React.FC<PersonalDetailsProps> = ({ portfolio_id }) => {
-    const [contactInfo, setContactInfo] = useState({
+const PersonalDetails: React.FC<PersonalDetailsProps> = () => {
+    const [contactInfo, setContactInfo] = useState<PersonalDetailsProps>({
         linkedin: '',
         socialMedia: '',
         website: '',
         address: '',
         dob: '',
-        portfolio_id: portfolio_id,
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setContactInfo((prevContactInfo) => ({
+        setContactInfo((prevContactInfo: PersonalDetailsProps) => ({
             ...prevContactInfo,
             [name]: value,
         }));
@@ -39,8 +42,6 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = ({ portfolio_id }) => {
         formData.append('website', contactInfo.website);
         formData.append('address', contactInfo.address);
         formData.append('dob', contactInfo.dob);
-        formData.append('portfolio_id', contactInfo.portfolio_id.toString());
-
         const response = await createPersonalDetails(formData);
         console.log(response);
     };
