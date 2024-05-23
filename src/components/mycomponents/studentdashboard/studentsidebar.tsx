@@ -52,7 +52,7 @@ export function StudentSidebar({onProfile,
                     className={`w-full justify-start hover:text-orange-500 ${
                       activeItem === "dashboard" ? "text-orange-500" : ""
                     }`}>
-                <LayoutDashboard/>Dashboard
+                <LayoutDashboard/>Home
             </Button>
         </NavigationMenuItem>
 

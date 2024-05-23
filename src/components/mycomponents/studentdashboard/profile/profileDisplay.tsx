@@ -55,7 +55,7 @@ const ProfileDisplay = () => {
         URL.revokeObjectURL(profile.profileImage);
       }
     };
-  }, [refresh]);
+  }, [refresh, profile?.profileImage]);
 
   const showAlertMessage = () => {
     setShowAlert(true);
@@ -81,11 +81,7 @@ const ProfileDisplay = () => {
           <p className="text-gray-500">{profile?.address}</p>
           <p className="mt-1 text-lg font-semibold">{profile?.title}</p>
         </div>
-        <ProfileEditDialog
-          showAlertDialog={showAlertMessage}
-          refreshPortfolioList={refreshPortfolio}
-          onClick={() => setOpen(true)}
-        />
+        <ProfileEditDialog/>
       </div>
       <div className="mt-6 space-y-4">
         <div className="grid grid-cols-2 gap-4 text-gray-700">

@@ -1,7 +1,6 @@
 import { deletePortfolio, getMyPortfolios } from '@/app/api/portfolioService';
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@/components/ui/table';
 import { EditDialog } from './editDialog';
 import {
   AlertDialog,
@@ -12,6 +11,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import  PortfolioConfig from './portfolioInputComponent/portfolioConfig';
+import Link from 'next/link';
 
 interface refreshtype {
   refreshList: boolean;
@@ -77,7 +77,9 @@ const PortfolioListView = ({refreshList}: refreshtype) => {
             <td className="px-6 py-4 whitespace-nowrap w-1/3 space-x-2 ">
             <div className='flex w-12'>
             </div>
-              <Button size={'sm'}>Preview</Button>
+            <Link href="/dashboard/student/portfolio">
+                <Button size={'sm'}>Preview</Button>
+              </Link>
               <PortfolioConfig/>
               <EditDialog portfolio={portfolio} refreshPortfolioList={refreshPortfolioList} />
               <AlertDialog>

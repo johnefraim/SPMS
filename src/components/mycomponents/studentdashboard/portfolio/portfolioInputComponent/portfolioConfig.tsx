@@ -10,7 +10,7 @@ import { CreateAcademicDialog } from "../../academicdetails/createAcademicDialog
 import { AcademicListview } from "../../academicdetails/academicListview";
 import { CreatePersonalDetailscDialog } from "../../personalDetails/createPersonalDetailsDialog";
 import { PersonalDetailsListview } from "../../personalDetails/personalDetailsListview";
-
+import  CertificationCRUD  from "../../certificate/crudCertification";
 
 
 export default function PortfolioConfig() {
@@ -60,7 +60,7 @@ export default function PortfolioConfig() {
                         <SkillInput/>
                     </TabsContent>
                     <TabsContent value="Certifications">
-                        <Certification/>
+                        <CertificationCRUD/>
                     </TabsContent>
                 </Tabs>
             </DialogContent>

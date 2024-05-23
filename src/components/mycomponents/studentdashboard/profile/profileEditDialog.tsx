@@ -30,12 +30,6 @@ import {
 } from "@/components/ui/select";
 import { getUserDetails, updateProfile } from "@/app/api/userService";
 
-interface ProfileEditDialogProps {
-  onClick?: () => void;
-  refreshPortfolioList: () => void;
-  showAlertDialog: () => void;
-}
-
 const schema = z.object({
   firstName: z.string(),
   middleName: z.string(),
@@ -55,13 +49,10 @@ const frameworks = [
   { value: "Non-binary", label: "Non-binary" },
 ];
 
-export function ProfileEditDialog({
-  onClick,
-  refreshPortfolioList,
-  showAlertDialog,
-}: ProfileEditDialogProps) {
+export function ProfileEditDialog(){
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const formdata = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -84,9 +75,12 @@ export function ProfileEditDialog({
   };
 
   const submit = async (formValues: any) => {
+    console.log('submit function called with values:', formValues);
     try {
       const formData = new FormData();
-      formData.append("file", profileImage as File);
+      if (profileImage) {
+        formData.append("file", profileImage);
+      }
       formData.append("firstName", formValues.firstName);
       formData.append("middleName", formValues.middleName);
       formData.append("lastName", formValues.lastName);
@@ -99,12 +93,12 @@ export function ProfileEditDialog({
       formData.append("summary", formValues.summary);
 
       const response = await updateProfile(formData);
-      if (response.status === 200) {
+      if (response.status >= 200 && response.status < 300) {
         formdata.reset();
-        showAlertDialog();
       }
     } catch (error) {
       console.error("Error updating user details:", error);
+      setError("Error updating user details");
     }
   };
 
@@ -196,23 +190,23 @@ export function ProfileEditDialog({
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                 />
               </Label>
-              <Select>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select Gender" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {frameworks.map((framework) => (
-                      <SelectItem
-                        key={framework.value}
-                        value={framework.value}
-                      >
-                        {framework.label}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <Select {...formdata.register("gender")}>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Select Gender" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {frameworks.map((framework) => (
+              <SelectItem
+                key={framework.value}
+                value={framework.value}
+              >
+                {framework.label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
               <Label className="block mt-4">
                 <span className="text-gray-700">Birthday</span>
                 <Input
@@ -269,6 +263,7 @@ export function ProfileEditDialog({
           </Form>
         </div>
       </DialogContent>
+      {error && <p>{error}</p>}
     </Dialog>
   );
 }

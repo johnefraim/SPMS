@@ -1,52 +1,27 @@
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { Info, Trophy, PencilRuler, Medal, Briefcase, FolderGit2 } from "lucide-react";
-export function StudentOverview(){
+import React, { useEffect, useState } from 'react';
 
-    return(
-        <section>
-           <div className="h-14 mt-12 ml-2">
-                <h1 className="text-4xl leading-14">Welcome back! {localStorage.getItem('name')}!</h1>
-            </div> 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 ml-2">
-                <Card className="h-32 w-64 bg-[#205375] text-white">
-                    <CardTitle className="text-lg leading-10 ml-4">Personal Details</CardTitle>
-                    <CardContent>
-                    <Info />
-                    </CardContent>
-                </Card>
-                <Card className="h-32 w-64 bg-[#205375] text-white">
-                    <CardTitle className="text-lg leading-10 ml-4">Certificates</CardTitle>
-                    <CardContent>
-                    <Medal />
-                    </CardContent>
-                </Card>
-                <Card className="h-32 w-64 bg-[#205375] text-white">
-                    <CardTitle className="text-lg leading-10 ml-4">Projects</CardTitle>
-                    <CardContent>
-                    <FolderGit2 />
-                    </CardContent>
-                </Card>
-                <Card className="h-32 w-64 bg-[#205375] text-white">
-                    <CardTitle className="text-lg leading-10 ml-4">Skills</CardTitle>
-                    <CardContent>
-                        <PencilRuler />
-                    </CardContent>
-                    
-                </Card>
-                <Card className="h-32 w-64 bg-[#205375] text-white">
-                    <CardTitle className="text-lg leading-10 ml-4">Achievements</CardTitle>
-                    <CardContent>
-                        <Trophy />
-                    </CardContent>
-                </Card>
-                <Card className="h-32 w-64 bg-[#205375] text-white">
-                    <CardTitle className="text-lg leading-10 ml-4">Work Experience</CardTitle>
-                    <CardContent>
-                    <Briefcase />
-                    </CardContent>
-                </Card>
-            </div>
+export function StudentOverview() {
+  const [name, setName] = useState('');
 
-        </section>
-    );
+  useEffect(() => {
+    const storedName = localStorage.getItem('name');
+    if (storedName) {
+      setName(storedName);
+    }
+  }, []);
+
+  return (
+    <section className="flex flex-col items-start justify-normal min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8">
+      <div className="mt-12 ml-2">
+        <h1 className="text-6xl leading-tight font-bold text-gray-900">
+          Welcome back, {name}!
+        </h1>
+      </div>
+      <div className="mt-8 max-w-prose ml-2">
+        <p className="text-xl leading-relaxed text-gray-700">
+          Explore your dashboard, manage your portfolio, and track your progress as you prepare for graduation. We&apos;re excited to have you back and ready to support you on your journey.
+        </p>
+      </div>
+    </section>
+  );
 }

@@ -54,9 +54,7 @@ const EditProfile = () => {
         e.preventDefault();
         
     };
-    const handleGenderChange = (value: string) => {
-        setGender(value);
-    };
+    
     return (
         <div className="max-w-md mx-auto bg-[#EFEFEF] rounded-xl shadow-md overflow-hidden md:max-w-2xl">
             <form onSubmit={handleSubmit} className="p-8">

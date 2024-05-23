@@ -24,11 +24,11 @@ export default function StudentDashboard(){
     };
     
     useLayoutEffect(() => {
-        const datatoken = localStorage.getItem('token')
-      if (datatoken === null && userRole === null) {
-        redirect('/');
-      }
-      }, [])
+            const datatoken = localStorage.getItem('token')
+        if (datatoken === null && userRole === null) {
+            redirect('/');
+        }
+        }, [userRole])
 
     
     useEffect(() => {
