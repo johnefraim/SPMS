@@ -1,11 +1,12 @@
 'use client'
 import { StudentSidebar } from "@/components/mycomponents/studentdashboard/studentsidebar";
-import { StudentOverview } from "@/components/mycomponents/studentdashboard/dashboard/student-overview";
+import { StudentOverview } from "@/components/mycomponents/studentdashboard/home/student-overview";
 import {  useEffect, useState, useLayoutEffect } from "react";
 import { CreatePortfolio } from "@/components/mycomponents/studentdashboard/portfolio/createportfolio";
 import { LogoutDropDown } from "@/components/mycomponents/studentdashboard/logoutdropdown";
 import { redirect } from "next/navigation"
 import ProfileDisplay from "@/components/mycomponents/studentdashboard/profile/profileDisplay";
+import PortfolioCRUD from "@/components/mycomponents/studentdashboard/portfolio/portfolioCrud";
 export default function StudentDashboard(){
 
     const [currentComponent, setCurrentComponent] = useState('');
@@ -17,7 +18,7 @@ export default function StudentDashboard(){
             case 'profile':
                 return <ProfileDisplay/>;
             case 'createPortfolio':
-                return <CreatePortfolio />;
+                return <PortfolioCRUD />;
             default:
                 return <StudentOverview />;
         }

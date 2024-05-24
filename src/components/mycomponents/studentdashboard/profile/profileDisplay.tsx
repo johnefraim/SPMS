@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { Card } from "@/components/ui/card";
-import { getUserDetails } from "@/app/api/userService";
 import { ProfileEditDialog } from "./profileEditDialog";
 import axios from "axios";
 
@@ -20,8 +18,8 @@ interface ProfileProps {
 
 const ProfileDisplay = () => {
   const [profile, setProfile] = useState<ProfileProps | null>(null);
-  const [open, setOpen] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
@@ -31,7 +29,12 @@ const ProfileDisplay = () => {
         try {
           const decode = JSON.parse(atob(token.split('.')[1]));
           const userId = decode.Id;
-          const response = await getUserDetails(userId.toString());
+          const response = await axios.get(`http://localhost:8080/api/user/${userId}/details`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          });
+
           const { data } = response;
 
           if (data.profileImage) {
@@ -43,7 +46,10 @@ const ProfileDisplay = () => {
           }
           setProfile(data);
         } catch (error) {
+          setError('Error fetching user details.');
           console.error('Error fetching user details:', error);
+        } finally {
+          setLoading(false);
         }
       }
     };
@@ -55,60 +61,60 @@ const ProfileDisplay = () => {
         URL.revokeObjectURL(profile.profileImage);
       }
     };
-  }, [refresh, profile?.profileImage]);
+  }, [refresh]);
 
-  const showAlertMessage = () => {
-    setShowAlert(true);
-    setTimeout(() => {
-      setShowAlert(false);
-    }, 8000);
-  };
 
-  const refreshPortfolio = () => {
-    setRefresh(!refresh);
-  };
+  if (loading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="flex items-center justify-center min-h-screen text-red-500">{error}</div>;
+  }
 
   return (
-    <div className="max-h-screen bg-white rounded-xl shadow-md overflow-hidden p-8">
-      <div className="flex items-center space-x-4">
-        <img
-          className="w-24 h-24 rounded-full"
-          src={profile?.profileImage || ""}
-          alt="Profile Image"
-        />
-        <div className="flex-1">
-          <h2 className="text-2xl font-bold">{profile?.name + ' ' + profile?.middleName + ' ' + profile?.lastName}</h2>
-          <p className="text-gray-500">{profile?.address}</p>
-          <p className="mt-1 text-lg font-semibold">{profile?.title}</p>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-6">
+      <div className="max-w-4xl w-full bg-white rounded-xl shadow-lg overflow-hidden p-8">
+        <div className="flex items-center space-x-6">
+          <img
+            className="w-32 h-32 rounded-full object-cover"
+            src={profile?.profileImage || "/default-profile.png"}
+            alt="Profile Image"
+          />
+          <div className="flex-1">
+            <h2 className="text-3xl font-bold">{profile?.name + ' ' + profile?.middleName + ' ' + profile?.lastName}</h2>
+            <p className="text-gray-500">{profile?.address}</p>
+            <p className="mt-1 text-xl font-semibold">{profile?.title}</p>
+          </div>
+          <ProfileEditDialog/>
         </div>
-        <ProfileEditDialog/>
-      </div>
-      <div className="mt-6 space-y-4">
-        <div className="grid grid-cols-2 gap-4 text-gray-700">
-          <div>
-            <h3 className="font-semibold">Email</h3>
-            <p>{profile?.email}</p>
+        <div className="mt-6 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+            <div>
+              <h3 className="font-semibold">Email</h3>
+              <p>{profile?.email}</p>
+            </div>
+            <div>
+              <h3 className="font-semibold">Phone</h3>
+              <p>{profile?.phoneNumber}</p>
+            </div>
+            <div>
+              <h3 className="font-semibold">Address</h3>
+              <p>{profile?.address}</p>
+            </div>
+            <div>
+              <h3 className="font-semibold">Gender</h3>
+              <p>{profile?.gender}</p>
+            </div>
+            <div>
+              <h3 className="font-semibold">Birthday</h3>
+              <p>{profile?.birthday}</p>
+            </div>
           </div>
           <div>
-            <h3 className="font-semibold">Phone</h3>
-            <p>{profile?.phoneNumber}</p>
+            <h3 className="text-lg font-bold">Summary</h3>
+            <p className="mt-2 text-gray-700">{profile?.summary}</p>
           </div>
-          <div>
-            <h3 className="font-semibold">Address</h3>
-            <p>{profile?.address}</p>
-          </div>
-          <div>
-            <h3 className="font-semibold">Gender</h3>
-            <p>{profile?.gender}</p>
-          </div>
-          <div>
-            <h3 className="font-semibold">Birthday</h3>
-            <p>{profile?.birthday}</p>
-          </div>
-        </div>
-        <div>
-          <h3 className="text-lg font-bold">Summary</h3>
-          <p className="mt-2 text-gray-700">{profile?.summary}</p>
         </div>
       </div>
     </div>

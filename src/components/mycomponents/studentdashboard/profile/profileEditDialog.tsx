@@ -43,7 +43,7 @@ const schema = z.object({
   summary: z.string(),
 });
 
-const frameworks = [
+const Gender = [
   { value: "Male", label: "Male" },
   { value: "Female", label: "Female" },
   { value: "Non-binary", label: "Non-binary" },
@@ -196,12 +196,12 @@ export function ProfileEditDialog(){
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            {frameworks.map((framework) => (
+            {Gender.map((gender) => (
               <SelectItem
-                key={framework.value}
-                value={framework.value}
+                key={Gender.value}
+                value={Gender.value}
               >
-                {framework.label}
+                {Gender.label}
               </SelectItem>
             ))}
           </SelectGroup>

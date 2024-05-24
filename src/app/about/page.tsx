@@ -1,6 +1,6 @@
 'use client'
 import { HomeNavigation } from "@/components/mycomponents/homenavigationbar";
-import AcademicDetailsForm from "@/components/mycomponents/studentdashboard/academicdetails/academicDetails";
+import AcademicDetailsForm from "@/components/mycomponents/studentdashboard/educationalBackground/academicDetails";
 
 export default function About(){
     return(

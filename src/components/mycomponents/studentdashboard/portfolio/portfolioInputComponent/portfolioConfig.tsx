@@ -6,12 +6,15 @@ import  Career  from "./career";
 import Project from "./project";
 import SkillInput from "./skills";
 import Certification from "./certification";
-import { CreateAcademicDialog } from "../../academicdetails/createAcademicDialog";
-import { AcademicListview } from "../../academicdetails/academicListview";
+import { CreateAcademicDialog } from "../../educationalBackground/createAcademicDialog";
+import { AcademicListview } from "../../educationalBackground/academicListview";
 import { CreatePersonalDetailscDialog } from "../../personalDetails/createPersonalDetailsDialog";
 import { PersonalDetailsListview } from "../../personalDetails/personalDetailsListview";
 import  CertificationCRUD  from "../../certificate/crudCertification";
-
+import CareerCRUD from "../../career/careerComponent";
+import  PersonalDetailsCRUD  from "../../personalDetails/personalDetailsCRUD";
+import EducationalBackgroundCRUD from "../../educationalBackground/educationalBackgroundCRUD";
+import ProjectCRUD from "../../projects/projectCRUD";
 
 export default function PortfolioConfig() {
     const [open, setOpen] = useState(false);
@@ -30,10 +33,10 @@ export default function PortfolioConfig() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button>Add Information</Button>
+                <Button className="bg-green-500" variant={"secondary"} size={"sm"}>setup</Button>
             </DialogTrigger>
             <DialogContent className="max-w-[70vw] overflow-y-auto">
-                <Tabs defaultValue="Personal Details">
+                <Tabs defaultValue="Personal Details" className="bg-gray-100 h-[80vh]">
                     <TabsList>
                         <TabsTrigger value="Personal Details">Personal Details</TabsTrigger>
                         <TabsTrigger value="Educational Background">Educational Background</TabsTrigger>
@@ -43,18 +46,16 @@ export default function PortfolioConfig() {
                         <TabsTrigger value="Certifications">Certifications</TabsTrigger>
                     </TabsList>
                     <TabsContent value="Personal Details">
-                        <CreatePersonalDetailscDialog  refreshListview={refreshPortfolio} showAlertDialog={showAlertMessage} onClick={()=>setOpen(true)}/>
-                        <PersonalDetailsListview refreshlist={refresh}/>
+                        <PersonalDetailsCRUD/>
                     </TabsContent>
                     <TabsContent value="Educational Background">
-                        <CreateAcademicDialog showAlertDialog= {showAlertMessage} refreshAcademicListview={refreshPortfolio} onClick={()=>{setOpen(true)}}/>
-                        <AcademicListview/>
+                        <EducationalBackgroundCRUD/>
                     </TabsContent>
                     <TabsContent value="Work Experience">
-                        <Career title={""} employmentType={""} companyName={""} location={""} locationType={""} startDate={""} startYear={""} endDate={""} endYear={""} description={""}/>
+                        <CareerCRUD/>
                     </TabsContent>
                     <TabsContent value="Projects">
-                        <Project/>
+                        <ProjectCRUD/>
                     </TabsContent>
                     <TabsContent value="Skills">
                         <SkillInput/>

@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/alert-dialog"
 import  PortfolioConfig from './portfolioInputComponent/portfolioConfig';
 import Link from 'next/link';
+import axios from 'axios';
+
 
 interface refreshtype {
   refreshList: boolean;
@@ -92,10 +94,21 @@ const PortfolioListView = ({refreshList}: refreshtype) => {
                   <div className="flex justify-end space-x-4">
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <Button variant={'destructive'}  onClick={async () => {
-                        const response = await deletePortfolio(`${portfolio.id}`);
+                        const response = await axios.delete(`http://localhost:8080/api/portfolio/delete/${portfolio.id}`,
+                          {
+                            headers: {
+                              Authorization: `Bearer ${localStorage.getItem('token')}`,
+                            },
+                          }
+                        );
                         if (response.status === 200) {
                           setRefresh(!refresh);
+                          console.error('Response Data:', response.data);
                         }
+                      else {
+                        console.error('Delete request failed:', response.data);
+                      }
+                      
                       }}>Delete</Button>
                   </div>
                 </AlertDialogContent>
