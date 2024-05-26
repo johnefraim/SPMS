@@ -9,16 +9,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Pen } from "lucide-react";
-import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import {
   Select,
   SelectContent,
@@ -28,242 +23,174 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getUserDetails, updateProfile } from "@/app/api/userService";
+import axios from "axios";
+import { Close } from "@radix-ui/react-dialog";
 
-const schema = z.object({
-  firstName: z.string(),
-  middleName: z.string(),
-  lastName: z.string(),
-  gender: z.string(),
-  birthday: z.string(),
-  title: z.string(),
-  email: z.string(),
-  phoneNumber: z.string(),
-  address: z.string(),
-  summary: z.string(),
-});
+interface ProfileProps {
+  name: string;
+  middleName: string;
+  lastName: string;
+  gender: string;
+  birthday: Date;
+  title: string;
+  email: string;
+  phoneNumber: string;
+  address: string;
+  summary: string;
+}
 
-const Gender = [
+const GenderOptions = [
   { value: "Male", label: "Male" },
   { value: "Female", label: "Female" },
-  { value: "Non-binary", label: "Non-binary" },
 ];
 
-export function ProfileEditDialog(){
-  const [profileImage, setProfileImage] = useState<File | null>(null);
-  const [open, setOpen] = useState(false);
+export function ProfileEditDialog() {
+  const [profile, setProfile] = useState<ProfileProps>();
   const [error, setError] = useState<string | null>(null);
-
-  const formdata = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      gender: "",
-      birthday: "",
-      title: "",
-      email: "",
-      phoneNumber: "",
-      address: "",
-      summary: "",
-    },
-  });
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProfileImage(e.target.files ? e.target.files[0] : null);
-  };
-
-  const submit = async (formValues: any) => {
-    console.log('submit function called with values:', formValues);
-    try {
-      const formData = new FormData();
-      if (profileImage) {
-        formData.append("file", profileImage);
-      }
-      formData.append("firstName", formValues.firstName);
-      formData.append("middleName", formValues.middleName);
-      formData.append("lastName", formValues.lastName);
-      formData.append("gender", formValues.gender);
-      formData.append("birthday", formValues.birthday);
-      formData.append("title", formValues.title);
-      formData.append("email", formValues.email);
-      formData.append("phoneNumber", formValues.phoneNumber);
-      formData.append("address", formValues.address);
-      formData.append("summary", formValues.summary);
-
-      const response = await updateProfile(formData);
-      if (response.status >= 200 && response.status < 300) {
-        formdata.reset();
-      }
-    } catch (error) {
-      console.error("Error updating user details:", error);
-      setError("Error updating user details");
-    }
-  };
-
+  const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
   useEffect(() => {
-    const fetchUserDetails = async () => {
-      const token = localStorage.getItem("token");
+    const fetchProfile = async () => {
+      const token = localStorage.getItem('token');
       if (token) {
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        const userId = decodedToken.Id;
         try {
-          const decode = JSON.parse(atob(token.split(".")[1]));
-          const userId = decode.Id;
-          const response = await getUserDetails(userId.toString());
-          const { data } = response;
-          setProfileImage(data.profileImage);
-          formdata.reset({
-            firstName: data.name,
-            middleName: data.middleName,
-            lastName: data.lastName,
-            gender: data.gender,
-            birthday: data.birthday,
-            title: data.title,
-            email: data.email,
-            phoneNumber: data.phoneNumber,
-            address: data.address,
-            summary: data.summary,
+          const response = await axios.get(`http://localhost:8080/api/user/${userId}/details`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
           });
+          setProfile(response.data);
         } catch (error) {
-          console.error("Error fetching user details:", error);
+          setError('Error fetching profile.');
+          console.error('Error fetching profile:', error);
+        } finally {
+          setLoading(false);
         }
       }
     };
-    fetchUserDetails();
-  }, []);
+
+    fetchProfile();
+  }, [refresh]);
+
+  const handleSave = async (updatedProfile: ProfileProps) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        const userId = decodedToken.Id;
+        const response = await axios.put(`http://localhost:8080/api/user/update/${userId}`, updatedProfile, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        setProfile(updatedProfile);
+        setRefresh(!refresh);
+        reset();
+        
+      }
+    } catch (error) {
+      setError('Error updating profile.');
+      console.error('Error updating profile:', error);
+    }
+  };
+
+  const {register,handleSubmit, reset} = useForm<ProfileProps>();
+
+  const onSubmit = handleSubmit(async (data) => {await handleSave(data);});
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button size="sm">
-          <Pen /> Edit Profile
+          Edit Profile
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Update your Profile</DialogTitle>
-          <DialogDescription>
-            Add important information.
-          </DialogDescription>
+          <DialogDescription>Add important information.</DialogDescription>
         </DialogHeader>
-        <div className="grid items-center space-y-3">
-          <Form {...formdata}>
-            <form onSubmit={formdata.handleSubmit(submit)}>
-              {profileImage && (
-                <Image
-                  src={URL.createObjectURL(profileImage)}
-                  width={32}
-                  height={64}
-                  alt="Profile"
-                  className="mt-4 w-32 h-32 object-cover rounded-full"
-                />
-              )}
-              <Label className="block">
-                <span className="text-gray-700">Profile Image</span>
-                <Input
-                  type="file"
-                  onChange={handleImageChange}
-                  className="mt-1 block w-full"
-                />
-              </Label>
-              <Label className="block mt-4">
-                <span className="text-gray-700">First Name</span>
-                <Input
-                  type="text"
-                  {...formdata.register("firstName")}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                />
-              </Label>
-              <Label className="block mt-4">
-                <span className="text-gray-700">Middle Name</span>
-                <Input
-                  type="text"
-                  {...formdata.register("middleName")}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                />
-              </Label>
-              <Label className="block mt-4">
-                <span className="text-gray-700">Last Name</span>
-                <Input
-                  type="text"
-                  {...formdata.register("lastName")}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                />
-              </Label>
-              <Select {...formdata.register("gender")}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select Gender" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            {Gender.map((gender) => (
-              <SelectItem
-                key={Gender.value}
-                value={Gender.value}
-              >
-                {Gender.label}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-              <Label className="block mt-4">
-                <span className="text-gray-700">Birthday</span>
-                <Input
-                  type="date"
-                  {...formdata.register("birthday")}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                />
-              </Label>
-              <Label className="block mt-4">
-                <span className="text-gray-700">Title/Headline</span>
-                <Input
-                  type="text"
-                  {...formdata.register("title")}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                />
-              </Label>
-              <Label className="block mt-4">
-                <span className="text-gray-700">Email</span>
-                <Input
-                  type="email"
-                  {...formdata.register("email")}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                />
-              </Label>
-              <Label className="block mt-4">
-                <span className="text-gray-700">Phone Number</span>
-                <Input
-                  type="tel"
-                  {...formdata.register("phoneNumber")}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                />
-              </Label>
-              <Label className="block mt-4">
-                <span className="text-gray-700">Address</span>
-                <Input
-                  type="text"
-                  {...formdata.register("address")}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                />
-              </Label>
-              <Label className="block mt-4">
-                <span className="text-gray-700">Professional Summary</span>
-                <Textarea
-                  {...formdata.register("summary")}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm space-y-2"
-                />
-              </Label>
-              <DialogFooter>
-                <Button type="submit" className="mt-4">
-                  Save
-                </Button>
-              </DialogFooter>
-            </form>
-          </Form>
-        </div>
+        {profile && (
+          <form onSubmit={onSubmit} className="space-y-4">
+            <div className="flex flex-col space-y-2">
+              <Label className="font-semibold">Name</Label>
+              <Input type="text" {...register("name")} defaultValue={profile.name} className="border p-2 rounded" />
+            </div>
+            <div className="flex flex-col space-y-2">
+              <Label className="font-semibold">Middle Name</Label>
+              <Input type="text" {...register("middleName")} defaultValue={profile.middleName} className="border p-2 rounded" />
+            </div>
+            <div className="flex flex-col space-y-2">
+              <Label className="font-semibold">Last Name</Label>
+              <Input type="text" {...register("lastName")} defaultValue={profile.lastName} className="border p-2 rounded" />
+            </div>
+            <div className="flex flex-col space-y-2">
+              <Label className="font-semibold">Gender</Label>
+              <Select defaultValue={profile.gender} {...register("gender")}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Gender</SelectLabel>
+                    {GenderOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex flex-col space-y-2">
+  <Label className="font-semibold">Birthday</Label>
+  <Input
+  type="date"
+  {...register("birthday")}
+  defaultValue={profile && profile.birthday ? new Date(profile.birthday).toISOString().split('T')[0] : ''}
+  className="border p-2 rounded"
+/>
+  </div>
+
+            <div className="flex flex-col space-y-2">
+              <Label className="font-semibold">Title</Label>
+              <Input type="text" {...register("title")} defaultValue={profile.title} className="border p-2 rounded" />
+            </div>
+            <div className="flex flex-col space-y-2">
+              <Label className="font-semibold">Email</Label>
+              <Input type="email" {...register("email")} defaultValue={profile.email} className="border p-2 rounded" />
+            </div>
+            <div className="flex flex-col space-y-2">
+              <Label className="font-semibold">Phone Number</Label>
+              <Input type="text" {...register("phoneNumber")} defaultValue={profile.phoneNumber} className="border p-2 rounded" />
+            </div>
+            <div className="flex flex-col space-y-2">
+              <Label className="font-semibold">Address</Label>
+              <Input type="text" {...register("address")} defaultValue={profile.address} className="border p-2 rounded" />
+            </div>
+            <div className="flex flex-col space-y-2">
+              <Label className="font-semibold">Summary</Label>
+              <Textarea {...register("summary")} defaultValue={profile.summary} className="border p-2 rounded" />
+            </div>
+            <div className="flex space-x-4">
+              <Button type="submit" className="bg-blue-500 text-white p-2 rounded">
+                Save
+              </Button>
+            </div>
+          </form>
+        )}
       </DialogContent>
-      {error && <p>{error}</p>}
+      {error && <p className="text-red-500">{error}</p>}
     </Dialog>
   );
 }

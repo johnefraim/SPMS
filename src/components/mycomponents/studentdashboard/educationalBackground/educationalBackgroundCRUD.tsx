@@ -27,15 +27,30 @@ const EducationalBackgroundCRUD: React.FC = () => {
     });
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/educational-backgrounds', 
-        {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            },
+        const fetchBackgrounds = async () => {
+        const token = localStorage.getItem('token');
+        if(token){
+            const decodedToken = JSON.parse(atob(token.split('.')[1]));
+            const userId = decodedToken.Id;
+            const response = await axios.get(`http://localhost:8080/api/educational-backgrounds/${userId}`,
+            {
+                headers: {'Authorization': `Bearer ${token}`,},
+            });
+            const backgroundData = Array.isArray(response.data) ? response.data.map((background: any) => ({
+                id: background.id,
+                school: background.school,
+                degree: background.degree,
+                fieldOfStudy: background.fieldOfStudy,
+                startDate: background.startDate,
+                endDate: background.endDate,
+                gpa: background.gpa,
+                activities: background.activities,
+                description: background.description,
+            })) : [];
+            setBackgrounds(backgroundData);
         }
-        )
-            .then(response => setBackgrounds(response.data))
-            .catch(error => console.error('Error fetching educational backgrounds:', error));
+        };
+        fetchBackgrounds();
     }, []);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -206,7 +221,7 @@ const EducationalBackgroundCRUD: React.FC = () => {
                         className="w-full p-2 border border-gray-300 rounded"
                     />
                 </div>
-                <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                <button type="submit" className="px-4 mr-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                     Save
                 </button>
                 <button 

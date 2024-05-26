@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
-import { ProfileEditDialog } from "./profileEditDialog";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import {ProfileEditDialog} from "./profileEditDialog";
 
 interface ProfileProps {
-  profileImage: string | null;
   name: string;
   middleName: string;
   lastName: string;
@@ -21,7 +20,9 @@ const ProfileDisplay = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refresh, setRefresh] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
+  
   useEffect(() => {
     const fetchUserDetails = async () => {
       const token = localStorage.getItem('token');
@@ -55,14 +56,28 @@ const ProfileDisplay = () => {
     };
 
     fetchUserDetails();
-
-    return () => {
-      if (profile?.profileImage) {
-        URL.revokeObjectURL(profile.profileImage);
-      }
-    };
   }, [refresh]);
 
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('profileImage', file);
+
+      try {
+        const response = await axios.post(`http://localhost:8080/api/user/${userId}/upload`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        // Refresh the profile to show the new image
+        setRefresh(prev => !prev);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    }
+  };
 
   if (loading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
@@ -78,8 +93,13 @@ const ProfileDisplay = () => {
         <div className="flex items-center space-x-6">
           <img
             className="w-32 h-32 rounded-full object-cover"
-            src={profile?.profileImage || "/default-profile.png"}
+            src={profile?.profileImage || "/default.png"}
             alt="Profile Image"
+          />
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileUpload}
           />
           <div className="flex-1">
             <h2 className="text-3xl font-bold">{profile?.name + ' ' + profile?.middleName + ' ' + profile?.lastName}</h2>

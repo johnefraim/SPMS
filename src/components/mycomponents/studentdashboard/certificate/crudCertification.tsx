@@ -24,15 +24,28 @@ function CertificationCRUD() {
     const [certifications, setCertifications] = useState<Certification[]>([]);
     const [selectedCertification, setSelectedCertification] = useState<Certification>(initialCertification);
 
-    // Fetch all certifications
+    
     useEffect(() => {
         const fetchCertifications = async () => {
+            const token = localStorage.getItem('token');
             try {
-                const response = await axios.get('http://localhost:8080/api/certifications', {
-                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-                });
-                setCertifications(response.data);
-            } catch (error) {
+                if (token) {
+                    const decodedToken = JSON.parse(atob(token.split('.')[1]));
+                    const userId = decodedToken.Id;
+                    const response = await axios.get(`http://localhost:8080/api/certifications/user/${userId}`, {
+                        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                    });
+                    const certificationData = Array.isArray(response.data) ? response.data.map((certification: any) => ({
+                        id: certification.id,
+                        name: certification.name,
+                        issuingOrganization: certification.issuingOrganization,
+                        issuedDate: certification.issuedDate,
+                        expirationDate: certification.expirationDate,
+                        credentialId: certification.credentialId,
+                        photoUrl: certification.photoUrl,
+                    })) : [];
+                    setCertifications(certificationData); }
+             } catch (error) {
                 console.error('Failed to fetch certifications:', error);
             }
         };
@@ -97,7 +110,6 @@ function CertificationCRUD() {
 
     return (
         <div className="max-w-4xl mx-auto p-4 h-[80vh] overflow-y-auto">
-            <h1 className="text-3xl font-bold mb-6">Certifications</h1>
             <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6">
                 <h2 className="text-2xl font-bold mb-4">{selectedCertification.id ? 'Edit Certification' : 'Add Certification'}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -150,7 +162,7 @@ function CertificationCRUD() {
                         required
                     />
                 </div>
-                <button type="submit" className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700">
+                <button type="submit" className="mr-4 mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700">
                     Save
                 </button>
                 <button 

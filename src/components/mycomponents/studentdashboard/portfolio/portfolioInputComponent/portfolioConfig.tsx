@@ -15,6 +15,7 @@ import CareerCRUD from "../../career/careerComponent";
 import  PersonalDetailsCRUD  from "../../personalDetails/personalDetailsCRUD";
 import EducationalBackgroundCRUD from "../../educationalBackground/educationalBackgroundCRUD";
 import ProjectCRUD from "../../projects/projectCRUD";
+import SkillCRUD from "../../skill/skillCRUD";
 
 export default function PortfolioConfig() {
     const [open, setOpen] = useState(false);
@@ -58,7 +59,7 @@ export default function PortfolioConfig() {
                         <ProjectCRUD/>
                     </TabsContent>
                     <TabsContent value="Skills">
-                        <SkillInput/>
+                        <SkillCRUD/>
                     </TabsContent>
                     <TabsContent value="Certifications">
                         <CertificationCRUD/>
