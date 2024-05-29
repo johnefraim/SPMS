@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Image from 'next/image';
 
 interface Project {
     id?: number;
@@ -46,7 +47,7 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
             }})
             .catch(error => console.error('Error fetching projects:', error));
         }
-    }, []);
+    }, [portfolioAttribute]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -204,7 +205,7 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {projects.map(project => (
                     <div key={project.id} className="p-4 bg-white rounded shadow-md">
-                        <img src={project.projectImage} alt={project.projectTitle} className="w-full h-32 object-cover rounded mb-4"/>
+                        <Image height={128} width={128} src={project.projectImage} alt={project.projectTitle} className="w-full h-32 object-cover rounded mb-4"/>
                         <h2 className="text-xl font-bold mb-2">{project.projectTitle}</h2>
                         <p className="text-gray-700 mb-2">{project.description}</p>
                         <p className="text-gray-700 mb-2"><strong>Role:</strong> {project.role}</p>

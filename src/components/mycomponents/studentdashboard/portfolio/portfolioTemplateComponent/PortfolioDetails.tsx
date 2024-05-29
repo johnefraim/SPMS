@@ -2,6 +2,7 @@ import { useState, useEffect, useLayoutEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface PersonalDetails {
   id: number;
@@ -180,13 +181,13 @@ const PortfolioDetails: React.FC<{ id: string }> = ({ id }) => {
       <h2 className="text-2xl font-bold mb-4">Projects</h2>
       {portfolio.projectEntity.map((project) => (
         <div key={project.id} className="mb-4">
-          <img src={project.projectImage} alt={project.projectTitle} className="w-full mb-4"/>
+          <Image width={128} height={128} src={project.projectImage} alt={project.projectTitle} className="w-full mb-4"/>
           <p><strong>Title:</strong> {project.projectTitle}</p>
           <p><strong>Description:</strong> {project.description}</p>
           <p><strong>Role:</strong> {project.role}</p>
           <p><strong>Technologies:</strong> {project.technologies}</p>
-          <p><strong>Project Link:</strong> <a href={project.projectLink} className="text-blue-500">{project.projectLink}</a></p>
-          <p><strong>GitHub:</strong> <a href={project.projectGithub} className="text-blue-500">{project.projectGithub}</a></p>
+          <p><strong>Project Link:</strong> {project.projectLink}</p>
+          <p><strong>GitHub:</strong>{project.projectGithub}</p>
         </div>
       ))}
 

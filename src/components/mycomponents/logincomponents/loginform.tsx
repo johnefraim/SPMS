@@ -73,7 +73,7 @@ const formSchema = z.object({
           }
         }
 
-    }, [token]);
+    }, [token, userRole]);
 
     return (
         <section className="w-full">

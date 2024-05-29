@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface PersonalDetails {
   id: number;
@@ -154,7 +155,7 @@ const PortfolioDetails: React.FC = () => {
           <h2 className="text-2xl font-semibold mb-2">Projects</h2>
           {portfolio.projectEntity && portfolio.projectEntity.map((project) => (
             <div key={project.id} className="mb-4">
-              <img src={project.projectImage} alt={project.projectTitle} className="w-full h-48 object-cover mb-2" />
+              <Image height={128} width={128} src={project.projectImage} alt={project.projectTitle} className="w-full h-48 object-cover mb-2" />
               <p><strong>Project Title:</strong> {project.projectTitle}</p>
               <p><strong>Description:</strong> {project.description}</p>
               <p><strong>Role:</strong> {project.role}</p>

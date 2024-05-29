@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { ProfileEditDialog } from "./profileEditDialog";
+import Image from "next/image";
 
 interface ProfileProps {
   name: string;
@@ -91,9 +92,11 @@ const ProfileDisplay = () => {
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-6">
       <div className="max-w-4xl w-full bg-white rounded-xl shadow-lg overflow-hidden p-8">
         <div className="flex items-center space-x-6">
-          <img
+          <Image
             className="w-32 h-32 rounded-full object-cover"
             src={profile?.profileImage || "/default.png"}
+            width={128}
+            height={128}
             alt="Profile Image"
           />
           <input

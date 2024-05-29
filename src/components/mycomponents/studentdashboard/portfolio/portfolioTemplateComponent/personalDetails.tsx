@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 interface PersonalDetailsProps {
@@ -81,8 +82,10 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = ({
       <div className="bg-white shadow-md rounded-lg overflow-hidden max-w-2xl w-full">
         <div className="p-6">
           <div className="flex items-center">
-            <img
+            <Image
               src={photoUrl}
+              height={96}
+              width={96}
               alt="Profile Picture"
               className="w-24 h-24 rounded-full"
             />
@@ -149,7 +152,7 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = ({
             <h2 className="text-xl font-semibold">Projects</h2>
             {projectEntity.map(project => (
               <div key={project.projectTitle} className="mt-4">
-                <img src={project.projectImage} alt={project.projectTitle} className="w-full h-32 object-cover rounded-lg"/>
+                <Image width={128} height={128} src={project.projectImage} alt={project.projectTitle} className="w-full h-32 object-cover rounded-lg"/>
                 <h3 className="text-lg font-medium mt-2">{project.projectTitle}</h3>
                 <p className="text-gray-600">{project.description}</p>
                 <p className="text-gray-600">Role: {project.role}</p>

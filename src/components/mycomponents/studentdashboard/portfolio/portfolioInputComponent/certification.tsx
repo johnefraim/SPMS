@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import Image from 'next/image';
 
 const Certification = () => {
     const [formData, setFormData] = React.useState({
@@ -98,7 +99,7 @@ const Certification = () => {
             <Input type="file" multiple onChange={handleImageChange} />
             <div className="grid grid-cols-3 gap-4">
                 {images.map((imageUrl, index) => (
-                <img key={index} src={imageUrl} alt={`Certification Image ${index + 1}`} className="w-72 h-72 object-cover" />
+                <Image height={128} width={123} key={index} src={imageUrl} alt={`Certification Image ${index + 1}`} className="w-72 h-72 object-cover" />
                 ))}
             </div>
 

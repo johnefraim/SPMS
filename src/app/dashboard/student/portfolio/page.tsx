@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface PersonalDetails {
   id: number;
@@ -148,7 +149,7 @@ const PortfolioDetails: React.FC = () => {
       <h2 className="text-2xl font-bold mb-4">Projects</h2>
       {portfolio.projectEntity.map((project) => (
         <div key={project.id} className="mb-4">
-          <img src={project.projectImage} alt={project.projectTitle} className="w-full mb-4"/>
+          <Image height={128} width={128} src={project.projectImage} alt={project.projectTitle} className="w-full mb-4"/>
           <p><strong>Title:</strong> {project.projectTitle}</p>
           <p><strong>Description:</strong> {project.description}</p>
           <p><strong>Role:</strong> {project.role}</p>

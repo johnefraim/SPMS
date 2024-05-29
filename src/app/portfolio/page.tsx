@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image';
 import React, { useEffect } from 'react';
 
 const PortfolioPage = () => {
@@ -26,9 +27,11 @@ const PortfolioPage = () => {
       <div className="container mx-auto px-4">
   <h1 className="text-4xl font-bold mb-8 text-center">About Me</h1>
   <div className="flex justify-center items-center mb-12">
-    <img
+    <Image
       src="/profile-pic.jpg" 
       alt="Profile Picture"
+      height={192}
+      width={192}
       className="rounded-full w-48 h-48 mx-auto mb-6"
     />
   </div>

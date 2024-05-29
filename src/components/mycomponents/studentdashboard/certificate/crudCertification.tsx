@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Image from 'next/image';
 
 interface Certification {
     id?: number;
@@ -54,7 +55,7 @@ const CertificationCRUD: React.FC<CertificationProps> = ({portfolioAttribute})=>
         };
 
         fetchCertifications();
-    }, []);
+    }, [portfolioAttribute]);
 
     
     const createCertification = async (certification: Certification) => {
@@ -184,7 +185,10 @@ const CertificationCRUD: React.FC<CertificationProps> = ({portfolioAttribute})=>
                         <p className="text-gray-600">Issued Date: {certification.issuedDate}</p>
                         <p className="text-gray-600">Expiration Date: {certification.expirationDate}</p>
                         <p className="text-gray-600">Credential ID: {certification.credentialId}</p>
-                        <img src={certification.photoUrl} alt={certification.name} className="mt-2 mb-2 h-32 w-32 object-cover"/>
+                        {certification.photoUrl && 
+                            (certification.photoUrl.startsWith('http://') || certification.photoUrl.startsWith('https://') || certification.photoUrl.startsWith('/')) && (
+                            <Image height={128} width={128} src={certification.photoUrl} alt={certification.name} className="mt-2 mb-2 h-32 w-32 object-cover"/>
+                        )}
                         <div className="flex space-x-2">
                             <button 
                                 onClick={() => setSelectedCertification(certification)} 

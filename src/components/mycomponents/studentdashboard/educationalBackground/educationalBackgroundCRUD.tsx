@@ -54,7 +54,7 @@ const EducationalBackgroundCRUD: React.FC<EducationalBackgroundProps> = ({portfo
         }
         };
         fetchBackgrounds();
-    }, []);
+    }, [portfolioAttribute]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -90,7 +90,7 @@ const EducationalBackgroundCRUD: React.FC<EducationalBackgroundProps> = ({portfo
     };
 
     const createBackground = async (background: EducationalBackground) => {
-        await axios.post(`http://localhost:8080/api/educational-backgrounds/create/${portfolioAttribute}`, background,
+        await axios.post(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/educational-backgrounds/create/${portfolioAttribute}`, background,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ const EducationalBackgroundCRUD: React.FC<EducationalBackgroundProps> = ({portfo
     };
 
     const updateBackground = (background: EducationalBackground) => {
-        axios.put(`http://localhost:8080/api/educational-backgrounds/update/${background.id}`, background,
+        axios.put(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/educational-backgrounds/update/${background.id}`, background,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ const EducationalBackgroundCRUD: React.FC<EducationalBackgroundProps> = ({portfo
     };
 
     const deleteBackground = (background: EducationalBackground) => {
-        axios.delete(`http://localhost:8080/api/educational-backgrounds/delete/${background.id}`,
+        axios.delete(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/educational-backgrounds/delete/${background.id}`,
         {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token'),

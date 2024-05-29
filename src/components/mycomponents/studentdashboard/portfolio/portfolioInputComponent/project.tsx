@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import Image from 'next/image';
 
 const Project = () => {
         const [title, setTitle] = useState('');
@@ -56,7 +57,7 @@ const Project = () => {
             
             <div className="grid grid-cols-3 gap-4">
                 {images.map((imageUrl, index) => (
-                <img key={index} src={imageUrl} alt={`Project Image ${index + 1}`} className="w-72 h-72 object-cover" />
+                <Image height={128} width={128} key={index} src={imageUrl} alt={`Project Image ${index + 1}`} className="w-72 h-72 object-cover" />
                 ))}
             </div>
             <Button onClick={handleSave}>Save</Button>
