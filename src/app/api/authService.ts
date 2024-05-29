@@ -1,10 +1,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:8080/api/auth',
+    baseURL: 'http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/auth',
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
     },
 
 });
@@ -34,7 +33,12 @@ api.interceptors.response.use(response => {
 });
 
 export const authenticate = (email: string, password: string) => {
-    return api.post('/authenticate', { email, password });
+    return api.post('/authenticate', { email, password }, 
+    {headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+    }},
+    );
 };
 
 export const register = (firstname: string, lastname: string, email: string, password: string, role: string) => {

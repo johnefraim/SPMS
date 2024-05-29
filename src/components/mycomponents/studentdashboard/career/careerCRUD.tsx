@@ -33,7 +33,7 @@ const CareerCRUD: React.FC<CareerProps> = ({ portfolioAttribute }) => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            axios.get(`http://localhost:8080/api/careers/${portfolioAttribute}`, {
+            axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/careers/${portfolioAttribute}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
@@ -46,7 +46,7 @@ const CareerCRUD: React.FC<CareerProps> = ({ portfolioAttribute }) => {
     }, [portfolioAttribute]);
 
     const createCareer = (career: Career) => {
-        axios.post(`http://localhost:8080/api/careers/create/${portfolioAttribute}`, career, {
+        axios.post(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/careers/create/${portfolioAttribute}`, career, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -56,7 +56,7 @@ const CareerCRUD: React.FC<CareerProps> = ({ portfolioAttribute }) => {
     };
 
     const updateCareer = (career: Career) => {
-        axios.put(`http://localhost:8080/api/careers/update/${career.id}`, career, {
+        axios.put(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/careers/update/${career.id}`, career, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -66,7 +66,7 @@ const CareerCRUD: React.FC<CareerProps> = ({ portfolioAttribute }) => {
     };
 
     const deleteCareer = (career: Career) => {
-        axios.delete(`http://localhost:8080/api/careers/delete/${career.id}`, {
+        axios.delete(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/careers/delete/${career.id}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },

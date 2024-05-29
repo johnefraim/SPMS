@@ -34,7 +34,7 @@ export function LogoutDropDown() {
         const decodedToken = token ? JSON.parse(atob(token.split('.')[1])) : null;
         const userId = decodedToken ? decodedToken.Id : null;
         try {
-          const response = await axios.get(`http://localhost:8080/api/user/${userId}`, {
+          const response = await axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/user/${userId}`, {
             headers: {
               Authorization: `Bearer ${token}`
             }

@@ -30,13 +30,13 @@ const ProfileDisplay = () => {
     try {
       const decode = JSON.parse(atob(token.split('.')[1]));
       const userId = decode.Id;
-      const response = await axios.get(`http://localhost:8080/api/user/${userId}/details`, {
+      const response = await axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/user/${userId}/details`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       const { data } = response;
       if (data.profileImage) {
-        const imageResponse = await axios.get(`http://localhost:8080/api/images/${data.profileImage}`, {
+        const imageResponse = await axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/images/${data.profileImage}`, {
           responseType: 'blob',
         });
         const imageBlob = new Blob([imageResponse.data], { type: 'image/png' });
@@ -66,7 +66,7 @@ const ProfileDisplay = () => {
     try {
         const decode = JSON.parse(atob(token.split('.')[1]));
         const userId = decode.Id;
-        await axios.post(`http://localhost:8080/api/image/${userId}`, formData, {
+        await axios.post(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/image/${userId}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${token}`,

@@ -32,7 +32,7 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
         const token = localStorage.getItem('token');
         
         if(token){
-            axios.get(`http://localhost:8080/api/projects/user/${portfolioAttribute}`, 
+            axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/projects/user/${portfolioAttribute}`, 
         {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token'),
@@ -76,7 +76,7 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
 
     const createProject = (project: Project) => {
 
-        axios.post(`http://localhost:8080/api/projects/create/${portfolioAttribute}`, project,
+        axios.post(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/projects/create/${portfolioAttribute}`, project,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
     };
 
     const updateProject = (project: Project) => {
-        axios.put(`http://localhost:8080/api/projects/update/${project.id}`, project,
+        axios.put(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/projects/update/${project.id}`, project,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
     };
 
     const deleteProject = (project: Project) => {
-        axios.delete(`http://localhost:8080/api/projects/delete/${project.id}`,
+        axios.delete(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/projects/delete/${project.id}`,
         {
             headers: {
                 'Content-Type': 'application/json',

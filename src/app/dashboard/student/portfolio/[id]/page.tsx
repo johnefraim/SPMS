@@ -97,7 +97,7 @@ const PortfolioDetails: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      axios.get(`http://localhost:8080/api/portfolio/show/${id}`, {
+      axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/portfolio/show/${id}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },

@@ -35,7 +35,7 @@ const CertificationCRUD: React.FC<CertificationProps> = ({portfolioAttribute})=>
             const token = localStorage.getItem('token');
             try {
                 if (token) {
-                    const response = await axios.get(`http://localhost:8080/api/certifications/${portfolioAttribute}`, {
+                    const response = await axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/certifications/${portfolioAttribute}`, {
                         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
                     });
                     const certificationData = Array.isArray(response.data) ? response.data.map((certification: any) => ({
@@ -59,7 +59,7 @@ const CertificationCRUD: React.FC<CertificationProps> = ({portfolioAttribute})=>
     
     const createCertification = async (certification: Certification) => {
         try {
-            const response = await axios.post(`http://localhost:8080/api/certifications/create/${portfolioAttribute}`, certification, {
+            const response = await axios.post(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/certifications/create/${portfolioAttribute}`, certification, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -74,7 +74,7 @@ const CertificationCRUD: React.FC<CertificationProps> = ({portfolioAttribute})=>
     
     const updateCertification = async (certification: Certification) => {
         try {
-            const response = await axios.put(`http://localhost:8080/api/certifications/update/${certification.id}`, certification, {
+            const response = await axios.put(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/certifications/update/${certification.id}`, certification, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -88,7 +88,7 @@ const CertificationCRUD: React.FC<CertificationProps> = ({portfolioAttribute})=>
 
     const deleteCertification = async (certification: Certification) => {
         try {
-            await axios.delete(`http://localhost:8080/api/certifications/delete/${certification.id}`, {
+            await axios.delete(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/certifications/delete/${certification.id}`, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
             });
             axios.interceptors.request.use(config => {

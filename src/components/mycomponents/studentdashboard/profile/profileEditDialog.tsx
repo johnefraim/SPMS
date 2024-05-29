@@ -56,7 +56,7 @@ export function ProfileEditDialog() {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const userId = decodedToken.Id;
         try {
-          const response = await axios.get(`http://localhost:8080/api/user/${userId}/details`, {
+          const response = await axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/user/${userId}/details`, {
             headers: {
               'Authorization': `Bearer ${token}`,
             },
@@ -80,7 +80,7 @@ export function ProfileEditDialog() {
       if (token) {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const userId = decodedToken.Id;
-        const response = await axios.put(`http://localhost:8080/api/user/update/${userId}`, updatedProfile, {
+        const response = await axios.put(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/user/update/${userId}`, updatedProfile, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },

@@ -27,7 +27,7 @@ const PersonalDetailsCRUD: React.FC<PortfolioProps> = ({portfolioAttribute}) => 
     useEffect(() => {
         const token = localStorage.getItem('token');
         if(token){
-            axios.get(`http://localhost:8080/api/personaldetails/${portfolioAttribute}`, 
+            axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/personaldetails/${portfolioAttribute}`, 
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ const PersonalDetailsCRUD: React.FC<PortfolioProps> = ({portfolioAttribute}) => 
     };
 
     const createDetail = (detail: PersonalDetail) => {
-        axios.post(`http://localhost:8080/api/personaldetails/create/${portfolioAttribute}`, detail,
+        axios.post(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/personaldetails/create/${portfolioAttribute}`, detail,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const PersonalDetailsCRUD: React.FC<PortfolioProps> = ({portfolioAttribute}) => 
     };
 
     const updateDetail = (detail: PersonalDetail) => {
-        axios.put(`http://localhost:8080/api/personaldetails/update/${detail.id}`, detail,
+        axios.put(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/personaldetails/update/${detail.id}`, detail,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ const PersonalDetailsCRUD: React.FC<PortfolioProps> = ({portfolioAttribute}) => 
     };
 
     const deleteDetail = (detail: PersonalDetail) => {
-        axios.delete(`http://localhost:8080/api/personaldetails/delete/${detail.id}`,
+        axios.delete(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/personaldetails/delete/${detail.id}`,
         {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token'),

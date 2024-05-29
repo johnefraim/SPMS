@@ -35,7 +35,7 @@ const EducationalBackgroundCRUD: React.FC<EducationalBackgroundProps> = ({portfo
         const fetchBackgrounds = async () => {
         const token = localStorage.getItem('token');
         if(token){
-            const response = await axios.get(`http://localhost:8080/api/educational-backgrounds/${portfolioAttribute}`,
+            const response = await axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/educational-backgrounds/${portfolioAttribute}`,
             {
                 headers: {'Authorization': `Bearer ${token}`,},
             });

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:8080/api/educational-backgrounds',
+    baseURL: 'http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/educational-backgrounds',
     headers: {
         "Content-Type": "application/json",
         'Authorization': `Bearer ${localStorage.getItem('token')}`

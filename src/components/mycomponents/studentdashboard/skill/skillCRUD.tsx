@@ -36,7 +36,7 @@ const SkillCRUD: React.FC<SkillProps> = ({portfolioAttribute}) => {
             if (token) {
                 
                 try {
-                    const response = await axios.get(`http://localhost:8080/api/skills/${portfolioAttribute}`, {
+                    const response = await axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/skills/${portfolioAttribute}`, {
                         headers: {
                             'Authorization': `Bearer ${token}`,
                         },
@@ -65,7 +65,7 @@ const SkillCRUD: React.FC<SkillProps> = ({portfolioAttribute}) => {
 
     const createSkill = async (skill: Skill) => {
         try {
-            const response = await axios.post(`http://localhost:8080/api/skills/create/${portfolioAttribute}`, skill, {
+            const response = await axios.post(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/skills/create/${portfolioAttribute}`, skill, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -79,7 +79,7 @@ const SkillCRUD: React.FC<SkillProps> = ({portfolioAttribute}) => {
 
     const updateSkill = async (skill: Skill) => {
         try {
-            const response = await axios.put(`http://localhost:8080/api/skills/update/${skill.id}`, skill, {
+            const response = await axios.put(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/skills/update/${skill.id}`, skill, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -93,7 +93,7 @@ const SkillCRUD: React.FC<SkillProps> = ({portfolioAttribute}) => {
 
     const deleteSkill = async (skill: Skill) => {
         try {
-            await axios.delete(`http://localhost:8080/api/skills/delete/${skill.id}`, {
+            await axios.delete(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/skills/delete/${skill.id}`, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
             });
             setSkills(prevSkills => prevSkills.filter(s => s.id !== skill.id));

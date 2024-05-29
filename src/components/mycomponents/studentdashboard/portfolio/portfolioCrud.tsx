@@ -28,7 +28,7 @@ const PortfolioCRUD: React.FC = () => {
         if(token){
             const decodedToken = JSON.parse(atob(token.split('.')[1]));
             const userId = decodedToken.Id;
-            axios.get(`http://localhost:8080/api/portfolio/${userId.toString()}`, 
+            axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/portfolio/${userId.toString()}`, 
         {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -64,7 +64,7 @@ const PortfolioCRUD: React.FC = () => {
     };
 
     const createPortfolio = (portfolio: Portfolio) => {
-        axios.post('http://localhost:8080/api/portfolio/create', portfolio,
+        axios.post('http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/portfolio/create', portfolio,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ const PortfolioCRUD: React.FC = () => {
     };
 
     const updatePortfolio = (portfolio: Portfolio) => {
-        axios.put(`http://localhost:8080/api/portfolio/update/${portfolio.id}`, portfolio,
+        axios.put(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/portfolio/update/${portfolio.id}`, portfolio,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ const PortfolioCRUD: React.FC = () => {
     };
 
     const deletePortfolio = (portfolio: Portfolio) => {
-        axios.delete(`http://localhost:8080/api/portfolio/delete/${portfolio.id}`,
+        axios.delete(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/portfolio/delete/${portfolio.id}`,
         {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
