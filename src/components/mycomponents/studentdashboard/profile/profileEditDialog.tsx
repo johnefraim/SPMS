@@ -24,7 +24,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import axios from "axios";
-import { Close } from "@radix-ui/react-dialog";
 
 interface ProfileProps {
   name: string;
@@ -86,8 +85,19 @@ export function ProfileEditDialog() {
           },
         });
         setProfile(updatedProfile);
+        reset({
+          name: '',
+          middleName: '',
+          lastName: '',
+          gender: '',
+          birthday:  new Date(),
+          title: '',
+          email: '',
+          phoneNumber: '',
+          address: '',
+          summary: '',
+        });
         setRefresh(!refresh);
-        reset();
         
       }
     } catch (error) {
