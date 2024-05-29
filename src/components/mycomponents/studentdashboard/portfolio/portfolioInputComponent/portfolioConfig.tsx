@@ -2,39 +2,23 @@ import { useState } from "react";
 import { Dialog, DialogContent,DialogHeader,DialogTitle, DialogTrigger, } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import  Career  from "./career";
-import Project from "./project";
-import SkillInput from "./skills";
-import Certification from "./certification";
-import { CreateAcademicDialog } from "../../educationalBackground/createAcademicDialog";
-import { AcademicListview } from "../../educationalBackground/academicListview";
-import { CreatePersonalDetailscDialog } from "../../personalDetails/createPersonalDetailsDialog";
-import { PersonalDetailsListview } from "../../personalDetails/personalDetailsListview";
 import  CertificationCRUD  from "../../certificate/crudCertification";
-import CareerCRUD from "../../career/careerComponent";
+import CareerCRUD from "../../career/careerCRUD";
 import  PersonalDetailsCRUD  from "../../personalDetails/personalDetailsCRUD";
 import EducationalBackgroundCRUD from "../../educationalBackground/educationalBackgroundCRUD";
 import ProjectCRUD from "../../projects/projectCRUD";
 import SkillCRUD from "../../skill/skillCRUD";
 
-export default function PortfolioConfig() {
-    const [open, setOpen] = useState(false);
+interface PortfolioProps{
+    portfolioAttribute: number;
+}
+
+const PortfolioConfig: React.FC<PortfolioProps> = ({portfolioAttribute}) => {
     const [refresh, setRefresh] = useState(false);
-    const [showAlert, setShowAlert] = useState(false);
-    
-    const refreshPortfolio = () => {
-        setRefresh(!refresh);
-    };
-    const showAlertMessage = () => {
-        setShowAlert(true);
-        setTimeout(() => {
-            setShowAlert(false);
-        }, 8000);
-    }
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button className="bg-green-500" variant={"secondary"} size={"sm"}>setup</Button>
+                <Button className="bg-green-500" variant={"secondary"} size={"sm"}>modify</Button>
             </DialogTrigger>
             <DialogContent className="max-w-[70vw] overflow-y-auto">
                 <Tabs defaultValue="Personal Details" className="bg-gray-100 h-[80vh]">
@@ -47,25 +31,27 @@ export default function PortfolioConfig() {
                         <TabsTrigger value="Certifications">Certifications</TabsTrigger>
                     </TabsList>
                     <TabsContent value="Personal Details">
-                        <PersonalDetailsCRUD/>
+                        <PersonalDetailsCRUD portfolioAttribute={portfolioAttribute}/>
                     </TabsContent>
                     <TabsContent value="Educational Background">
-                        <EducationalBackgroundCRUD/>
+                        <EducationalBackgroundCRUD portfolioAttribute={portfolioAttribute}/>
                     </TabsContent>
                     <TabsContent value="Work Experience">
-                        <CareerCRUD/>
+                        <CareerCRUD portfolioAttribute={portfolioAttribute}/>
                     </TabsContent>
                     <TabsContent value="Projects">
-                        <ProjectCRUD/>
+                        <ProjectCRUD portfolioAttribute={portfolioAttribute}/>
                     </TabsContent>
                     <TabsContent value="Skills">
-                        <SkillCRUD/>
+                        <SkillCRUD portfolioAttribute={portfolioAttribute}/>
                     </TabsContent>
                     <TabsContent value="Certifications">
-                        <CertificationCRUD/>
+                        <CertificationCRUD portfolioAttribute={portfolioAttribute}/>
                     </TabsContent>
                 </Tabs>
             </DialogContent>
         </Dialog>
     );
 };
+
+export default PortfolioConfig;

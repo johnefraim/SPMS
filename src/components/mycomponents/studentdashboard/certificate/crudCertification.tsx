@@ -20,7 +20,12 @@ const initialCertification: Certification = {
     photoUrl: '',
 };
 
-function CertificationCRUD() {
+interface CertificationProps {
+    portfolioAttribute: number;
+}
+
+
+const CertificationCRUD: React.FC<CertificationProps> = ({portfolioAttribute})=> {
     const [certifications, setCertifications] = useState<Certification[]>([]);
     const [selectedCertification, setSelectedCertification] = useState<Certification>(initialCertification);
 
@@ -30,9 +35,7 @@ function CertificationCRUD() {
             const token = localStorage.getItem('token');
             try {
                 if (token) {
-                    const decodedToken = JSON.parse(atob(token.split('.')[1]));
-                    const userId = decodedToken.Id;
-                    const response = await axios.get(`http://localhost:8080/api/certifications/user/${userId}`, {
+                    const response = await axios.get(`http://localhost:8080/api/certifications/${portfolioAttribute}`, {
                         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
                     });
                     const certificationData = Array.isArray(response.data) ? response.data.map((certification: any) => ({
@@ -56,7 +59,7 @@ function CertificationCRUD() {
     
     const createCertification = async (certification: Certification) => {
         try {
-            const response = await axios.post('http://localhost:8080/api/certifications', certification, {
+            const response = await axios.post(`http://localhost:8080/api/certifications/create/${portfolioAttribute}`, certification, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -71,7 +74,7 @@ function CertificationCRUD() {
     
     const updateCertification = async (certification: Certification) => {
         try {
-            const response = await axios.put(`http://localhost:8080/api/certifications/${certification.id}`, certification, {
+            const response = await axios.put(`http://localhost:8080/api/certifications/update/${certification.id}`, certification, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -85,7 +88,7 @@ function CertificationCRUD() {
 
     const deleteCertification = async (certification: Certification) => {
         try {
-            await axios.delete(`http://localhost:8080/api/certifications/${certification.id}`, {
+            await axios.delete(`http://localhost:8080/api/certifications/delete/${certification.id}`, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
             });
             axios.interceptors.request.use(config => {

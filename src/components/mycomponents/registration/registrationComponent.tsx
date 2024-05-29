@@ -9,7 +9,7 @@ import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
 import { register } from '@/app/api/authService';
 import { redirect } from "next/navigation"
 import { RegistrationAlert } from './registrationAlert';
-
+import { useRouter } from 'next/navigation';
 const formSchema = z.object({
   firstName: z.string().min(2, { message: 'First Name must be at least 2 characters.' }),
   lastName: z.string().min(2, { message: 'Last Name must be at least 2 characters.' }),
@@ -24,6 +24,7 @@ export function RegistrationComponent() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [alert, setAlert] = useState(false);
   const role = 'STUDENT';
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,6 +44,7 @@ export function RegistrationComponent() {
       form.reset();
       if(response.status == 200){
         setAlert(true);
+        router.replace('/');
       }
 
     } catch (error: any) {

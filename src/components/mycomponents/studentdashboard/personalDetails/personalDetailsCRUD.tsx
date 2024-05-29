@@ -10,7 +10,10 @@ interface PersonalDetail {
     dob: string;
 }
 
-const PersonalDetailsCRUD: React.FC = () => {
+interface PortfolioProps{
+    portfolioAttribute: number;
+}
+const PersonalDetailsCRUD: React.FC<PortfolioProps> = ({portfolioAttribute}) => {
     const [details, setDetails] = useState<PersonalDetail[]>([]);
     const [refresh, setRefresh] = useState(false);
     const [selectedDetail, setSelectedDetail] = useState<PersonalDetail>({
@@ -24,9 +27,7 @@ const PersonalDetailsCRUD: React.FC = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if(token){
-            const decode = JSON.parse(atob(token.split('.')[1]));
-            const userId = decode.Id;
-            axios.get(`http://localhost:8080/api/personaldetails/${userId}`, 
+            axios.get(`http://localhost:8080/api/personaldetails/${portfolioAttribute}`, 
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -68,7 +69,7 @@ const PersonalDetailsCRUD: React.FC = () => {
     };
 
     const createDetail = (detail: PersonalDetail) => {
-        axios.post('http://localhost:8080/api/personaldetails/create', detail,
+        axios.post(`http://localhost:8080/api/personaldetails/create/${portfolioAttribute}`, detail,
         {
             headers: {
                 'Content-Type': 'application/json',

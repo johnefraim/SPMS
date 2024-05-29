@@ -1,5 +1,4 @@
-'use client'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Link from 'next/link';
@@ -91,17 +90,43 @@ interface Portfolio {
   certifications: Certification[];
 }
 
-const PortfolioDetails: React.FC = () => {
+const PortfolioDetails: React.FC<{ id: string }> = ({ id }) => {
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
   const router = useRouter();
-  const { id } = router.query;
+
+  useLayoutEffect(() => {
+    const datatoken = localStorage.getItem('token');
+    const userRole = localStorage.getItem('role');
+    
+    if (!datatoken || !userRole) {
+        router.replace('/');
+        return;
+    }
+
+    if (userRole !== 'STUDENT') {
+        switch (userRole) {
+            case 'ADMIN':
+                router.replace('/dashboard/dean');
+                break;
+            case 'MANAGER':
+                router.replace('/dashboard/program-head');
+                break;
+            default:
+                router.replace('/');
+                break;
+        }
+    }
+  }, [router]);
+
 
   useEffect(() => {
     if (id) {
+      const token = localStorage.getItem('token');
+      console.log('Token:', token);
       axios
         .get<Portfolio>(`http://localhost:8080/api/portfolio/${id}`, {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Authorization': `Bearer ${token}`,
           },
         })
         .then((response) => setPortfolio(response.data))
@@ -114,7 +139,14 @@ const PortfolioDetails: React.FC = () => {
   }
 
   return (
+    <>
     <div className="p-6 bg-gray-100 min-h-screen">
+      <h1 className="text-4xl font-bold mb-6">{portfolio.portfolioTitle}</h1>
+      <p className="text-xl mb-4">{portfolio.category}</p>
+      <p className="mb-4">{portfolio.description}</p>
+      <p className="mb-4">{portfolio.tagsKeywords}</p>
+
+      <div className="p-6 bg-gray-100 min-h-screen">
       <h1 className="text-4xl font-bold mb-6">{portfolio.portfolioTitle}</h1>
       <p className="text-xl mb-4">{portfolio.category}</p>
       <p className="mb-4">{portfolio.description}</p>
@@ -197,10 +229,12 @@ const PortfolioDetails: React.FC = () => {
         </div>
       ))}
 
-      <Link href={`/dashboard/student/portfolio/${portfolio.id}`} className="mt-6 inline-block bg-blue-500 text-white px-4 py-2 rounded">
+      <Link href="/dashboard/student/dashboard" className="mt-6 inline-block bg-blue-500 text-white px-4 py-2 rounded">
         Back to Portfolio List
       </Link>
     </div>
+    </div>
+    </>
   );
 };
 

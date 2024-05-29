@@ -82,7 +82,7 @@ const PortfolioListView = ({refreshList}: refreshtype) => {
             <Link href="/dashboard/student/portfolio">
                 <Button size={'sm'}>Preview</Button>
               </Link>
-              <PortfolioConfig/>
+              <PortfolioConfig portfolioAttribute={portfolio.id}/>
               <EditDialog portfolio={portfolio} refreshPortfolioList={refreshPortfolioList} />
               <AlertDialog>
                 <AlertDialogTrigger asChild>

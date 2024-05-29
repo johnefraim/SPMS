@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import {ProfileEditDialog} from "./profileEditDialog";
+import { ProfileEditDialog } from "./profileEditDialog";
 
 interface ProfileProps {
   name: string;
@@ -13,6 +13,7 @@ interface ProfileProps {
   phoneNumber: string;
   address: string;
   summary: string;
+  profileImage?: string;
 }
 
 const ProfileDisplay = () => {
@@ -22,62 +23,61 @@ const ProfileDisplay = () => {
   const [refresh, setRefresh] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        try {
-          const decode = JSON.parse(atob(token.split('.')[1]));
-          const userId = decode.Id;
-          const response = await axios.get(`http://localhost:8080/api/user/${userId}/details`, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-          });
+  const fetchUserDetails = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
 
-          const { data } = response;
+    try {
+      const decode = JSON.parse(atob(token.split('.')[1]));
+      const userId = decode.Id;
+      const response = await axios.get(`http://localhost:8080/api/user/${userId}/details`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-          if (data.profileImage) {
-            const imageResponse = await axios.get(data.profileImage, {
-              responseType: 'blob',
-            });
-            const imageBlob = new Blob([imageResponse.data], { type: 'image/png' });
-            data.profileImage = URL.createObjectURL(imageBlob);
-          }
-          setProfile(data);
-        } catch (error) {
-          setError('Error fetching user details.');
-          console.error('Error fetching user details:', error);
-        } finally {
-          setLoading(false);
-        }
+      const { data } = response;
+      if (data.profileImage) {
+        const imageResponse = await axios.get(`http://localhost:8080/api/images/${data.profileImage}`, {
+          responseType: 'blob',
+        });
+        const imageBlob = new Blob([imageResponse.data], { type: 'image/png' });
+        data.profileImage = URL.createObjectURL(imageBlob);
       }
-    };
+      setProfile(data);
+    } catch (error) {
+      setError('Error fetching user details.');
+      console.error('Error fetching user details:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchUserDetails();
   }, [refresh]);
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append('profileImage', file);
+    const token = localStorage.getItem('token');
+    if (!file || !token) return;
 
-      try {
-        const response = await axios.post(`http://localhost:8080/api/user/${userId}/upload`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
+    const formData = new FormData();
+    formData.append('profileImage', file);
+
+    try {
+        const decode = JSON.parse(atob(token.split('.')[1]));
+        const userId = decode.Id;
+        await axios.post(`http://localhost:8080/api/image/${userId}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${token}`,
+            },
         });
-        // Refresh the profile to show the new image
-        setRefresh(prev => !prev);
-      } catch (error) {
+        setRefresh(prev => !prev); // Trigger a refresh
+    } catch (error) {
         console.error('Error uploading file:', error);
-      }
     }
-  };
+};
+
 
   if (loading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
@@ -100,36 +100,29 @@ const ProfileDisplay = () => {
             type="file"
             ref={fileInputRef}
             onChange={handleFileUpload}
+            style={{ display: 'none' }}
           />
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 text-sm rounded"
+          >
+            Upload Image
+          </button>
           <div className="flex-1">
-            <h2 className="text-3xl font-bold">{profile?.name + ' ' + profile?.middleName + ' ' + profile?.lastName}</h2>
+            <h2 className="text-3xl font-bold">{`${profile?.name} ${profile?.middleName} ${profile?.lastName}`}</h2>
             <p className="text-gray-500">{profile?.address}</p>
             <p className="mt-1 text-xl font-semibold">{profile?.title}</p>
           </div>
-          <ProfileEditDialog/>
+          <ProfileEditDialog />
         </div>
         <div className="mt-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
-            <div>
-              <h3 className="font-semibold">Email</h3>
-              <p>{profile?.email}</p>
-            </div>
-            <div>
-              <h3 className="font-semibold">Phone</h3>
-              <p>{profile?.phoneNumber}</p>
-            </div>
-            <div>
-              <h3 className="font-semibold">Address</h3>
-              <p>{profile?.address}</p>
-            </div>
-            <div>
-              <h3 className="font-semibold">Gender</h3>
-              <p>{profile?.gender}</p>
-            </div>
-            <div>
-              <h3 className="font-semibold">Birthday</h3>
-              <p>{profile?.birthday}</p>
-            </div>
+            {['Email', 'Phone', 'Address', 'Gender', 'Birthday'].map((field, index) => (
+              <div key={index}>
+                <h3 className="font-semibold">{field}</h3>
+                <p>{profile ? (profile as any)[field.toLowerCase()] : ''}</p>
+              </div>
+            ))}
           </div>
           <div>
             <h3 className="text-lg font-bold">Summary</h3>

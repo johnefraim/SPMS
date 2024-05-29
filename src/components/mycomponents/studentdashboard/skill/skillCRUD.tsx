@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 interface Skill {
@@ -22,7 +22,11 @@ const initialSkill: Skill = {
     category: '',
 };
 
-function SkillCRUD() {
+interface SkillProps {
+    portfolioAttribute: number;
+}
+
+const SkillCRUD: React.FC<SkillProps> = ({portfolioAttribute}) => {
     const [skills, setSkills] = useState<Skill[]>([]);
     const [selectedSkill, setSelectedSkill] = useState<Skill>(initialSkill);
 
@@ -30,10 +34,9 @@ function SkillCRUD() {
         const fetchSkills = async () => {
             const token = localStorage.getItem('token');
             if (token) {
-                const decodedToken = JSON.parse(atob(token.split('.')[1]));
-                const userId = decodedToken.Id;
+                
                 try {
-                    const response = await axios.get(`http://localhost:8080/api/skills/${userId}`, {
+                    const response = await axios.get(`http://localhost:8080/api/skills/${portfolioAttribute}`, {
                         headers: {
                             'Authorization': `Bearer ${token}`,
                         },
@@ -62,7 +65,7 @@ function SkillCRUD() {
 
     const createSkill = async (skill: Skill) => {
         try {
-            const response = await axios.post('http://localhost:8080/api/skills/create', skill, {
+            const response = await axios.post(`http://localhost:8080/api/skills/create/${portfolioAttribute}`, skill, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,

@@ -13,7 +13,12 @@ interface EducationalBackground {
     description: string;
 }
 
-const EducationalBackgroundCRUD: React.FC = () => {
+interface EducationalBackgroundProps {
+    portfolioAttribute: number;
+}
+
+
+const EducationalBackgroundCRUD: React.FC<EducationalBackgroundProps> = ({portfolioAttribute}) => {
     const [backgrounds, setBackgrounds] = useState<EducationalBackground[]>([]);
     const [selectedBackground, setSelectedBackground] = useState<EducationalBackground>({
         school: '',
@@ -30,9 +35,7 @@ const EducationalBackgroundCRUD: React.FC = () => {
         const fetchBackgrounds = async () => {
         const token = localStorage.getItem('token');
         if(token){
-            const decodedToken = JSON.parse(atob(token.split('.')[1]));
-            const userId = decodedToken.Id;
-            const response = await axios.get(`http://localhost:8080/api/educational-backgrounds/${userId}`,
+            const response = await axios.get(`http://localhost:8080/api/educational-backgrounds/${portfolioAttribute}`,
             {
                 headers: {'Authorization': `Bearer ${token}`,},
             });
@@ -86,8 +89,8 @@ const EducationalBackgroundCRUD: React.FC = () => {
         });
     };
 
-    const createBackground = (background: EducationalBackground) => {
-        axios.post('http://localhost:8080/api/educational-backgrounds/create', background,
+    const createBackground = async (background: EducationalBackground) => {
+        await axios.post(`http://localhost:8080/api/educational-backgrounds/create/${portfolioAttribute}`, background,
         {
             headers: {
                 'Content-Type': 'application/json',

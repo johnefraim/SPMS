@@ -1,6 +1,6 @@
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { headers } from 'next/headers';
 import PortfolioConfig from './portfolioInputComponent/portfolioConfig';
 import Link from 'next/link';
 import { Link as LucideLink } from 'lucide-react';
@@ -174,34 +174,45 @@ const PortfolioCRUD: React.FC = () => {
                 </button>
             </form>
             <h1>Portfolio Lists</h1>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 p-4">
-            {portfolios.map(portfolio => (
-                <div key={portfolio.id} className="p-6 bg-white rounded-lg shadow-md transform transition duration-500 hover:scale-105">
-                    <h2 className="text-2xl font-bold mb-3">{portfolio.portfolioTitle}</h2>
-                    <p className="text-gray-600 mb-2">{portfolio.category}</p>
-                    <p className="text-gray-600 mb-4">{portfolio.description}</p>
-                    <p className="text-gray-600 mb-4">{portfolio.tagsKeywords}</p>
-                    <div className="flex space-x-2 mb-4">
-                        <button 
-                            onClick={() => setSelectedPortfolio(portfolio)} 
-                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                        >
-                            Edit
-                        </button>
-                        <button 
-                            onClick={() => deletePortfolio(portfolio)} 
-                            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
-                        >
-                            Delete
-                        </button>
-                    </div>
-                    <Link href={`/dashboard/student/portfolio`} passHref>
-                            <LucideLink className="inline-block" />
-                    </Link>
-                    <PortfolioConfig />
+            <div className="container mx-auto p-4">
+            <div className="container mx-auto p-4">
+            <div className="container mx-auto p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {portfolios.map((portfolio) => (
+          <div key={portfolio.id} className="shadow-md rounded-lg overflow-hidden">
+            <div className="bg-white p-6">
+              <h2 className="text-lg font-bold mb-3">{portfolio.portfolioTitle}</h2>
+              <p className="text-gray-600 mb-2">{portfolio.category}</p>
+              <p className="text-gray-600 mb-4">{portfolio.description}</p>
+              <p className="text-gray-600 mb-4">{portfolio.tagsKeywords}</p>
+              <div className="flex justify-between items-center mb-4">
+                <div>
+                  <button
+                    onClick={() => setSelectedPortfolio(portfolio)}
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => deletePortfolio(portfolio)}
+                    className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Delete
+                  </button>
                 </div>
-            ))}
-        </div>
+                <Link href={`/dashboard/student/portfolio/${portfolio.id}`}>
+                    <LucideLink className="inline-block text-gray-600 hover:text-gray-900" />
+                    View
+                </Link>
+              </div>
+              {portfolio.id && <PortfolioConfig portfolioAttribute={portfolio.id} />}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+</div>
+</div>
         </div>
     );
 };

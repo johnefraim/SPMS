@@ -12,7 +12,11 @@ interface Project {
     projectGithub: string;
 }
 
-const ProjectCRUD: React.FC = () => {
+interface ProjectProps{
+    portfolioAttribute: number;
+}
+
+const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
     const [projects, setProjects] = useState<Project[]>([]);
     const [selectedProject, setSelectedProject] = useState<Project>({
         projectImage: '',
@@ -28,10 +32,7 @@ const ProjectCRUD: React.FC = () => {
         const token = localStorage.getItem('token');
         
         if(token){
-            const decodedToken = JSON.parse(atob(token.split('.')[1]));
-            const userId = decodedToken.Id;
-            console.log(typeof userId);
-            axios.get(`http://localhost:8080/api/projects/user/${userId.toString()}`, 
+            axios.get(`http://localhost:8080/api/projects/user/${portfolioAttribute}`, 
         {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token'),
@@ -75,7 +76,7 @@ const ProjectCRUD: React.FC = () => {
 
     const createProject = (project: Project) => {
 
-        axios.post('http://localhost:8080/api/projects', project,
+        axios.post(`http://localhost:8080/api/projects/create/${portfolioAttribute}`, project,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -88,7 +89,7 @@ const ProjectCRUD: React.FC = () => {
     };
 
     const updateProject = (project: Project) => {
-        axios.put(`http://localhost:8080/api/projects/${project.id}`, project,
+        axios.put(`http://localhost:8080/api/projects/update/${project.id}`, project,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -103,7 +104,7 @@ const ProjectCRUD: React.FC = () => {
     };
 
     const deleteProject = (project: Project) => {
-        axios.delete(`http://localhost:8080/api/projects/${project.id}`,
+        axios.delete(`http://localhost:8080/api/projects/delete/${project.id}`,
         {
             headers: {
                 'Content-Type': 'application/json',
