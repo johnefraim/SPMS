@@ -16,21 +16,21 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useEffect, useState } from "react"
 import { redirect } from "next/navigation"
-import { logout } from "@/app/api/authService";
+import { getToken, logout } from "@/app/api/authService";
 import { Avatar, AvatarImage, AvatarFallback } from "../../ui/avatar";
 
 
 export function LogoutDropDown() {
     const [logoutStatus, setLogout] = useState(false);
     const [profilePicture, setProfilePicture] = useState<Blob | string>(('/default.png'));
-    const token = localStorage.getItem('token');
+    const token = getToken();
 
     useEffect(() => {
       if (logoutStatus) {
         redirect('/');
       }
       const fetchUserDetails = async () => {
-        const token = localStorage.getItem('token');
+        const token = getToken();
         const decodedToken = token ? JSON.parse(atob(token.split('.')[1])) : null;
         const userId = decodedToken ? decodedToken.Id : null;
         try {

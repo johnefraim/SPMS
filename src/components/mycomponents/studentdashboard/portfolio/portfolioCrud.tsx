@@ -4,6 +4,7 @@ import axios from 'axios';
 import PortfolioConfig from './portfolioInputComponent/portfolioConfig';
 import Link from 'next/link';
 import { Link as LucideLink } from 'lucide-react';
+import { getToken } from '@/app/api/authService';
 
 interface Portfolio {
     id?: number;
@@ -24,14 +25,14 @@ const PortfolioCRUD: React.FC = () => {
     });
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = getToken();
         if(token){
             const decodedToken = JSON.parse(atob(token.split('.')[1]));
             const userId = decodedToken.Id;
             axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/portfolio/${userId.toString()}`, 
         {
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Authorization': `Bearer ${getToken()}`,
             },
         }
         )
@@ -68,7 +69,7 @@ const PortfolioCRUD: React.FC = () => {
         {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Authorization': `Bearer ${getToken()}`,
             },
         })
         .then(response => {
@@ -83,7 +84,7 @@ const PortfolioCRUD: React.FC = () => {
         {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Authorization': `Bearer ${getToken()}`,
             },
         }
         )
@@ -105,7 +106,7 @@ const PortfolioCRUD: React.FC = () => {
         axios.delete(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/portfolio/delete/${portfolio.id}`,
         {
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Authorization': `Bearer ${getToken()}`,
             },
         }
         )

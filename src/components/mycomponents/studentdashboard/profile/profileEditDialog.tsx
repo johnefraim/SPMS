@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import axios from "axios";
+import { getToken } from "@/app/api/authService";
 
 interface ProfileProps {
   name: string;
@@ -50,7 +51,7 @@ export function ProfileEditDialog() {
   const [refresh, setRefresh] = useState(false);
   useEffect(() => {
     const fetchProfile = async () => {
-      const token = localStorage.getItem('token');
+      const token = getToken();
       if (token) {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const userId = decodedToken.Id;
@@ -75,7 +76,7 @@ export function ProfileEditDialog() {
 
   const handleSave = async (updatedProfile: ProfileProps) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = getToken();
       if (token) {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const userId = decodedToken.Id;

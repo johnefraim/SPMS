@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { getToken } from '@/app/api/authService';
 
 interface Skill {
     id?: number;
@@ -32,7 +33,7 @@ const SkillCRUD: React.FC<SkillProps> = ({portfolioAttribute}) => {
 
     useEffect(() => {
         const fetchSkills = async () => {
-            const token = localStorage.getItem('token');
+            const token = getToken();
             if (token) {
                 
                 try {
@@ -68,7 +69,7 @@ const SkillCRUD: React.FC<SkillProps> = ({portfolioAttribute}) => {
             const response = await axios.post(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/skills/create/${portfolioAttribute}`, skill, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Authorization': `Bearer ${getToken()}`,
                 },
             });
             setSkills(prevSkills => [...prevSkills, response.data]);
@@ -82,7 +83,7 @@ const SkillCRUD: React.FC<SkillProps> = ({portfolioAttribute}) => {
             const response = await axios.put(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/skills/update/${skill.id}`, skill, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Authorization': `Bearer ${getToken()}`,
                 },
             });
             setSkills(prevSkills => prevSkills.map(s => s.id === response.data.id ? response.data : s));
@@ -94,7 +95,7 @@ const SkillCRUD: React.FC<SkillProps> = ({portfolioAttribute}) => {
     const deleteSkill = async (skill: Skill) => {
         try {
             await axios.delete(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/skills/delete/${skill.id}`, {
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                headers: { 'Authorization': `Bearer ${getToken()}` }
             });
             setSkills(prevSkills => prevSkills.filter(s => s.id !== skill.id));
         } catch (error) {

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getRole, getToken } from '@/app/api/authService';
 
 interface PersonalDetails {
   id: number;
@@ -96,8 +97,8 @@ const PortfolioDetails: React.FC<{ id: string }> = ({ id }) => {
   const router = useRouter();
 
   useLayoutEffect(() => {
-    const datatoken = localStorage.getItem('token');
-    const userRole = localStorage.getItem('role');
+    const datatoken = getToken();
+    const userRole = getRole();
     
     if (!datatoken || !userRole) {
         router.replace('/');

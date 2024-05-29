@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
+import { getToken } from '@/app/api/authService';
 
 interface Project {
     id?: number;
@@ -30,13 +31,13 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
     });
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = getToken();
         
         if(token){
             axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/projects/user/${portfolioAttribute}`, 
         {
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + getToken(),
             },
         }
         ).then(response =>{ 
@@ -81,7 +82,7 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
         {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + getToken(),
             },
         }
         )
@@ -94,7 +95,7 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
         {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + getToken(),
             },
         }
         )
@@ -109,7 +110,7 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
         {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + getToken(),
             },
         }
         )

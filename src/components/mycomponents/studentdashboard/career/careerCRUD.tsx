@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { getToken } from '@/app/api/authService';
 
 interface Career {
     id?: number;
@@ -31,11 +32,11 @@ const CareerCRUD: React.FC<CareerProps> = ({ portfolioAttribute }) => {
     });
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = getToken();
         if (token) {
             axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/careers/${portfolioAttribute}`, {
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Authorization': `Bearer ${getToken()}`,
                 },
             }).then(response => {
                 if (Array.isArray(response.data)) {
@@ -49,7 +50,7 @@ const CareerCRUD: React.FC<CareerProps> = ({ portfolioAttribute }) => {
         axios.post(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/careers/create/${portfolioAttribute}`, career, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Authorization': `Bearer ${getToken()}`,
             },
         }).then(response => setCareers([...careers, response.data]))
             .catch(error => console.error('Error creating career:', error));
@@ -59,7 +60,7 @@ const CareerCRUD: React.FC<CareerProps> = ({ portfolioAttribute }) => {
         axios.put(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/careers/update/${career.id}`, career, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Authorization': `Bearer ${getToken()}`,
             },
         }).then(response => setCareers(careers.map(c => c.id === response.data.id ? response.data : c)))
             .catch(error => console.error('Error updating career:', error));
@@ -68,7 +69,7 @@ const CareerCRUD: React.FC<CareerProps> = ({ portfolioAttribute }) => {
     const deleteCareer = (career: Career) => {
         axios.delete(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/careers/delete/${career.id}`, {
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Authorization': `Bearer ${getToken()}`,
             },
         }).then(() => setCareers(careers.filter(c => c.id !== career.id)))
             .catch(error => console.error('Error deleting career:', error));

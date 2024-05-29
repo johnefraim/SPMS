@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { getToken } from '@/app/api/authService';
 
 interface EducationalBackground {
     id?: number;
@@ -33,7 +34,7 @@ const EducationalBackgroundCRUD: React.FC<EducationalBackgroundProps> = ({portfo
 
     useEffect(() => {
         const fetchBackgrounds = async () => {
-        const token = localStorage.getItem('token');
+        const token = getToken();
         if(token){
             const response = await axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/educational-backgrounds/${portfolioAttribute}`,
             {
@@ -94,7 +95,7 @@ const EducationalBackgroundCRUD: React.FC<EducationalBackgroundProps> = ({portfo
         {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + getToken(),
             },
         }
         )
@@ -107,7 +108,7 @@ const EducationalBackgroundCRUD: React.FC<EducationalBackgroundProps> = ({portfo
         {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + getToken(),
             },
         }
         )
@@ -121,7 +122,7 @@ const EducationalBackgroundCRUD: React.FC<EducationalBackgroundProps> = ({portfo
         axios.delete(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/educational-backgrounds/delete/${background.id}`,
         {
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + getToken(),
             },
         }
         )

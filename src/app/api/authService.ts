@@ -46,19 +46,47 @@ export const register = (firstname: string, lastname: string, email: string, pas
 };
 
 export const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('name');
-    return api.post('/logout');
+    if (typeof window !== 'undefined') {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('name');
+    }
 };
 
 export const authenticated =()=>{
-    const token = localStorage.getItem('token');
-    console.log(authenticated);
-    if (token && token !== "undefined" && token !== "null") {
-        return true;
+    if (typeof window !== 'undefined') {
+        if (localStorage.getItem('token')) {
+            return true;
+        } else {
+            return false;
+        }
     }
-    return false;
 };
 
+export const getRole = () => {
+    if (typeof window !== 'undefined') {
+        return localStorage.getItem('role');
+    }
+};
 
+export const getName = () => {
+    if (typeof window !== 'undefined') {
+        return localStorage.getItem('name');
+    }
+}
+
+export const getToken = () => {
+
+    if(typeof window !== 'undefined'){
+        return localStorage.getItem('token');
+    }
+}
+
+export const setUser = (token: string, name: string, role: string) => {
+    if (typeof window!== 'undefined') {
+        localStorage.setItem('token', token);
+        localStorage.setItem('name', name);
+        localStorage.setItem('role', role);
+      }
+}
 export default api;

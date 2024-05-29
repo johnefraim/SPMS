@@ -33,28 +33,6 @@ export function PersonalDetailsListview({refreshlist}: refresh){
     const [personalDetails, setPersonalDetails] = useState<PersonalDetails[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refresh, setRefresh] = useState(false);
-
-    // useEffect(() => {
-    //   const fetchPersonalDetails = async () => {
-    //     const token = localStorage.getItem('token');
-    //     if (token) {
-    //       try {
-    //         const decodedToken = JSON.parse(atob(token.split('.')[1]));
-    //         const userId = decodedToken.Id;
-    //         const response = await GetPersonalDetails(userId.toString());
-    //         console.log(response.data);
-    //         setPersonalDetails(response.data);
-    //         setRefresh(true);
-    //       } catch (error) {
-    //         console.error('Error fetching portfolios:', error);
-    //       } finally {
-    //         setIsLoading(false);
-    //       }
-    //     }
-    //   };
-  
-    //   fetchPersonalDetails();
-    // }, [refreshlist, refresh]);
   
     const refreshAcademicList = () => {
       setRefresh(!refresh);

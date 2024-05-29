@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { LogIn, User, Lock, Ghost } from "lucide-react"
 import {Form,FormControl,FormField,FormItem,} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { authenticate } from "@/app/api/authService"
+import { authenticate, getRole, getToken, setUser } from "@/app/api/authService"
 import { useEffect, useState } from "react"
 import { redirect } from "next/navigation"
 import Link  from "next/link"
@@ -46,17 +46,15 @@ const formSchema = z.object({
         setPassword('');
         const response = await authenticate(values.username, values.password);
         const { access_token, name, role } = response.data; 
-        localStorage.setItem('token', access_token);
-        localStorage.setItem('name', name);
-        localStorage.setItem('role', role);
+        setUser(access_token, name, role);
         
       } catch (error) {
         console.error('Login failed:', error);
       }
     }
 
-    const token = localStorage.getItem('token');
-    const userRole = localStorage.getItem('role');
+    const token = getToken();
+    const userRole = getRole();
     useEffect(() => {
         if(token){
           if(userRole === 'STUDENT'){

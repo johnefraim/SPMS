@@ -13,6 +13,8 @@ import {
   } from "@/components/ui/alert-dialog"
 import { DeleteAcademicDetails, GetAcademicDetails } from "@/app/api/academicService";
 import { EditAcademicDialog } from "./editAcademicDialog";
+import { get } from "http";
+import { getToken } from "@/app/api/authService";
 
 interface refresh{
     refreshlist?: boolean,
@@ -37,7 +39,7 @@ export function AcademicListview({refreshlist}: refresh){
 
     useEffect(() => {
       const fetchAcademicDetails = async () => {
-        const token = localStorage.getItem('token');
+        const token = getToken();
         if (token) {
           try {
             const decodedToken = JSON.parse(atob(token.split('.')[1]));

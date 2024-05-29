@@ -1,10 +1,11 @@
+import { getName } from '@/app/api/authService';
 import React, { useEffect, useState } from 'react';
 
 export function StudentOverview() {
   const [name, setName] = useState('');
 
   useEffect(() => {
-    const storedName = localStorage.getItem('name');
+    const storedName = getName();
     if (storedName) {
       setName(storedName);
     }

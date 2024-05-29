@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { ProfileEditDialog } from "./profileEditDialog";
 import Image from "next/image";
+import { getToken } from "@/app/api/authService";
 
 interface ProfileProps {
   name: string;
@@ -25,7 +26,7 @@ const ProfileDisplay = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchUserDetails = async () => {
-    const token = localStorage.getItem('token');
+    const token = getToken();
     if (!token) return;
 
     try {
@@ -58,7 +59,7 @@ const ProfileDisplay = () => {
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    const token = localStorage.getItem('token');
+    const token = getToken();
     if (!file || !token) return;
 
     const formData = new FormData();

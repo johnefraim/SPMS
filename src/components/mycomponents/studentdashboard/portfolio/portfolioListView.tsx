@@ -13,6 +13,7 @@ import {
 import  PortfolioConfig from './portfolioInputComponent/portfolioConfig';
 import Link from 'next/link';
 import axios from 'axios';
+import { getToken } from '@/app/api/authService';
 
 
 interface refreshtype {
@@ -34,7 +35,7 @@ const PortfolioListView = ({refreshList}: refreshtype) => {
 
   useEffect(() => {
     const fetchPortfolios = async () => {
-      const token = localStorage.getItem('token');
+      const token = getToken();
       if (token) {
         try {
           const decodedToken = JSON.parse(atob(token.split('.')[1]));
@@ -97,7 +98,7 @@ const PortfolioListView = ({refreshList}: refreshtype) => {
                         const response = await axios.delete(`http://localhost:8080/api/portfolio/delete/${portfolio.id}`,
                           {
                             headers: {
-                              Authorization: `Bearer ${localStorage.getItem('token')}`,
+                              Authorization: `Bearer ${getToken()}`,
                             },
                           }
                         );
