@@ -1,9 +1,11 @@
 'use client'
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { getToken } from '@/app/api/authService';
 import Image from 'next/image';
+import { useReactToPrint } from 'react-to-print';
 
 interface PersonalDetails {
   id: number;
@@ -92,12 +94,15 @@ interface Portfolio {
   certifications: Certification[];
 }
 
-interface Params{
-    id: string;
+interface Params {
+  id: string;
 }
-const PortfolioDetails: React.FC<Params> = ({id}) => {
+
+const PortfolioDetails: React.FC<Params> = ({ id }) => {
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const componentRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (id) {
       axios.get(`${apiUrl}/api/portfolio/show/${id}`, {
@@ -105,13 +110,17 @@ const PortfolioDetails: React.FC<Params> = ({id}) => {
             'Authorization': `Bearer ${getToken()}`,
           },
         })
-        .then((response) => {setPortfolio(response.data);
-        console.log(response.data);
-      })
-
+        .then((response) => {
+          setPortfolio(response.data);
+          console.log(response.data);
+        })
         .catch((error) => console.error('Error fetching portfolio:', error));
     }
   }, [id, apiUrl]);
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   if (!portfolio) {
     return <div>Loading...</div>;
@@ -119,9 +128,15 @@ const PortfolioDetails: React.FC<Params> = ({id}) => {
 
   return (
     <div className="p-8 bg-gray-100">
-      <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-3xl font-bold mb-4">{portfolio.portfolioTitle}</h1>
-        <p className="text-lg mb-6">{portfolio.description}</p>
+        <div className="p-8 bg-gray-100">
+      <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md" ref={componentRef}>
+        <div className="flex items-center mb-6">
+          <Image src="/profile-image.png" alt="Profile Image" width={128} height={128} className="rounded-full mr-4" />
+          <div>
+            <h1 className="text-3xl font-bold">{portfolio.portfolioTitle}</h1>
+            <p className="text-lg">{portfolio.description}</p>
+          </div>
+        </div>
 
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-2">Personal Details</h2>
@@ -134,7 +149,6 @@ const PortfolioDetails: React.FC<Params> = ({id}) => {
               <p><strong>Date of Birth:</strong> {new Date(detail.dob).toLocaleDateString()}</p>
             </div>
           ))}
-          
         </section>
 
         <section className="mb-8">
@@ -212,11 +226,19 @@ const PortfolioDetails: React.FC<Params> = ({id}) => {
             </div>
           ))}
         </section>
-
-        <Link href={`/dashboard/student`} className='bg-blue'>
-            Back
-        </Link>
       </div>
+    </div>
+        <Link href={`/dashboard/student`} className=" first-line:bg-blue-500 text-white px-4 py-2 rounded">
+            <button className="no-print bg-blue-500 text-white px-4 py-2 rounded">Back</button>
+        </Link>
+        <button onClick={handlePrint} className="no-print bg-blue-500 text-white px-4 py-2 rounded mb-4">Download as PDF</button>
+      <style jsx>{`
+        @media print {
+          .no-print {
+            display: none;
+          }
+        }
+      `}</style>
     </div>
   );
 };

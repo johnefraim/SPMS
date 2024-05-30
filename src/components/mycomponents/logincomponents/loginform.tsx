@@ -21,7 +21,7 @@ const formSchema = z.object({
   })
 
   export function LoginForm() {
-
+    const [error, setError] = useState<string | null>(null)
     
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
@@ -50,6 +50,7 @@ const formSchema = z.object({
         
       } catch (error) {
         console.error('Login failed:', error);
+        setError('Login failed. Please try again.');
       }
     }
 
@@ -75,6 +76,7 @@ const formSchema = z.object({
 
     return (
         <section className="w-full">
+          {error && <p className="text-red-500">{error}</p>}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
             <FormField
