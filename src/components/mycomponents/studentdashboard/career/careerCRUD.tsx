@@ -45,7 +45,7 @@ const CareerCRUD: React.FC<CareerProps> = ({ portfolioAttribute }) => {
                 }
             }).catch(error => console.error('Error fetching careers:', error));
         }
-    }, [portfolioAttribute]);
+    }, [portfolioAttribute, apiUrl]);
 
     const createCareer = (career: Career) => {
         axios.post(`${apiUrl}/api/careers/create/${portfolioAttribute}`, career, {

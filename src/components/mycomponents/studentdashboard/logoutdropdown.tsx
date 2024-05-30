@@ -53,7 +53,7 @@ export function LogoutDropDown() {
     };
 
     fetchUserDetails();
-    }, [logoutStatus, token]);
+    }, [logoutStatus, token, apiUrl]);
   return (
     <DropdownMenu>
         

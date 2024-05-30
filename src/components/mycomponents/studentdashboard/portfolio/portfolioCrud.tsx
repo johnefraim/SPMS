@@ -40,7 +40,7 @@ const PortfolioCRUD: React.FC = () => {
             .then(response => setPortfolios(response.data))
             .catch(error => console.error('Error fetching portfolios:', error));
         }
-    }, [refresh]);
+    }, [refresh, apiUrl]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;

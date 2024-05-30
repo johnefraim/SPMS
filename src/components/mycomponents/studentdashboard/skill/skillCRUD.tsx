@@ -61,7 +61,7 @@ const SkillCRUD: React.FC<SkillProps> = ({portfolioAttribute}) => {
         };
     
         fetchSkills();
-    }, [portfolioAttribute]);
+    }, [portfolioAttribute, apiUrl]);
     
 
     const createSkill = async (skill: Skill) => {

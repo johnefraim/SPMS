@@ -44,7 +44,7 @@ const PersonalDetailsCRUD: React.FC<PortfolioProps> = ({portfolioAttribute}) => 
             }})
             .catch(error => console.error('Error fetching personal details:', error));
         }
-    }, [refresh, portfolioAttribute]);
+    }, [refresh, portfolioAttribute, apiUrl]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;

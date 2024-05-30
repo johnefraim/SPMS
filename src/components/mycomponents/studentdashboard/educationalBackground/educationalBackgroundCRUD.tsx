@@ -56,7 +56,7 @@ const EducationalBackgroundCRUD: React.FC<EducationalBackgroundProps> = ({portfo
         }
         };
         fetchBackgrounds();
-    }, [portfolioAttribute]);
+    }, [portfolioAttribute, apiUrl]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;

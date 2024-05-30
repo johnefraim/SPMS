@@ -50,7 +50,7 @@ export function ProfileEditDialog() {
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  
+
   useEffect(() => {
     const fetchProfile = async () => {
       const token = getToken();
@@ -74,7 +74,7 @@ export function ProfileEditDialog() {
     };
 
     fetchProfile();
-  }, [refresh]);
+  }, [refresh, apiUrl]);
 
   const handleSave = async (updatedProfile: ProfileProps) => {
     try {

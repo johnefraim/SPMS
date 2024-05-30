@@ -49,7 +49,7 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
             }})
             .catch(error => console.error('Error fetching projects:', error));
         }
-    }, [portfolioAttribute]);
+    }, [portfolioAttribute, apiUrl]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;

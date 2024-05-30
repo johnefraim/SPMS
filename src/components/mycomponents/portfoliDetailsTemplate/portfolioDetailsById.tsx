@@ -111,7 +111,7 @@ const PortfolioDetails: React.FC<Params> = ({id}) => {
 
         .catch((error) => console.error('Error fetching portfolio:', error));
     }
-  }, [id]);
+  }, [id, apiUrl]);
 
   if (!portfolio) {
     return <div>Loading...</div>;

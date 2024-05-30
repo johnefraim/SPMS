@@ -56,7 +56,7 @@ const CertificationCRUD: React.FC<CertificationProps> = ({portfolioAttribute})=>
         };
 
         fetchCertifications();
-    }, [portfolioAttribute]);
+    }, [portfolioAttribute, apiUrl]);
 
     
     const createCertification = async (certification: Certification) => {

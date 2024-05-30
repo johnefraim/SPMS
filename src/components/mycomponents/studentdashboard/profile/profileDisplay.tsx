@@ -25,6 +25,7 @@ const ProfileDisplay = () => {
   const [refresh, setRefresh] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
   const fetchUserDetails = async () => {
     const token = getToken();
     if (!token) return;
@@ -55,7 +56,7 @@ const ProfileDisplay = () => {
 
   useEffect(() => {
     fetchUserDetails();
-  }, [refresh]);
+  }, [refresh, apiUrl]);
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
