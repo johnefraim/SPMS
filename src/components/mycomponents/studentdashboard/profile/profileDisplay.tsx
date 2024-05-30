@@ -26,35 +26,34 @@ const ProfileDisplay = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  const fetchUserDetails = async () => {
-    const token = getToken();
-    if (!token) return;
-
-    try {
-      const decode = JSON.parse(atob(token.split('.')[1]));
-      const userId = decode.Id;
-      const response = await axios.get(`${apiUrl}/api/user/${userId}/details`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const { data } = response;
-      if (data.profileImage) {
-        const imageResponse = await axios.get(`${apiUrl}/api/images/${data.profileImage}`, {
-          responseType: 'blob',
-        });
-        const imageBlob = new Blob([imageResponse.data], { type: 'image/png' });
-        data.profileImage = URL.createObjectURL(imageBlob);
-      }
-      setProfile(data);
-    } catch (error) {
-      setError('Error fetching user details.');
-      console.error('Error fetching user details:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchUserDetails = async () => {
+      const token = getToken();
+      if (!token) return;
+  
+      try {
+        const decode = JSON.parse(atob(token.split('.')[1]));
+        const userId = decode.Id;
+        const response = await axios.get(`${apiUrl}/api/user/${userId}/details`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        const { data } = response;
+        if (data.profileImage) {
+          const imageResponse = await axios.get(`${apiUrl}/api/images/${data.profileImage}`, {
+            responseType: 'blob',
+          });
+          const imageBlob = new Blob([imageResponse.data], { type: 'image/png' });
+          data.profileImage = URL.createObjectURL(imageBlob);
+        }
+        setProfile(data);
+      } catch (error) {
+        setError('Error fetching user details.');
+        console.error('Error fetching user details:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchUserDetails();
   }, [refresh, apiUrl]);
 
