@@ -95,7 +95,7 @@ interface Portfolio {
 const PortfolioDetails: React.FC<{ id: string }> = ({ id }) => {
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
   const router = useRouter();
-
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   useLayoutEffect(() => {
     const datatoken = getToken();
     const userRole = getRole();
@@ -126,7 +126,7 @@ const PortfolioDetails: React.FC<{ id: string }> = ({ id }) => {
       const token = localStorage.getItem('token');
       console.log('Token:', token);
       axios
-        .get<Portfolio>(`http://localhost:8080/api/portfolio/${id}`, {
+        .get<Portfolio>(`${apiUrl}/api/portfolio/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },

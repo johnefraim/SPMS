@@ -20,6 +20,7 @@ interface ProjectProps{
 
 const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
     const [projects, setProjects] = useState<Project[]>([]);
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const [selectedProject, setSelectedProject] = useState<Project>({
         projectImage: '',
         projectTitle: '',
@@ -34,7 +35,7 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
         const token = getToken();
         
         if(token){
-            axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/projects/user/${portfolioAttribute}`, 
+            axios.get(`${apiUrl}/api/projects/user/${portfolioAttribute}`, 
         {
             headers: {
                 'Authorization': 'Bearer ' + getToken(),
@@ -78,7 +79,7 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
 
     const createProject = (project: Project) => {
 
-        axios.post(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/projects/create/${portfolioAttribute}`, project,
+        axios.post(`${apiUrl}/api/projects/create/${portfolioAttribute}`, project,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -91,7 +92,7 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
     };
 
     const updateProject = (project: Project) => {
-        axios.put(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/projects/update/${project.id}`, project,
+        axios.put(`${apiUrl}/api/projects/update/${project.id}`, project,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -106,7 +107,7 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
     };
 
     const deleteProject = (project: Project) => {
-        axios.delete(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/projects/delete/${project.id}`,
+        axios.delete(`${apiUrl}/api/projects/delete/${project.id}`,
         {
             headers: {
                 'Content-Type': 'application/json',

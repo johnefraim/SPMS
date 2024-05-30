@@ -30,14 +30,14 @@ interface CertificationProps {
 const CertificationCRUD: React.FC<CertificationProps> = ({portfolioAttribute})=> {
     const [certifications, setCertifications] = useState<Certification[]>([]);
     const [selectedCertification, setSelectedCertification] = useState<Certification>(initialCertification);
-
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     
     useEffect(() => {
         const fetchCertifications = async () => {
             const token = getToken();
             try {
                 if (token) {
-                    const response = await axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/certifications/${portfolioAttribute}`, {
+                    const response = await axios.get(`${apiUrl}/api/certifications/${portfolioAttribute}`, {
                         headers: { 'Authorization': `Bearer ${getToken()}` }
                     });
                     const certificationData = Array.isArray(response.data) ? response.data.map((certification: any) => ({
@@ -61,7 +61,7 @@ const CertificationCRUD: React.FC<CertificationProps> = ({portfolioAttribute})=>
     
     const createCertification = async (certification: Certification) => {
         try {
-            const response = await axios.post(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/certifications/create/${portfolioAttribute}`, certification, {
+            const response = await axios.post(`${apiUrl}/api/certifications/create/${portfolioAttribute}`, certification, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${getToken()}`,
@@ -76,7 +76,7 @@ const CertificationCRUD: React.FC<CertificationProps> = ({portfolioAttribute})=>
     
     const updateCertification = async (certification: Certification) => {
         try {
-            const response = await axios.put(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/certifications/update/${certification.id}`, certification, {
+            const response = await axios.put(`${apiUrl}/api/certifications/update/${certification.id}`, certification, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${getToken()}`,
@@ -90,7 +90,7 @@ const CertificationCRUD: React.FC<CertificationProps> = ({portfolioAttribute})=>
 
     const deleteCertification = async (certification: Certification) => {
         try {
-            await axios.delete(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/certifications/delete/${certification.id}`, {
+            await axios.delete(`${apiUrl}/api/certifications/delete/${certification.id}`, {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             });
             axios.interceptors.request.use(config => {

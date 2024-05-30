@@ -20,6 +20,7 @@ interface CareerProps {
 
 const CareerCRUD: React.FC<CareerProps> = ({ portfolioAttribute }) => {
     const [careers, setCareers] = useState<Career[]>([]);
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const [selectedCareer, setSelectedCareer] = useState<Career>({
         jobTitle: '',
         employmentType: '',
@@ -34,7 +35,7 @@ const CareerCRUD: React.FC<CareerProps> = ({ portfolioAttribute }) => {
     useEffect(() => {
         const token = getToken();
         if (token) {
-            axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/careers/${portfolioAttribute}`, {
+            axios.get(`${apiUrl}/api/careers/${portfolioAttribute}`, {
                 headers: {
                     'Authorization': `Bearer ${getToken()}`,
                 },
@@ -47,7 +48,7 @@ const CareerCRUD: React.FC<CareerProps> = ({ portfolioAttribute }) => {
     }, [portfolioAttribute]);
 
     const createCareer = (career: Career) => {
-        axios.post(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/careers/create/${portfolioAttribute}`, career, {
+        axios.post(`${apiUrl}/api/careers/create/${portfolioAttribute}`, career, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${getToken()}`,
@@ -57,7 +58,7 @@ const CareerCRUD: React.FC<CareerProps> = ({ portfolioAttribute }) => {
     };
 
     const updateCareer = (career: Career) => {
-        axios.put(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/careers/update/${career.id}`, career, {
+        axios.put(`${apiUrl}/api/careers/update/${career.id}`, career, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${getToken()}`,
@@ -67,7 +68,7 @@ const CareerCRUD: React.FC<CareerProps> = ({ portfolioAttribute }) => {
     };
 
     const deleteCareer = (career: Career) => {
-        axios.delete(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/careers/delete/${career.id}`, {
+        axios.delete(`${apiUrl}/api/careers/delete/${career.id}`, {
             headers: {
                 'Authorization': `Bearer ${getToken()}`,
             },

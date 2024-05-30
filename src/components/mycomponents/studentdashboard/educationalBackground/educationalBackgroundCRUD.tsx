@@ -21,6 +21,7 @@ interface EducationalBackgroundProps {
 
 const EducationalBackgroundCRUD: React.FC<EducationalBackgroundProps> = ({portfolioAttribute}) => {
     const [backgrounds, setBackgrounds] = useState<EducationalBackground[]>([]);
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const [selectedBackground, setSelectedBackground] = useState<EducationalBackground>({
         school: '',
         degree: '',
@@ -36,7 +37,7 @@ const EducationalBackgroundCRUD: React.FC<EducationalBackgroundProps> = ({portfo
         const fetchBackgrounds = async () => {
         const token = getToken();
         if(token){
-            const response = await axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/educational-backgrounds/${portfolioAttribute}`,
+            const response = await axios.get(`${apiUrl}/api/educational-backgrounds/${portfolioAttribute}`,
             {
                 headers: {'Authorization': `Bearer ${token}`,},
             });
@@ -91,7 +92,7 @@ const EducationalBackgroundCRUD: React.FC<EducationalBackgroundProps> = ({portfo
     };
 
     const createBackground = async (background: EducationalBackground) => {
-        await axios.post(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/educational-backgrounds/create/${portfolioAttribute}`, background,
+        await axios.post(`${apiUrl}/api/educational-backgrounds/create/${portfolioAttribute}`, background,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -104,7 +105,7 @@ const EducationalBackgroundCRUD: React.FC<EducationalBackgroundProps> = ({portfo
     };
 
     const updateBackground = (background: EducationalBackground) => {
-        axios.put(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/educational-backgrounds/update/${background.id}`, background,
+        axios.put(`${apiUrl}/api/educational-backgrounds/update/${background.id}`, background,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -119,7 +120,7 @@ const EducationalBackgroundCRUD: React.FC<EducationalBackgroundProps> = ({portfo
     };
 
     const deleteBackground = (background: EducationalBackground) => {
-        axios.delete(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/educational-backgrounds/delete/${background.id}`,
+        axios.delete(`${apiUrl}/api/educational-backgrounds/delete/${background.id}`,
         {
             headers: {
                 'Authorization': 'Bearer ' + getToken(),

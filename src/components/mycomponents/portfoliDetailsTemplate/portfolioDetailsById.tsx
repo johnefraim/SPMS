@@ -97,10 +97,10 @@ interface Params{
 }
 const PortfolioDetails: React.FC<Params> = ({id}) => {
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
-
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   useEffect(() => {
     if (id) {
-      axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/portfolio/show/${id}`, {
+      axios.get(`${apiUrl}/api/portfolio/show/${id}`, {
           headers: {
             'Authorization': `Bearer ${getToken()}`,
           },

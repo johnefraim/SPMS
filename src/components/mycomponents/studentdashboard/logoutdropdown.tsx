@@ -24,7 +24,7 @@ export function LogoutDropDown() {
     const [logoutStatus, setLogout] = useState(false);
     const [profilePicture, setProfilePicture] = useState<Blob | string>(('/default.png'));
     const token = getToken();
-
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     useEffect(() => {
       if (logoutStatus) {
         redirect('/');
@@ -34,13 +34,13 @@ export function LogoutDropDown() {
         const decodedToken = token ? JSON.parse(atob(token.split('.')[1])) : null;
         const userId = decodedToken ? decodedToken.Id : null;
         try {
-          const response = await axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/user/${userId}`, {
+          const response = await axios.get(`${apiUrl}/api/user/${userId}`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
           });
           const { imageName } = response.data;
-          const responseImage = await axios.get(`http://localhost:8080/api/image/${imageName}`, {
+          const responseImage = await axios.get(`${apiUrl}/api/image/${imageName}`, {
             headers: {
               Authorization: `Bearer ${token}`
             },

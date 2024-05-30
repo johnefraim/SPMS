@@ -30,14 +30,14 @@ interface SkillProps {
 const SkillCRUD: React.FC<SkillProps> = ({portfolioAttribute}) => {
     const [skills, setSkills] = useState<Skill[]>([]);
     const [selectedSkill, setSelectedSkill] = useState<Skill>(initialSkill);
-
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     useEffect(() => {
         const fetchSkills = async () => {
             const token = getToken();
             if (token) {
                 
                 try {
-                    const response = await axios.get(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/skills/${portfolioAttribute}`, {
+                    const response = await axios.get(`${apiUrl}/api/skills/${portfolioAttribute}`, {
                         headers: {
                             'Authorization': `Bearer ${token}`,
                         },
@@ -66,7 +66,7 @@ const SkillCRUD: React.FC<SkillProps> = ({portfolioAttribute}) => {
 
     const createSkill = async (skill: Skill) => {
         try {
-            const response = await axios.post(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/skills/create/${portfolioAttribute}`, skill, {
+            const response = await axios.post(`${apiUrl}/api/skills/create/${portfolioAttribute}`, skill, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${getToken()}`,
@@ -80,7 +80,7 @@ const SkillCRUD: React.FC<SkillProps> = ({portfolioAttribute}) => {
 
     const updateSkill = async (skill: Skill) => {
         try {
-            const response = await axios.put(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/skills/update/${skill.id}`, skill, {
+            const response = await axios.put(`${apiUrl}/api/skills/update/${skill.id}`, skill, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${getToken()}`,
@@ -94,7 +94,7 @@ const SkillCRUD: React.FC<SkillProps> = ({portfolioAttribute}) => {
 
     const deleteSkill = async (skill: Skill) => {
         try {
-            await axios.delete(`http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/skills/delete/${skill.id}`, {
+            await axios.delete(`${apiUrl}/api/skills/delete/${skill.id}`, {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             });
             setSkills(prevSkills => prevSkills.filter(s => s.id !== skill.id));

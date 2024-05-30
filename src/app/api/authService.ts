@@ -1,7 +1,7 @@
 import axios from 'axios';
-
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const api = axios.create({
-    baseURL: 'http://ec2-54-227-188-19.compute-1.amazonaws.com:8080/api/auth',
+    baseURL: `${apiUrl}/api/auth`,
     headers: {
         'Content-Type': 'application/json',
     },
