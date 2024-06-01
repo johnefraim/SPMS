@@ -4,6 +4,7 @@ import { ProfileEditDialog } from "./profileEditDialog";
 import Image from "next/image";
 import { getToken } from "@/app/api/authService";
 import { Button } from "@/components/ui/button";
+import Loading from "../../utils/loading";
 interface ProfileProps {
   name: string;
   middleName: string;
@@ -15,7 +16,7 @@ interface ProfileProps {
   phoneNumber: string;
   address: string;
   summary: string;
-  profileImage?: string;
+  profileImage: string;
 }
 
 const ProfileDisplay = () => {
@@ -39,18 +40,14 @@ const ProfileDisplay = () => {
         });
 
         const { data } = response;
-        try {
-          const imageResponse = await axios.get(`${apiUrl}/api/image/${userId}`, {
+        setProfile(response.data);
+
+        const imageResponse = await axios.get(`${apiUrl}/api/image/${userId}`, {
             headers: { Authorization: `Bearer ${token}` },
             responseType: 'blob',
           });
           const imageBlob = new Blob([imageResponse.data], { type: 'image/png' });
           data.profileImage = URL.createObjectURL(imageBlob);
-        } catch (error) {
-          console.error('Error fetching image:', error);
-        }
-
-        setProfile(data);
       } catch (error) {
         setError('Error fetching user details.');
         console.error('Error fetching user details:', error);
@@ -78,14 +75,14 @@ const ProfileDisplay = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setRefresh(prev => !prev);
+      setRefresh(true);
     } catch (error) {
       console.error('Error uploading file:', error);
     }
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+    return <Loading/>;
   }
 
   if (error) {

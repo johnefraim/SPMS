@@ -48,7 +48,7 @@ export function StudentSidebar({
         <Menu className="text-orange-500" />
       </Button>
       <NavigationMenu
-        className={`bg-[#EFEFEF] w-full md:w-48 h-full items-start shadow-2xl fixed md:relative z-40 transform ${
+        className={`bg-[#EFEFEF] w-1/3 md:w-48 h-full items-start shadow-2xl fixed md:relative z-40 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 transition-transform duration-300 ease-in-out`}
       >
@@ -70,6 +70,7 @@ export function StudentSidebar({
               onClick={() => {
                 setActiveItem("dashboard");
                 onDashboard();
+                setIsSidebarOpen(false);
               }}
               className={`w-full justify-start hover:text-orange-500 ${
                 activeItem === "dashboard" ? "text-orange-500" : ""
@@ -86,6 +87,7 @@ export function StudentSidebar({
               onClick={() => {
                 setActiveItem("profile");
                 onProfile();
+                setIsSidebarOpen(false);
               }}
               className={`w-full justify-start hover:text-orange-500 ${
                 activeItem === "profile" ? "text-orange-500" : ""
@@ -102,6 +104,7 @@ export function StudentSidebar({
               onClick={() => {
                 setActiveItem("portfolio");
                 onCreatePortfolio();
+                setIsSidebarOpen(false);
               }}
               className={`w-full justify-start hover:text-orange-500 ${
                 activeItem === "portfolio" ? "text-orange-500" : ""
