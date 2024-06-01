@@ -14,10 +14,9 @@ const StudentDashboardPage = () => {
     const router = useRouter();
 
     useLayoutEffect(() => {
-        
         const userRole = getRole();
         const datatoken = authenticated();
-        
+
         if (!datatoken || !userRole) {
             router.replace('/');
             return;
@@ -39,9 +38,9 @@ const StudentDashboardPage = () => {
     }, [router]);
 
     useEffect(() => {
-        const datatoken = getToken;
+        const datatoken = getToken();
         const userRole = getRole();
-        
+
         if (!datatoken || !userRole) {
             router.replace('/');
             return;
@@ -76,18 +75,18 @@ const StudentDashboardPage = () => {
     };
 
     return (
-        <section className="flex h-screen bg-[#EFEFEF]">
-            <div>
+        <section className="flex flex-col md:flex-row bg-[#EFEFEF] min-h-screen">
+            <div className="w-full md:w-1/4 lg:w-1/5">
                 <StudentSidebar
                     onDashboard={() => setCurrentComponent('overview')}
                     onProfile={() => setCurrentComponent('profile')}
                     onCreatePortfolio={() => setCurrentComponent('createPortfolio')}
                 />
             </div>
-            <div className="w-full flex flex-col">
+            <div className="w-full flex-1 flex flex-col p-4">
                 {renderComponent()}
             </div>
-            <div className="grid justify-end p-4">
+            <div className="absolute top-4 right-4 md:relative md:top-0 md:right-0 md:p-4">
                 <LogoutDropDown />
             </div>
         </section>

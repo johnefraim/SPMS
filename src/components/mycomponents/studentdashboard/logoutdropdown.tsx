@@ -25,6 +25,7 @@ export function LogoutDropDown() {
     const [profilePicture, setProfilePicture] = useState<Blob | string>(('/default.png'));
     const token = getToken();
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
     useEffect(() => {
       if (logoutStatus) {
         redirect('/');
@@ -53,7 +54,7 @@ export function LogoutDropDown() {
         
       <DropdownMenuTrigger asChild>
         <Avatar>
-        {profilePicture && <AvatarImage src={typeof profilePicture === 'string' ? profilePicture : URL.createObjectURL(profilePicture)} alt="user" />}
+        {profilePicture && <AvatarImage src={typeof profilePicture === 'string' ? profilePicture : URL.createObjectURL(profilePicture)} alt="avatar" />}
           <AvatarFallback>user</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

@@ -3,7 +3,7 @@ import axios from "axios";
 import { ProfileEditDialog } from "./profileEditDialog";
 import Image from "next/image";
 import { getToken } from "@/app/api/authService";
-
+import { Button } from "@/components/ui/button";
 interface ProfileProps {
   name: string;
   middleName: string;
@@ -18,14 +18,6 @@ interface ProfileProps {
   profileImage?: string;
 }
 
-const fieldMapping = {
-  'Email': 'email',
-  'Phone': 'phoneNumber',
-  'Address': 'address',
-  'Gender': 'gender',
-  'Birthday': 'birthday'
-};
-
 const ProfileDisplay = () => {
   const [profile, setProfile] = useState<ProfileProps | null>(null);
   const [loading, setLoading] = useState(true);
@@ -38,26 +30,26 @@ const ProfileDisplay = () => {
     const fetchUserDetails = async () => {
       const token = getToken();
       if (!token) return;
-  
+
       try {
         const decode = JSON.parse(atob(token.split('.')[1]));
         const userId = decode.Id;
         const response = await axios.get(`${apiUrl}/api/user/${userId}/details`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-  
+
         const { data } = response;
-          try{
-            const imageResponse = await axios.get(`${apiUrl}/api/image/${userId}`, {
-              headers: { Authorization: `Bearer ${token}` },
-              responseType: 'blob',
-            });
+        try {
+          const imageResponse = await axios.get(`${apiUrl}/api/image/${userId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+            responseType: 'blob',
+          });
           const imageBlob = new Blob([imageResponse.data], { type: 'image/png' });
           data.profileImage = URL.createObjectURL(imageBlob);
-          }catch(error){
-            console.error('Error fetching image:', error);
-          }
-        
+        } catch (error) {
+          console.error('Error fetching image:', error);
+        }
+
         setProfile(data);
       } catch (error) {
         setError('Error fetching user details.');
@@ -78,20 +70,19 @@ const ProfileDisplay = () => {
     formData.append('profileImage', file);
 
     try {
-        const decode = JSON.parse(atob(token.split('.')[1]));
-        const userId = decode.Id;
-        await axios.post(`${apiUrl}/api/image/${userId}`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        setRefresh(prev => !prev);
+      const decode = JSON.parse(atob(token.split('.')[1]));
+      const userId = decode.Id;
+      await axios.post(`${apiUrl}/api/image/${userId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setRefresh(prev => !prev);
     } catch (error) {
-        console.error('Error uploading file:', error);
+      console.error('Error uploading file:', error);
     }
-};
-
+  };
 
   if (loading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
@@ -102,11 +93,11 @@ const ProfileDisplay = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-6">
-      <div className="max-w-4xl w-full bg-white rounded-xl shadow-lg overflow-hidden p-8">
-        <div className="flex items-center space-x-6">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
+      <div className="max-w-4xl w-full bg-white rounded-xl shadow-lg overflow-hidden p-6 sm:p-8">
+        <div className="flex flex-col sm:flex-row items-center space-y-6 sm:space-y-0 sm:space-x-6">
           <Image
-            className="w-32 h-32 rounded-full object-cover"
+            className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover"
             src={profile?.profileImage || "/default.png"}
             width={128}
             height={128}
@@ -118,13 +109,13 @@ const ProfileDisplay = () => {
             onChange={handleFileUpload}
             style={{ display: 'none' }}
           />
-          <button
+          <Button
             onClick={() => fileInputRef.current?.click()}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 text-sm rounded"
           >
             Upload Image
-          </button>
-          <h2 className="text-3xl font-bold">{`${profile?.name} ${profile?.middleName ? profile?.middleName : ''} ${profile?.lastName}`}</h2>
+          </Button>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center sm:text-left">{`${profile?.name} ${profile?.middleName ? profile?.middleName : ''} ${profile?.lastName}`}</h2>
           <ProfileEditDialog />
         </div>
         <div className="mt-6 space-y-4">
@@ -137,9 +128,8 @@ const ProfileDisplay = () => {
             ))}
           </div>
           <div className="mt-6 space-y-4">
-          <h3 className="text-lg font-bold">Phone</h3>
+            <h3 className="text-lg font-bold">Phone</h3>
             <p className="mt-2 text-gray-700">{profile?.phoneNumber}</p>
-
           </div>
           <div>
             <h3 className="text-lg font-bold">Summary</h3>

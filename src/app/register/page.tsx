@@ -10,13 +10,15 @@ function Page() {
             <header>
             <HomeNavigation/>
             </header>
-            <section className='h-lvh flex justify-center items-center '>
-                <Card className='items-center justify-center w-1/4'>
+            <section className='h-lvh flex justify-center items-center'>
+                <div className="w-96">
+                <Card className='items-center justify-center'>
                     <CardTitle className='ml-6 mb-4 mt-4'>Sign Up</CardTitle>
                     <CardContent>
                         <RegistrationComponent/>
                     </CardContent>
                 </Card>
+                </div>
             </section>
             <Footer/>
         </>
