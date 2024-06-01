@@ -31,7 +31,7 @@
     "jwt-decode": "^4.0.0",
     "lucide": "^0.331.0",
     "lucide-react": "^0.331.0",
-    "next": "14.1.0",
+    "next": "14.1.1",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.50.1",
@@ -39,7 +39,8 @@
     "styled-components": "^6.1.8",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@testing-library/react": "^14.2.1",
