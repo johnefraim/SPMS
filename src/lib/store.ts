@@ -10,7 +10,7 @@ interface PortfolioStore {
 
 export const usePortfolioStore = create<PortfolioStore>((set, get) => ({
   portfolios: [],
-  apiUrl: process.env.REACT_APP_API_URL || 'http://localhost:8080',
+  apiUrl: process.env.REACT_APP_API_URL || 'https://ccs-spms.xyz',
   error: null,
   fetchPortfolios: async function () { 
     try {
