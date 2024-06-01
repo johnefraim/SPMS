@@ -50,6 +50,8 @@ export function ProfileEditDialog() {
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const [selectedGender, setSelectedGender] = useState(profile?.gender || "Male");
+
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -64,6 +66,7 @@ export function ProfileEditDialog() {
             },
           });
           setProfile(response.data);
+
         } catch (error) {
           setError('Error fetching profile.');
           console.error('Error fetching profile:', error);
@@ -72,7 +75,6 @@ export function ProfileEditDialog() {
         }
       }
     };
-
     fetchProfile();
   }, [refresh, apiUrl]);
 
@@ -82,11 +84,28 @@ export function ProfileEditDialog() {
       if (token) {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const userId = decodedToken.Id;
+
+        if (!updatedProfile.gender === null || updatedProfile.gender === 'undefined') {
+          if (profile) {
+            profile.gender = 'Male';
+          }
+        }
         const response = await axios.put(`${apiUrl}/api/user/update/${userId}`, updatedProfile, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         });
+        console.log("request data;"+ 
+        updatedProfile.gender,
+        updatedProfile.birthday,
+        updatedProfile.name,
+        updatedProfile.middleName,
+        updatedProfile.lastName,
+        updatedProfile.title,
+        updatedProfile.email,
+        updatedProfile.phoneNumber,
+        updatedProfile.address,
+        );
         setProfile(updatedProfile);
         reset({
           name: '',
@@ -100,7 +119,7 @@ export function ProfileEditDialog() {
           address: '',
           summary: '',
         });
-        setRefresh(!refresh);
+        setRefresh(true);
         
       }
     } catch (error) {
@@ -147,9 +166,10 @@ export function ProfileEditDialog() {
               <Label className="font-semibold">Last Name</Label>
               <Input type="text" {...register("lastName")} defaultValue={profile.lastName} className="border p-2 rounded" />
             </div>
-            <div className="flex flex-col space-y-2">
+            
+              <div className="flex flex-col space-y-2">
               <Label className="font-semibold">Gender</Label>
-              <Select defaultValue={profile.gender} {...register("gender")}>
+              <Select value={selectedGender} onValueChange={setSelectedGender}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>

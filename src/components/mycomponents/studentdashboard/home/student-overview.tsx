@@ -15,7 +15,7 @@ export function StudentOverview() {
     <section className="flex flex-col items-start justify-normal min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8">
       <div className="mt-12 ml-2">
         <h1 className="text-6xl leading-tight font-bold text-gray-900">
-          Welcome back, {name}!
+          Welcome, {name}!
         </h1>
       </div>
       <div className="mt-8 max-w-prose ml-2">

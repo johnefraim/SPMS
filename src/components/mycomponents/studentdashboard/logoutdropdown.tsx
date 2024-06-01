@@ -34,19 +34,13 @@ export function LogoutDropDown() {
         const decodedToken = token ? JSON.parse(atob(token.split('.')[1])) : null;
         const userId = decodedToken ? decodedToken.Id : null;
         try {
-          const response = await axios.get(`${apiUrl}/api/user/${userId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
+          const imageResponse = await axios.get(`${apiUrl}/api/image/${userId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+            responseType: 'blob',
           });
-          const { imageName } = response.data;
-          const responseImage = await axios.get(`${apiUrl}/api/image/${imageName}`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            },
-            responseType: 'blob'
-          });
-          setProfilePicture(responseImage.data);
+        const imageBlob = new Blob([imageResponse.data], { type: 'image/png' });
+        const pic = URL.createObjectURL(imageBlob);
+        setProfilePicture(pic);
         } catch (error) {
             console.error('Error fetching user details:', error);
         }

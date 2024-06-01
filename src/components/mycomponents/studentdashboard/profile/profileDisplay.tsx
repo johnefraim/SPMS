@@ -18,6 +18,14 @@ interface ProfileProps {
   profileImage?: string;
 }
 
+const fieldMapping = {
+  'Email': 'email',
+  'Phone': 'phoneNumber',
+  'Address': 'address',
+  'Gender': 'gender',
+  'Birthday': 'birthday'
+};
+
 const ProfileDisplay = () => {
   const [profile, setProfile] = useState<ProfileProps | null>(null);
   const [loading, setLoading] = useState(true);
@@ -39,13 +47,17 @@ const ProfileDisplay = () => {
         });
   
         const { data } = response;
-        if (data.profileImage) {
-          const imageResponse = await axios.get(`${apiUrl}/api/images/${data.profileImage}`, {
-            responseType: 'blob',
-          });
+          try{
+            const imageResponse = await axios.get(`${apiUrl}/api/image/${userId}`, {
+              headers: { Authorization: `Bearer ${token}` },
+              responseType: 'blob',
+            });
           const imageBlob = new Blob([imageResponse.data], { type: 'image/png' });
           data.profileImage = URL.createObjectURL(imageBlob);
-        }
+          }catch(error){
+            console.error('Error fetching image:', error);
+          }
+        
         setProfile(data);
       } catch (error) {
         setError('Error fetching user details.');
@@ -112,21 +124,22 @@ const ProfileDisplay = () => {
           >
             Upload Image
           </button>
-          <div className="flex-1">
-            <h2 className="text-3xl font-bold">{`${profile?.name} ${profile?.middleName} ${profile?.lastName}`}</h2>
-            <p className="text-gray-500">{profile?.address}</p>
-            <p className="mt-1 text-xl font-semibold">{profile?.title}</p>
-          </div>
+          <h2 className="text-3xl font-bold">{`${profile?.name} ${profile?.middleName ? profile?.middleName : ''} ${profile?.lastName}`}</h2>
           <ProfileEditDialog />
         </div>
         <div className="mt-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
-            {['Email', 'Phone', 'Address', 'Gender', 'Birthday'].map((field, index) => (
+            {['Email', 'Address', 'Title', 'Gender', 'Birthday'].map((field, index) => (
               <div key={index}>
                 <h3 className="font-semibold">{field}</h3>
                 <p>{profile ? (profile as any)[field.toLowerCase()] : ''}</p>
               </div>
             ))}
+          </div>
+          <div className="mt-6 space-y-4">
+          <h3 className="text-lg font-bold">Phone</h3>
+            <p className="mt-2 text-gray-700">{profile?.phoneNumber}</p>
+
           </div>
           <div>
             <h3 className="text-lg font-bold">Summary</h3>

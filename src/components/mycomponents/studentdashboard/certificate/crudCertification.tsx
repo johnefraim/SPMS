@@ -164,7 +164,6 @@ const CertificationCRUD: React.FC<CertificationProps> = ({portfolioAttribute})=>
                         onChange={e => setSelectedCertification({ ...selectedCertification, photoUrl: e.target.value })}
                         placeholder="Photo URL"
                         className="border rounded p-2"
-                        required
                     />
                 </div>
                 <button type="submit" className="mr-4 mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700">

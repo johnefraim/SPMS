@@ -14,11 +14,11 @@ interface Project {
     projectGithub: string;
 }
 
-interface ProjectProps{
+interface ProjectProps {
     portfolioAttribute: number;
 }
 
-const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
+const ProjectCRUD: React.FC<ProjectProps> = ({ portfolioAttribute }) => {
     const [projects, setProjects] = useState<Project[]>([]);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const [selectedProject, setSelectedProject] = useState<Project>({
@@ -34,19 +34,19 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
     useEffect(() => {
         const token = getToken();
         
-        if(token){
-            axios.get(`${apiUrl}/api/projects/user/${portfolioAttribute}`, 
-        {
-            headers: {
-                'Authorization': 'Bearer ' + getToken(),
-            },
-        }
-        ).then(response =>{ 
-                if(Array.isArray(response.data)) {
-                setProjects(response.data)
-            } else {
-                console.error('Error: response data is not an array:', response.data);
-            }})
+        if (token) {
+            axios.get(`${apiUrl}/api/projects/user/${portfolioAttribute}`, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                },
+            })
+            .then(response => { 
+                if (Array.isArray(response.data)) {
+                    setProjects(response.data);
+                } else {
+                    console.error('Error: response data is not an array:', response.data);
+                }
+            })
             .catch(error => console.error('Error fetching projects:', error));
         }
     }, [portfolioAttribute, apiUrl]);
@@ -78,47 +78,40 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
     };
 
     const createProject = (project: Project) => {
-
-        axios.post(`${apiUrl}/api/projects/create/${portfolioAttribute}`, project,
-        {
+        axios.post(`${apiUrl}/api/projects/create/${portfolioAttribute}`, project, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + getToken(),
             },
-        }
-        )
-            .then(response => setProjects(prevProjects => [...prevProjects, response.data]))
-            .catch(error => console.error('Error creating project:', error));
+        })
+        .then(response => setProjects(prevProjects => [...prevProjects, response.data]))
+        .catch(error => console.error('Error creating project:', error));
     };
 
     const updateProject = (project: Project) => {
-        axios.put(`${apiUrl}/api/projects/update/${project.id}`, project,
-        {
+        axios.put(`${apiUrl}/api/projects/update/${project.id}`, project, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + getToken(),
             },
-        }
-        )
-            .then(response => setProjects(prevProjects =>
-                prevProjects.map(p => p.id === response.data.id ? response.data : p)
-            ))
-            .catch(error => console.error('Error updating project:', error));
+        })
+        .then(response => setProjects(prevProjects =>
+            prevProjects.map(p => p.id === response.data.id ? response.data : p)
+        ))
+        .catch(error => console.error('Error updating project:', error));
     };
 
     const deleteProject = (project: Project) => {
-        axios.delete(`${apiUrl}/api/projects/delete/${project.id}`,
-        {
+        axios.delete(`${apiUrl}/api/projects/delete/${project.id}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + getToken(),
             },
-        }
-        )
-            .then(() => setProjects(prevProjects =>
-                prevProjects.filter(p => p.id !== project.id)
-            ))
-            .catch(error => console.error('Error deleting project:', error));
+        })
+        .then(() => setProjects(prevProjects =>
+            prevProjects.filter(p => p.id !== project.id)
+        ))
+        .catch(error => console.error('Error deleting project:', error));
     };
 
     return (
@@ -131,7 +124,6 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
                         value={selectedProject.projectImage}
                         onChange={handleInputChange}
                         placeholder="Project Image URL"
-                        required
                         className="w-full p-2 border border-gray-300 rounded"
                     />
                 </div>
@@ -185,7 +177,6 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
                         value={selectedProject.projectLink}
                         onChange={handleInputChange}
                         placeholder="Project Link"
-                        required
                         className="w-full p-2 border border-gray-300 rounded"
                     />
                 </div>
@@ -196,7 +187,7 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
                         value={selectedProject.projectGithub}
                         onChange={handleInputChange}
                         placeholder="GitHub Link"
-                        required
+                    
                         className="w-full p-2 border border-gray-300 rounded"
                     />
                 </div>
@@ -207,7 +198,7 @@ const ProjectCRUD: React.FC<ProjectProps> = ({portfolioAttribute}) => {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {projects.map(project => (
                     <div key={project.id} className="p-4 bg-white rounded shadow-md">
-                        <Image height={128} width={128} src={project.projectImage} alt={project.projectTitle} className="w-full h-32 object-cover rounded mb-4"/>
+                        <Image height={128} width={128} src={project.projectImage} alt={project.projectTitle} className="w-full h-32 object-cover rounded mb-4" unoptimized />
                         <h2 className="text-xl font-bold mb-2">{project.projectTitle}</h2>
                         <p className="text-gray-700 mb-2">{project.description}</p>
                         <p className="text-gray-700 mb-2"><strong>Role:</strong> {project.role}</p>

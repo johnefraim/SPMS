@@ -7,8 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
 import { register } from '@/app/api/authService';
-import { redirect } from "next/navigation"
-import { RegistrationAlert } from './registrationAlert';
+import { RegistrationAlert } from '../../components/mycomponents/registration/registrationAlert';
 import { useRouter } from 'next/navigation';
 const formSchema = z.object({
   firstName: z.string().min(2, { message: 'First Name must be at least 2 characters.' }),

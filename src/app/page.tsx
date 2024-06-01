@@ -1,7 +1,7 @@
 import { HomeNavigation } from "@/components/mycomponents/homenavigationbar";
 import Footer from "@/components/mycomponents/footer";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { LoginForm } from "@/components/mycomponents/logincomponents/loginform";
+import { LoginForm } from "@/app/login/loginform";
 import { KeyRound } from "lucide-react";
 
 export default function Home() {

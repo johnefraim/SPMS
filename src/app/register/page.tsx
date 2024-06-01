@@ -1,5 +1,5 @@
 import { HomeNavigation } from '@/components/mycomponents/homenavigationbar';
-import { RegistrationComponent } from '@/components/mycomponents/registration/registrationComponent';
+import { RegistrationComponent } from '@/app/register/registrationComponent';
 import React from 'react';
 import Footer from '@/components/mycomponents/footer';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';

@@ -131,7 +131,6 @@ const PortfolioDetails: React.FC<Params> = ({ id }) => {
         <div className="p-8 bg-gray-100">
       <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md" ref={componentRef}>
         <div className="flex items-center mb-6">
-          <Image src="/profile-image.png" alt="Profile Image" width={128} height={128} className="rounded-full mr-4" />
           <div>
             <h1 className="text-3xl font-bold">{portfolio.portfolioTitle}</h1>
             <p className="text-lg">{portfolio.description}</p>
@@ -139,9 +138,9 @@ const PortfolioDetails: React.FC<Params> = ({ id }) => {
         </div>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-2">Personal Details</h2>
           {portfolio.personalDetails && portfolio.personalDetails.map((detail) => (
             <div key={detail.id} className="mb-4">
+              <h2 className="text-2xl font-semibold mb-2">Personal Details</h2>
               <p><strong>LinkedIn:</strong> <a href={detail.linkedin} className="text-blue-500" target="_blank" rel="noopener noreferrer">{detail.linkedin}</a></p>
               <p><strong>Social Media:</strong> <a href={detail.socialMedia} className="text-blue-500" target="_blank" rel="noopener noreferrer">{detail.socialMedia}</a></p>
               <p><strong>Website:</strong> <a href={`http://${detail.website}`} className="text-blue-500" target="_blank" rel="noopener noreferrer">{detail.website}</a></p>
@@ -152,9 +151,9 @@ const PortfolioDetails: React.FC<Params> = ({ id }) => {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-2">Educational Background</h2>
           {portfolio.educationalBackground && portfolio.educationalBackground.map((education) => (
             <div key={education.id} className="mb-4">
+              <h2 className="text-2xl font-semibold mb-2">Educational Background</h2>
               <p><strong>School:</strong> {education.school}</p>
               <p><strong>Degree:</strong> {education.degree}</p>
               <p><strong>Field of Study:</strong> {education.fieldOfStudy}</p>
@@ -168,10 +167,12 @@ const PortfolioDetails: React.FC<Params> = ({ id }) => {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-2">Projects</h2>
+          
           {portfolio.projectEntity && portfolio.projectEntity.map((project) => (
+            
             <div key={project.id} className="mb-4">
-              <Image height={128} width={128} src={project.projectImage} alt={project.projectTitle} className="w-full h-48 object-cover mb-2" />
+              <h2 className="text-2xl font-semibold mb-2">Projects</h2>
+              <Image unoptimized height={128} width={128} src={project.projectImage} alt={project.projectTitle} className="w-full h-48 object-cover mb-2" />
               <p><strong>Project Title:</strong> {project.projectTitle}</p>
               <p><strong>Description:</strong> {project.description}</p>
               <p><strong>Role:</strong> {project.role}</p>
@@ -183,9 +184,9 @@ const PortfolioDetails: React.FC<Params> = ({ id }) => {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-2">Career</h2>
           {portfolio.careerEntity && portfolio.careerEntity.map((career) => (
             <div key={career.id} className="mb-4">
+              <h2 className="text-2xl font-semibold mb-2">Career</h2>
               <p><strong>Job Title:</strong> {career.jobTitle}</p>
               <p><strong>Employment Type:</strong> {career.employmentType}</p>
               <p><strong>Company:</strong> {career.company}</p>
@@ -199,9 +200,9 @@ const PortfolioDetails: React.FC<Params> = ({ id }) => {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-2">Skills</h2>
           {portfolio.skills && portfolio.skills.map((skill) => (
             <div key={skill.id} className="mb-4">
+              <h2 className="text-2xl font-semibold mb-2">Skills</h2>
               <p><strong>Name:</strong> {skill.name}</p>
               <p><strong>Proficiency:</strong> {skill.proficiency}</p>
               <p><strong>Years of Experience:</strong> {skill.yearsOfExperience}</p>
@@ -214,9 +215,9 @@ const PortfolioDetails: React.FC<Params> = ({ id }) => {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-2">Certifications</h2>
           {portfolio.certifications && portfolio.certifications.map((certification) => (
             <div key={certification.id} className="mb-4">
+              <h2 className="text-2xl font-semibold mb-2">Certifications</h2>
               <p><strong>Name:</strong> {certification.name}</p>
               <p><strong>Issuing Organization:</strong> {certification.issuingOrganization}</p>
               <p><strong>Issued Date:</strong> {new Date(certification.issuedDate).toLocaleDateString()}</p>
