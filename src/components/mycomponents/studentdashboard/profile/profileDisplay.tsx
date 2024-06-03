@@ -1,62 +1,24 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import axios from "axios";
-import { ProfileEditDialog } from "./profileEditDialog";
 import Image from "next/image";
 import { getToken } from "@/app/api/authService";
 import { Button } from "@/components/ui/button";
-import Loading from "../../utils/loading";
-interface ProfileProps {
-  name: string;
-  middleName: string;
-  lastName: string;
-  gender: string;
-  birthday: string;
-  title: string;
-  email: string;
-  phoneNumber: string;
-  address: string;
-  summary: string;
-  profileImage: string;
-}
+import { ProfileEditDialog } from "./profileEditDialog";
+import { useProfileStore } from "@/lib/userProfileStore";
 
 const ProfileDisplay = () => {
-  const [profile, setProfile] = useState<ProfileProps | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [refresh, setRefresh] = useState(false);
+  const {
+    profile,
+    setLoading,
+    setError,
+    refreshProfile,
+  } = useProfileStore();
+
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
-    const fetchUserDetails = async () => {
-      const token = getToken();
-      if (!token) return;
-
-      try {
-        const decode = JSON.parse(atob(token.split('.')[1]));
-        const userId = decode.Id;
-        const response = await axios.get(`${apiUrl}/api/user/${userId}/details`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const { data } = response;
-        setProfile(response.data);
-
-        const imageResponse = await axios.get(`${apiUrl}/api/image/${userId}`, {
-            headers: { Authorization: `Bearer ${token}` },
-            responseType: 'blob',
-          });
-          const imageBlob = new Blob([imageResponse.data], { type: 'image/png' });
-          data.profileImage = URL.createObjectURL(imageBlob);
-      } catch (error) {
-        setError('Error fetching user details.');
-        console.error('Error fetching user details:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUserDetails();
-  }, [refresh, apiUrl]);
+    refreshProfile();
+  }, [refreshProfile]);
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -68,26 +30,19 @@ const ProfileDisplay = () => {
 
     try {
       const decode = JSON.parse(atob(token.split('.')[1]));
-      const userId = decode.Id;
-      await axios.post(`${apiUrl}/api/image/${userId}`, formData, {
+      const userId: string = decode.Id;
+
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/image/${userId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
         },
       });
-      setRefresh(true);
+      refreshProfile();
     } catch (error) {
       console.error('Error uploading file:', error);
     }
   };
-
-  if (loading) {
-    return <Loading/>;
-  }
-
-  if (error) {
-    return <div className="flex items-center justify-center min-h-screen text-red-500">{error}</div>;
-  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
@@ -112,7 +67,7 @@ const ProfileDisplay = () => {
           >
             Upload Image
           </Button>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center sm:text-left">{`${profile?.name} ${profile?.middleName ? profile?.middleName : ''} ${profile?.lastName}`}</h2>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center sm:text-left">{`${profile?.name} ${profile?.middleName ? profile.middleName : ''} ${profile?.lastName}`}</h2>
           <ProfileEditDialog />
         </div>
         <div className="mt-6 space-y-4">

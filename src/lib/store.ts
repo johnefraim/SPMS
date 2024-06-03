@@ -3,14 +3,14 @@ import axios from 'axios';
 
 interface PortfolioStore {
   portfolios: any[];
-  apiUrl: string;
+  apiUrl: any;
   error: string | null;
   fetchPortfolios: () => Promise<void>;
 }
 
 export const usePortfolioStore = create<PortfolioStore>((set, get) => ({
   portfolios: [],
-  apiUrl: process.env.REACT_APP_API_URL || 'https://ccs-spms.xyz',
+  apiUrl: process.env.NEXT_PUBLIC_API_URL,
   error: null,
   fetchPortfolios: async function () { 
     try {
