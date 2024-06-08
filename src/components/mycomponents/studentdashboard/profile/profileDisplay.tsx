@@ -16,10 +16,6 @@ const ProfileDisplay = () => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    refreshProfile();
-  }, [refreshProfile]);
-
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     const token = getToken();

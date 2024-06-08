@@ -52,10 +52,6 @@ export function ProfileEditDialog() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const {profile, refreshProfile} = useProfileStore();
 
-  useEffect(() => {
-      refreshProfile();
-    }, [refreshProfile]);
-
   const handleSave = async (updatedProfile: ProfileProps) => {
     try {
       const token = getToken();
