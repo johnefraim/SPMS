@@ -12,6 +12,7 @@ interface Portfolio {
     category: string;
     description: string;
     tagsKeywords: string;
+    privacy:boolean;
 }
 
 const PortfolioCRUD: React.FC = () => {
@@ -23,6 +24,7 @@ const PortfolioCRUD: React.FC = () => {
         category: '',
         description: '',
         tagsKeywords: '',
+        privacy: false,
     });
 
     useEffect(() => {
@@ -43,10 +45,11 @@ const PortfolioCRUD: React.FC = () => {
     }, [refresh, apiUrl]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
+        const { name, value, type } = e.target as HTMLInputElement | HTMLTextAreaElement;
+        const checked = type === 'checkbox' ? (e.target as HTMLInputElement).checked : false;
         setSelectedPortfolio(prevState => ({
             ...prevState,
-            [name]: value,
+            [name]: type === 'checkbox' ? checked : value,
         }));
     };
 
@@ -62,10 +65,12 @@ const PortfolioCRUD: React.FC = () => {
             category: '',
             description: '',
             tagsKeywords: '',
+            privacy: false,
         });
     };
 
     const createPortfolio = (portfolio: Portfolio) => {
+        console.log(portfolio);
         axios.post(`${apiUrl}/api/portfolio/create`, portfolio,
         {
             headers: {
@@ -100,6 +105,7 @@ const PortfolioCRUD: React.FC = () => {
                 category: '',
                 description: '',
                 tagsKeywords: '',
+                privacy: false,
             });
     };
 
@@ -164,6 +170,18 @@ const PortfolioCRUD: React.FC = () => {
                         className="w-full p-2 border border-gray-300 rounded"
                     />
                 </div>
+                <div className="mb-4">
+    <label className="mr-2">Privacy:</label>
+    <input
+        type="checkbox"
+        name="privacy"
+        checked={selectedPortfolio.privacy}
+        onChange={handleInputChange}
+        className="mr-2"
+    />
+        <p>check the box if you want to make your portfolio public</p>
+                </div>
+
                 <button type="submit" className="mr-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                     Save
                 </button>

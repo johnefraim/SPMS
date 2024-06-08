@@ -1,6 +1,7 @@
 
 import { HomeNavigation } from "@/components/mycomponents/homenavigationbar";
 import PortfolioList from "@/components/mycomponents/portfolioshowroom/componentPortfolioList";
+import SeachPortfolio from "@/components/mycomponents/portfolioshowroom/searchComponent";
 const Portfolios: React.FC = ()=>{
 
     return(
@@ -9,6 +10,7 @@ const Portfolios: React.FC = ()=>{
             <HomeNavigation/>
         </header>
           <section>
+            <SeachPortfolio/>
              <PortfolioList/>
           </section>
         </>

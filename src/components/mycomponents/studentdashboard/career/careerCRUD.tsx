@@ -48,11 +48,12 @@ const CareerCRUD: React.FC<CareerProps> = ({ portfolioAttribute }) => {
     }, [portfolioAttribute, apiUrl]);
 
     const createCareer = (career: Career) => {
+        console.log('Career created:', career)
         axios.post(`${apiUrl}/api/careers/create/${portfolioAttribute}`, career, {
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${getToken()}`,
             },
+            
         }).then(response => setCareers([...careers, response.data]))
             .catch(error => console.error('Error creating career:', error));
     };

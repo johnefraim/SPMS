@@ -34,7 +34,7 @@ export function DeanSidebar({onDeanOverview,
   const [activeItem, setActiveItem] = useState("deanOverview");
 
   return (
-    <NavigationMenu className=" bg-][EFEFEF] w-48 h-full items-start shadow-2xl"> 
+    <NavigationMenu className=" bg-][EFEFEF] w-48 h-screen items-start shadow-2xl"> 
       <NavigationMenuList className="flex flex-col mt-6 space-y-3">
         <NavigationMenuItem className="w-full flex items-center space-x-4">
         <Image src="/CCS_LOGO.png" alt="unc logo" width={64} height={64}className="items-center ml-4 mt-2  mb-4"/>

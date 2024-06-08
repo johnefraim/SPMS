@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import axios from "axios";
 import { getToken } from "@/app/api/authService";
+import { useProfileStore } from "@/lib/userProfileStore";
 
 interface ProfileProps {
   name: string;
@@ -45,38 +46,15 @@ const GenderOptions = [
 ];
 
 export function ProfileEditDialog() {
-  const [profile, setProfile] = useState<ProfileProps>();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const [selectedGender, setSelectedGender] = useState(profile?.gender || "Male");
-
+  const {profile, refreshProfile} = useProfileStore();
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const token = getToken();
-      if (token) {
-        const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        const userId = decodedToken.Id;
-        try {
-          const response = await axios.get(`${apiUrl}/api/user/${userId}/details`, {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
-          });
-          setProfile(response.data);
-
-        } catch (error) {
-          setError('Error fetching profile.');
-          console.error('Error fetching profile:', error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-    fetchProfile();
-  }, [refresh, apiUrl]);
+      refreshProfile();
+    }, [refreshProfile]);
 
   const handleSave = async (updatedProfile: ProfileProps) => {
     try {
@@ -90,23 +68,8 @@ export function ProfileEditDialog() {
             profile.gender = 'Male';
           }
         }
-        const response = await axios.put(`${apiUrl}/api/user/update/${userId}`, updatedProfile, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-        console.log("request data;"+ 
-        updatedProfile.gender,
-        updatedProfile.birthday,
-        updatedProfile.name,
-        updatedProfile.middleName,
-        updatedProfile.lastName,
-        updatedProfile.title,
-        updatedProfile.email,
-        updatedProfile.phoneNumber,
-        updatedProfile.address,
-        );
-        setProfile(updatedProfile);
+        await axios.put(`${apiUrl}/api/user/update/${userId}`, updatedProfile, {headers: {'Authorization': `Bearer ${token}`,},});
+        refreshProfile();
         reset({
           name: '',
           middleName: '',
@@ -131,10 +94,6 @@ export function ProfileEditDialog() {
   const {register,handleSubmit, reset} = useForm<ProfileProps>();
 
   const onSubmit = handleSubmit(async (data) => {await handleSave(data);});
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   if (error) {
     return <div className="text-red-500">{error}</div>;
@@ -169,7 +128,7 @@ export function ProfileEditDialog() {
             
               <div className="flex flex-col space-y-2">
               <Label className="font-semibold">Gender</Label>
-              <Select value={selectedGender} onValueChange={setSelectedGender}>
+              <Select defaultValue="Male" onValueChange={(value: string) => {profile.gender = value}}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -197,7 +156,7 @@ export function ProfileEditDialog() {
 
             <div className="flex flex-col space-y-2">
               <Label className="font-semibold">Title</Label>
-              <Input type="text" {...register("title")} defaultValue={profile.title} className="border p-2 rounded" />
+              <Input type="text" {...register("title")} defaultValue={profile.title} className="border p-2 rounded" placeholder="Software Engineer, Web Designer etc."/>
             </div>
             <div className="flex flex-col space-y-2">
               <Label className="font-semibold">Email</Label>

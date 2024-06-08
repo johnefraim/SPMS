@@ -30,7 +30,7 @@ const PortfolioList: React.FC = () => {
               <p className="text-gray-700 mb-4">{portfolio.description}</p>
               <p className="text-gray-500 mb-2">{portfolio.category}</p>
               <p className="text-gray-500 mb-4">{portfolio.tagsKeywords}</p>
-              <Link href={`/dashboard/student/portfolio/${portfolio.id}`} className="text-orange-600 hover:text-orange-800 flex items-center">
+              <Link href={`/portfolios/${portfolio.id}`} className="text-orange-600 hover:text-orange-800 flex items-center">
                 <LucideLink className="mr-2" />
                 View
               </Link>

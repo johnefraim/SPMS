@@ -44,22 +44,14 @@ export default function DeanDashboard() {
                 switch (userRole) {
                     case 'STUDENT':
                         redirect('/dashboard/student');
-                        break;
                     case 'MANAGER':
                         redirect('/dashboard/program-head');
-                    break;
                 default:
                     redirect('/');
-                    break;
             }
           }
         
     }, []);
-
-    const handleSearch = (searchTerm: string) => {
-        console.log(searchTerm);
-        setCurrentComponent('search-result');
-    };
 
     return (
         <section className="flex">
@@ -68,7 +60,7 @@ export default function DeanDashboard() {
                 onProfile={() => setCurrentComponent('studentprofile')}
             />
             <div className="flex">
-                <SearchBar onSearch={handleSearch} />
+            
             </div>
             <div className="h-screen flex w-full">
                 <div className="w-full">{renderComponent()}</div>
